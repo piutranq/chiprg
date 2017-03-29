@@ -1,9 +1,20 @@
 # chiprg
 
-
-# Run on cordova
+# Run on Browser
 
 require `nodejs` & `npm`
+
+install http-server at global (just for once)
+```bash
+$ npm install -g http-server
+```
+
+run http-server
+```bash
+$ http-server src/
+```
+
+# Run on cordova
 
 install cordova at global (just for once)
 ```bash
