@@ -14,6 +14,8 @@ run http-server
 $ http-server src/
 ```
 
+open `localhost:8080/` on your browser
+
 # Run on cordova
 
 install cordova at global (just for once)
