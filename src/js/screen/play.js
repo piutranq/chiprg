@@ -1,5 +1,5 @@
-var screenConfig = {
-  name: "screenConfig",
+var screenPlay = {
+  name: "screenPlay",
   preload: function(){
   },
   create: function(){
