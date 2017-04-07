@@ -13,8 +13,8 @@ var screenStart = {
 
   },
   create: function(){
-    var ascii1014 = game.add.bitmapText(0, 0,'font1014', this.ascii,  14)
-    var ascii1014 = game.add.bitmapText(0, 86,'font1418', this.ascii,  18)
+    var ascii1014 = game.add.bitmapText(0, 0,'font1014', this.ascii,  14);
+    var ascii1418 = game.add.bitmapText(0, 86,'font1418', this.ascii,  18);
     var buttonStart = game.add.button(
       game.world.centerX-32, game.world.centerY-18,
       'redbutton', this.goMenu, this);
