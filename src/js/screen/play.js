@@ -8,6 +8,10 @@ var screenPlay = {
   area2: "",
   area3: "",
   area4: "",
+  areaL: "",
+  areaR: "",
+  areaSTART: "",
+  areaSELECT: "",
 
   // OBJECT (image)
   img_gear: "",
@@ -34,26 +38,29 @@ var screenPlay = {
     game.load.spritesheet('buttonL', SKIN_PATH + skinName + 'buttonL.png', 160, 78);
     game.load.spritesheet('buttonR', SKIN_PATH + skinName + 'buttonR.png', 160, 78);
     game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 80, 80);
+    game.load.spritesheet('buttonS', SKIN_PATH + skinName + 'buttonS.png', 80, 40);
   },
   create: function(){
 
 
-    area1= { x1:  0, x2: 79, y1:180, y2:359 };
-    area2= { x1: 80, x2:159, y1:180, y2:359 };
-    area3= { x1:480, x2:559, y1:180, y2:359 };
-    area4= { x1:560, x2:639, y1:180, y2:359 };
-    areaL= { x1:  0, x2:159, y1:0, y2:119 };
-    areaR= { x1:480, x2:639, y1:0, y2:119 };
+    area1 = { shape:   'circle', ox: 39, oy:235,  r: 40 };
+    area2 = { shape:   'circle', ox:119, oy:275,  r: 40 };
+    area3 = { shape:   'circle', ox:519, oy:275,  r: 40 };
+    area4 = { shape:   'circle', ox:599, oy:235,  r: 40 };
+    areaL = { shape:'rectangle', x1:  0, x2:159, y1: 40, y2: 99 };
+    areaR = { shape:'rectangle', x1:480, x2:639, y1: 40, y2: 99 };
+    areaS = { shape:'rectangle', x1:510, x2:589, y1: 130, y2: 150 };
 
 
     // Add image, text on screen
     img_gear = game.add.sprite(0, 0, 'gear');
-    img_buttonL = game.add.sprite(0, 40, 'buttonL', 0);
-    img_buttonR = game.add.sprite(480, 40, 'buttonR', 0);
     img_button1 = game.add.sprite(0, 200, 'buttonCircle', 0);
     img_button2 = game.add.sprite(80, 240, 'buttonCircle', 0);
     img_button3 = game.add.sprite(480, 240, 'buttonCircle', 0);
     img_button4 = game.add.sprite(560, 200, 'buttonCircle', 0);
+    img_buttonL = game.add.sprite(0, 40, 'buttonL', 0);
+    img_buttonR = game.add.sprite(480, 40, 'buttonR', 0);
+    img_buttonS = game.add.sprite(510, 130, 'buttonS', 0);
 
     // Gamepad input setup
     game.input.gamepad.start();
@@ -64,6 +71,7 @@ var screenPlay = {
     inputPad4 = Phaser.Gamepad.XBOX360_Y;
     inputPadL = Phaser.Gamepad.XBOX360_LEFT_BUMPER;
     inputPadR = Phaser.Gamepad.XBOX360_RIGHT_BUMPER;
+    inputPadS = Phaser.Gamepad.XBOX360_START;
 
     // Mouse & multi-touch input setup
     game.input.addPointer();
@@ -85,20 +93,30 @@ var screenPlay = {
     key4 = game.input.keyboard.addKey(Phaser.Keyboard.L);
     keyL = game.input.keyboard.addKey(Phaser.Keyboard.E);
     keyR = game.input.keyboard.addKey(Phaser.Keyboard.I);
+    keyS = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+
     game.input.keyboard.addKeyCapture
       ([Phaser.Keyboard.S,
         Phaser.Keyboard.F,
         Phaser.Keyboard.J,
         Phaser.Keyboard.L,
         Phaser.Keyboard.E,
-        Phaser.Keyboard.I,]);
+        Phaser.Keyboard.I,
+        Phaser.Keyboard.ENTER]);
 
   },
 
   update: function() {
 
     var pIsDown = function (p, a) { // p is pointer, a is area
-      return (p.x > a.x1 && p.x < a.x2 && p.y > a.y1 && p.y < a.y2) && p.isDown;
+      var ret;
+      if(a.shape == 'rectangle')
+        ret = (p.x > a.x1 && p.x < a.x2 && p.y > a.y1 && p.y < a.y2);
+      else if(a.shape == 'circle')
+        ret = Math.pow(a.ox-p.x, 2)+Math.pow(a.oy-p.y, 2) < Math.pow(a.r, 2);
+      else
+        return 0;
+      return ret && p.isDown;
     };
 
     var isDown1 =
@@ -110,8 +128,7 @@ var screenPlay = {
       pIsDown(touch3, area1) ||
       pIsDown(touch4, area1) ||
       pIsDown(touch5, area1) ||
-      pIsDown(touch6, area1)
-    ;
+      pIsDown(touch6, area1);
 
     var isDown2 =
       pad1.isDown(inputPad2) ||
@@ -122,8 +139,7 @@ var screenPlay = {
       pIsDown(touch3, area2) ||
       pIsDown(touch4, area2) ||
       pIsDown(touch5, area2) ||
-      pIsDown(touch6, area2)
-    ;
+      pIsDown(touch6, area2);
 
     var isDown3 =
       pad1.isDown(inputPad3) ||
@@ -134,8 +150,7 @@ var screenPlay = {
       pIsDown(touch3, area3) ||
       pIsDown(touch4, area3) ||
       pIsDown(touch5, area3) ||
-      pIsDown(touch6, area3)
-    ;
+      pIsDown(touch6, area3);
 
     var isDown4 =
       pad1.isDown(inputPad4) ||
@@ -146,8 +161,7 @@ var screenPlay = {
       pIsDown(touch3, area4) ||
       pIsDown(touch4, area4) ||
       pIsDown(touch5, area4) ||
-      pIsDown(touch6, area4)
-    ;
+      pIsDown(touch6, area4);
 
     var isDownL =
       pad1.isDown(inputPadL) ||
@@ -158,8 +172,7 @@ var screenPlay = {
       pIsDown(touch3, areaL) ||
       pIsDown(touch4, areaL) ||
       pIsDown(touch5, areaL) ||
-      pIsDown(touch6, areaL)
-    ;
+      pIsDown(touch6, areaL);
 
     var isDownR =
       pad1.isDown(inputPadR) ||
@@ -170,8 +183,18 @@ var screenPlay = {
       pIsDown(touch3, areaR) ||
       pIsDown(touch4, areaR) ||
       pIsDown(touch5, areaR) ||
-      pIsDown(touch6, areaR)
-    ;
+      pIsDown(touch6, areaR);
+
+    var isDownS =
+      pad1.isDown(inputPadS) ||
+      keyS.isDown ||
+      pIsDown(mouse, areaS) ||
+      pIsDown(touch1, areaS) ||
+      pIsDown(touch2, areaS) ||
+      pIsDown(touch3, areaS) ||
+      pIsDown(touch4, areaS) ||
+      pIsDown(touch5, areaS) ||
+      pIsDown(touch6, areaS);
 
     // button graphic update
     if (isDown1)
@@ -198,6 +221,10 @@ var screenPlay = {
       img_buttonR.frame=1;
     else
       img_buttonR.frame=0;
+    if (isDownS)
+      img_buttonS.frame=1;
+    else
+      img_buttonS.frame=0;
   }
 
 };
