@@ -1,5 +1,14 @@
 var game = new Phaser.Game(640, 360, Phaser.AUTO, '');
 
+// PATH CONSTANT
+
+FONT_PATH = 'assets/fonts/';
+IMG_PATH = 'assets/img/';
+SKIN_PATH = 'assets/img/skin/';
+
+// PATH VARIABLE
+skinName = 'default/';
+
 // OVERRIDE SOME FUNCTIONS
 
 // set tight gamepad button justPressed timing (250ms --> 20ms)
@@ -19,4 +28,4 @@ game.state.add('screenPlay', screenPlay);
 game.state.add('screenResult', screenResult);
 game.state.add('screenInputCheck', screenInputCheck);
 
-game.state.start('screenInputCheck');
+game.state.start('screenPlay');
