@@ -7,17 +7,14 @@ var screenMenu = {
   buttonGoSelect: "",
 
   preload: function(){
-    game.load.image('redbutton','assets/img/redbutton.png');
-    game.load.image('yellowbutton','assets/img/yellowbutton.png');
-    game.load.image('greenbutton','assets/img/greenbutton.png');
-    game.load.image('bluebutton','assets/img/bluebutton.png');
+    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 80, 80);
   },
   create: function(){
     var title = game.add.text(0, 0, this.name, { font: "14px Arial", fill: "#ffffff"});
-    var buttonGoStart = game.add.button(0, 342, 'redbutton', this.goStart, this);
-    var buttonGoConfig = game.add.button(64, 342, 'yellowbutton', this.goConfig, this);
-    var buttonGoRanking = game.add.button(128, 342, 'greenbutton', this.goRanking, this);
-    var buttonGoSelect = game.add.button(192, 342, 'bluebutton', this.goSelect, this);
+    var buttonGoStart = game.add.button(0, 324, 'buttonCircle', this.goStart, this);
+    var buttonGoConfig = game.add.button(64, 324, 'buttonCircle', this.goConfig, this);
+    var buttonGoRanking = game.add.button(128, 324, 'buttonCircle', this.goRanking, this);
+    var buttonGoSelect = game.add.button(192, 324, 'buttonCircle', this.goSelect, this);
   },
 
   goStart: function(buttonGoStart, pointer, isOver) {

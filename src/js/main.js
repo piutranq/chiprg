@@ -1,7 +1,6 @@
-var game = new Phaser.Game(640, 360, Phaser.AUTO, '');
+var game = new Phaser.Game(640, 360, Phaser.AUTO, 'chiprg');
 
 // PATH CONSTANT
-
 FONT_PATH = 'assets/fonts/';
 IMG_PATH = 'assets/img/';
 SKIN_PATH = 'assets/img/skin/';
@@ -17,7 +16,6 @@ Phaser.DeviceButton.prototype.justPressed = function(duration){
   return (this.isDown && (this.timeDown + duration) > this.game.time.time);
 };
 
-
 // DECLARE GAME STATES
 game.state.add('screenStart', screenStart);
 game.state.add('screenMenu', screenMenu);
@@ -28,4 +26,5 @@ game.state.add('screenPlay', screenPlay);
 game.state.add('screenResult', screenResult);
 game.state.add('screenInputCheck', screenInputCheck);
 
-game.state.start('screenPlay');
+game.state.start('screenStart');
+

@@ -33,7 +33,6 @@ var screenPlay = {
   touch6: "",
 
   preload: function(){
-    game.load.bitmapFont('font1014', FONT_PATH + 'font1014.png', FONT_PATH + '/font1014.xml');
     game.load.image('gear', SKIN_PATH + skinName + 'gear.png');
     game.load.spritesheet('buttonL', SKIN_PATH + skinName + 'buttonL.png', 160, 78);
     game.load.spritesheet('buttonR', SKIN_PATH + skinName + 'buttonR.png', 160, 78);
@@ -42,7 +41,7 @@ var screenPlay = {
   },
   create: function(){
 
-
+    // Add touch area
     area1 = { shape:   'circle', ox: 39, oy:235,  r: 40 };
     area2 = { shape:   'circle', ox:119, oy:275,  r: 40 };
     area3 = { shape:   'circle', ox:519, oy:275,  r: 40 };
@@ -50,7 +49,6 @@ var screenPlay = {
     areaL = { shape:'rectangle', x1:  0, x2:159, y1: 40, y2: 99 };
     areaR = { shape:'rectangle', x1:480, x2:639, y1: 40, y2: 99 };
     areaS = { shape:'rectangle', x1:510, x2:589, y1: 130, y2: 150 };
-
 
     // Add image, text on screen
     img_gear = game.add.sprite(0, 0, 'gear');
