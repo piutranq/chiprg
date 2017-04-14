@@ -23,23 +23,23 @@ var screenStart = {
     // Phaser.Canvas.setSmoothingEnabled(game.context, false); // Dosen't work. It may be legacy code.
 
     // Load assets
-    game.load.bitmapFont('font1014', 'assets/fonts/font1014.png', 'assets/fonts/font1014.xml');
-    game.load.bitmapFont('font1418', 'assets/fonts/font1418.png', 'assets/fonts/font1418.xml');
-    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 80, 80);
+    game.load.bitmapFont('font57', 'assets/fonts/font57.png', 'assets/fonts/font57.xml');
+    game.load.bitmapFont('font79', 'assets/fonts/font79.png', 'assets/fonts/font79.xml');
+    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 40, 40);
   },
 
   create: function(){
-    ascii1014 = game.add.bitmapText(0, 0,'font1014', this.ascii,  14);
-    ascii1418 = game.add.bitmapText(0, 86,'font1418', this.ascii,  18);
+    ascii1014 = game.add.bitmapText(0,  0, 'font57', this.ascii, 7);
+    ascii1418 = game.add.bitmapText(0, 42, 'font79', this.ascii, 9);
 
     buttonGoMenu = game.add.button(
-      game.world.centerX-32, game.world.centerY-18,
+      game.world.centerX-16, game.world.centerY-9,
       'buttonCircle', this.goMenu, this);
   },
 
   update: function(){ },
 
   goMenu: function(buttonGoMenu, pointer, isOver){
-    if (isOver)this.state.start('screenMenu');
+    if (isOver)this.state.start('screenPlay');
   }
 };

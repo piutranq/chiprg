@@ -1,4 +1,4 @@
-var game = new Phaser.Game(640, 360, Phaser.AUTO, 'chiprg');
+var game = new Phaser.Game(320, 180, Phaser.AUTO, 'chiprg');
 
 // PATH CONSTANT
 FONT_PATH = 'assets/fonts/';

@@ -7,14 +7,14 @@ var screenMenu = {
   buttonGoSelect: "",
 
   preload: function(){
-    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 80, 80);
+    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 40, 40);
   },
   create: function(){
-    var title = game.add.text(0, 0, this.name, { font: "14px Arial", fill: "#ffffff"});
-    var buttonGoStart = game.add.button(0, 324, 'buttonCircle', this.goStart, this);
-    var buttonGoConfig = game.add.button(64, 324, 'buttonCircle', this.goConfig, this);
-    var buttonGoRanking = game.add.button(128, 324, 'buttonCircle', this.goRanking, this);
-    var buttonGoSelect = game.add.button(192, 324, 'buttonCircle', this.goSelect, this);
+    var title = game.add.bitmapText(0,  0, 'font57', this.name, 7);
+    var buttonGoStart = game.add.button(0, 162, 'buttonCircle', this.goStart, this);
+    var buttonGoConfig = game.add.button(32, 162, 'buttonCircle', this.goConfig, this);
+    var buttonGoRanking = game.add.button(64, 162, 'buttonCircle', this.goRanking, this);
+    var buttonGoSelect = game.add.button(96, 162, 'buttonCircle', this.goSelect, this);
   },
 
   goStart: function(buttonGoStart, pointer, isOver) {

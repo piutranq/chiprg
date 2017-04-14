@@ -34,35 +34,35 @@ var screenPlay = {
 
   preload: function(){
     game.load.image('gear', SKIN_PATH + skinName + 'gear.png');
-    game.load.spritesheet('buttonL', SKIN_PATH + skinName + 'buttonL.png', 160, 78);
-    game.load.spritesheet('buttonR', SKIN_PATH + skinName + 'buttonR.png', 160, 78);
-    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 80, 80);
-    game.load.spritesheet('buttonS', SKIN_PATH + skinName + 'buttonS.png', 80, 40);
+    game.load.spritesheet('buttonL', SKIN_PATH + skinName + 'buttonL.png', 80, 39);
+    game.load.spritesheet('buttonR', SKIN_PATH + skinName + 'buttonR.png', 80, 39);
+    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 40, 40);
+    game.load.spritesheet('buttonS', SKIN_PATH + skinName + 'buttonS.png', 40, 20);
   },
   create: function(){
 
     // Add touch area
-    area1 = { shape:   'circle', ox: 39, oy:235,  r: 40 };
-    area2 = { shape:   'circle', ox:119, oy:275,  r: 40 };
-    area3 = { shape:   'circle', ox:519, oy:275,  r: 40 };
-    area4 = { shape:   'circle', ox:599, oy:235,  r: 40 };
-    areaL = { shape:'rectangle', x1:  0, x2:159, y1: 40, y2: 99 };
-    areaR = { shape:'rectangle', x1:480, x2:639, y1: 40, y2: 99 };
-    areaS = { shape:'rectangle', x1:510, x2:589, y1: 130, y2: 150 };
+    area1 = { shape:   'circle', ox: 19, oy:117,  r: 20 };
+    area2 = { shape:   'circle', ox: 59, oy:137,  r: 20 };
+    area3 = { shape:   'circle', ox:259, oy:137,  r: 20 };
+    area4 = { shape:   'circle', ox:299, oy:117,  r: 20 };
+    areaL = { shape:'rectangle', x1:  0, x2: 79, y1: 20, y2: 49 };
+    areaR = { shape:'rectangle', x1:240, x2:319, y1: 20, y2: 49 };
+    areaS = { shape:'rectangle', x1:255, x2:294, y1: 65, y2: 84 };
 
     // Add image, text on screen
-    img_gear = game.add.sprite(0, 0, 'gear');
-    img_button1 = game.add.sprite(0, 200, 'buttonCircle', 0);
-    img_button2 = game.add.sprite(80, 240, 'buttonCircle', 0);
-    img_button3 = game.add.sprite(480, 240, 'buttonCircle', 0);
-    img_button4 = game.add.sprite(560, 200, 'buttonCircle', 0);
-    img_buttonL = game.add.sprite(0, 40, 'buttonL', 0);
-    img_buttonR = game.add.sprite(480, 40, 'buttonR', 0);
-    img_buttonS = game.add.sprite(510, 130, 'buttonS', 0);
+    img_gear    = game.add.sprite(  0,   0, 'gear'           );
+    img_button1 = game.add.sprite(  0, 100, 'buttonCircle', 0);
+    img_button2 = game.add.sprite( 40, 120, 'buttonCircle', 0);
+    img_button3 = game.add.sprite(240, 120, 'buttonCircle', 0);
+    img_button4 = game.add.sprite(280, 100, 'buttonCircle', 0);
+    img_buttonL = game.add.sprite(  0,  20, 'buttonL',      0);
+    img_buttonR = game.add.sprite(240,  20, 'buttonR',      0);
+    img_buttonS = game.add.sprite(255,  65, 'buttonS',      0);
 
     // Gamepad input setup
     game.input.gamepad.start();
-    pad1 = game.input.gamepad.pad1;
+    pad1      = game.input.gamepad.pad1;
     inputPad1 = Phaser.Gamepad.XBOX360_DPAD_UP;
     inputPad2 = Phaser.Gamepad.XBOX360_DPAD_RIGHT;
     inputPad3 = Phaser.Gamepad.XBOX360_X;
