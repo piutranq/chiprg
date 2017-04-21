@@ -13,14 +13,26 @@ var screenPlay = {
   areaSTART: "",
   areaSELECT: "",
 
+  // OBJECT
+  skindata:"",
+
   // OBJECT (image)
   img_gear: "",
-  img_buttonL: "",
-  img_buttonR: "",
+  img_screen: "",
+  img_judgeline: "",
+  img_line1: "",
+  img_line2: "",
+  img_line3: "",
+  img_line4: "",
+  img_lineL: "",
+  img_lineR: "",
   img_button1: "",
   img_button2: "",
   img_button3: "",
   img_button4: "",
+  img_buttonL: "",
+  img_buttonR: "",
+  img_buttonS: "",
 
   // OBJECT (input)
   pad1: "",
@@ -32,33 +44,140 @@ var screenPlay = {
   touch5: "",
   touch6: "",
 
+
   preload: function(){
-    game.load.image('gear', SKIN_PATH + skinName + 'gear.png');
-    game.load.spritesheet('buttonL', SKIN_PATH + skinName + 'buttonL.png', 80, 39);
-    game.load.spritesheet('buttonR', SKIN_PATH + skinName + 'buttonR.png', 80, 39);
-    game.load.spritesheet('buttonCircle', SKIN_PATH + skinName + 'buttonCircle.png', 40, 40);
-    game.load.spritesheet('buttonS', SKIN_PATH + skinName + 'buttonS.png', 40, 20);
+    game.load.json('skindata', skinPath + 'skindata.json');
+
+    game.load.image('gear', skinPath + 'gear.png');
+    game.load.image('screen', skinPath + 'screen.png');
+
+    game.load.spritesheet(
+      'buttonTrigger', skinPath + 'buttonTrigger.png', 80, 40);
+
+    game.load.spritesheet(
+      'buttonCircle', skinPath + 'buttonCircle.png', 28, 31);
+
+    game.load.spritesheet(
+      'buttonS', skinPath + 'buttonS.png', 40, 20);
+
+    game.load.spritesheet(
+      'lineCircle', skinPath + 'lineCircle.png', 30, 150);
+
+    game.load.spritesheet(
+      'lineTrigger', skinPath + 'lineTrigger.png', 60, 150);
+
+    game.load.spritesheet(
+      'judgeLine', skinPath + 'judgeLine.png', 120, 6);
+
   },
   create: function(){
 
+    skindata = game.cache.getJSON('skindata');
+
     // Add touch area
-    area1 = { shape:   'circle', ox: 19, oy:117,  r: 20 };
-    area2 = { shape:   'circle', ox: 59, oy:137,  r: 20 };
-    area3 = { shape:   'circle', ox:259, oy:137,  r: 20 };
-    area4 = { shape:   'circle', ox:299, oy:117,  r: 20 };
-    areaL = { shape:'rectangle', x1:  0, x2: 79, y1: 20, y2: 49 };
-    areaR = { shape:'rectangle', x1:240, x2:319, y1: 20, y2: 49 };
-    areaS = { shape:'rectangle', x1:255, x2:294, y1: 65, y2: 84 };
+    area1 = skindata.button1.area;
+    area2 = skindata.button2.area;
+    area3 = skindata.button3.area;
+    area4 = skindata.button4.area;
+    areaL = skindata.buttonL.area;
+    areaR = skindata.buttonR.area;
+    areaS = skindata.buttonS.area;
 
     // Add image, text on screen
-    img_gear    = game.add.sprite(  0,   0, 'gear'           );
-    img_button1 = game.add.sprite(  0, 100, 'buttonCircle', 0);
-    img_button2 = game.add.sprite( 40, 120, 'buttonCircle', 0);
-    img_button3 = game.add.sprite(240, 120, 'buttonCircle', 0);
-    img_button4 = game.add.sprite(280, 100, 'buttonCircle', 0);
-    img_buttonL = game.add.sprite(  0,  20, 'buttonL',      0);
-    img_buttonR = game.add.sprite(240,  20, 'buttonR',      0);
-    img_buttonS = game.add.sprite(255,  65, 'buttonS',      0);
+
+    img_lineL   = game.add.sprite(
+      skindata.lineL.pos.x,
+      skindata.lineL.pos.y,
+      'lineTrigger',
+      skindata.lineL.sprite.default);
+
+    img_lineR   = game.add.sprite(
+      skindata.lineR.pos.x,
+      skindata.lineR.pos.y,
+      'lineTrigger',
+      skindata.lineR.sprite.default);
+
+    img_line1   = game.add.sprite(
+      skindata.line1.pos.x,
+      skindata.line1.pos.y,
+      'lineCircle',
+      skindata.line1.sprite.default);
+
+    img_line2   = game.add.sprite(
+      skindata.line2.pos.x,
+      skindata.line2.pos.y,
+      'lineCircle',
+      skindata.line2.sprite.default);
+
+    img_line3   = game.add.sprite(
+      skindata.line3.pos.x,
+      skindata.line3.pos.y,
+      'lineCircle',
+      skindata.line3.sprite.default);
+
+    img_line4   = game.add.sprite(
+      skindata.line4.pos.x,
+      skindata.line4.pos.y,
+      'lineCircle',
+      skindata.line4.sprite.default);
+
+    img_screen  = game.add.sprite(
+      skindata.screen.pos.x,
+      skindata.screen.pos.y,
+      'screen');
+
+    img_judgeline  = game.add.sprite(
+      skindata.judgeLine.pos.x,
+      skindata.judgeLine.pos.y,
+      'judgeLine',
+      0);
+
+    img_gear    = game.add.sprite(
+      skindata.gear.pos.x,
+      skindata.gear.pos.y,
+      'gear');
+
+    img_button1 = game.add.sprite(
+      skindata.button1.pos.x,
+      skindata.button1.pos.y,
+      'buttonCircle',
+      skindata.button1.sprite.default);
+
+    img_button2 = game.add.sprite(
+      skindata.button2.pos.x,
+      skindata.button2.pos.y,
+      'buttonCircle',
+      skindata.button2.sprite.default);
+
+    img_button3 = game.add.sprite(
+      skindata.button3.pos.x,
+      skindata.button3.pos.y,
+      'buttonCircle',
+      skindata.button3.sprite.default);
+
+    img_button4 = game.add.sprite(
+      skindata.button4.pos.x,
+      skindata.button4.pos.y,
+      'buttonCircle',
+      skindata.button4.sprite.default);
+
+    img_buttonL = game.add.sprite(
+      skindata.buttonL.pos.x,
+      skindata.buttonL.pos.y,
+      'buttonTrigger',
+      skindata.buttonL.sprite.default);
+
+    img_buttonR = game.add.sprite(
+      skindata.buttonR.pos.x,
+      skindata.buttonR.pos.y,
+      'buttonTrigger',
+      skindata.buttonR.sprite.default);
+
+    img_buttonS = game.add.sprite(
+      skindata.buttonS.pos.x,
+      skindata.buttonS.pos.y,
+      'buttonS',
+      skindata.buttonS.sprite.default);
 
     // Gamepad input setup
     game.input.gamepad.start();
@@ -117,112 +236,81 @@ var screenPlay = {
       return ret && p.isDown;
     };
 
-    var isDown1 =
-      pad1.isDown(inputPad1) ||
-      key1.isDown ||
-      pIsDown(mouse, area1) ||
-      pIsDown(touch1, area1) ||
-      pIsDown(touch2, area1) ||
-      pIsDown(touch3, area1) ||
-      pIsDown(touch4, area1) ||
-      pIsDown(touch5, area1) ||
-      pIsDown(touch6, area1);
-
-    var isDown2 =
-      pad1.isDown(inputPad2) ||
-      key2.isDown ||
-      pIsDown(mouse, area2) ||
-      pIsDown(touch1, area2) ||
-      pIsDown(touch2, area2) ||
-      pIsDown(touch3, area2) ||
-      pIsDown(touch4, area2) ||
-      pIsDown(touch5, area2) ||
-      pIsDown(touch6, area2);
-
-    var isDown3 =
-      pad1.isDown(inputPad3) ||
-      key3.isDown ||
-      pIsDown(mouse, area3) ||
-      pIsDown(touch1, area3) ||
-      pIsDown(touch2, area3) ||
-      pIsDown(touch3, area3) ||
-      pIsDown(touch4, area3) ||
-      pIsDown(touch5, area3) ||
-      pIsDown(touch6, area3);
-
-    var isDown4 =
-      pad1.isDown(inputPad4) ||
-      key4.isDown ||
-      pIsDown(mouse, area4) ||
-      pIsDown(touch1, area4) ||
-      pIsDown(touch2, area4) ||
-      pIsDown(touch3, area4) ||
-      pIsDown(touch4, area4) ||
-      pIsDown(touch5, area4) ||
-      pIsDown(touch6, area4);
-
-    var isDownL =
-      pad1.isDown(inputPadL) ||
-      keyL.isDown ||
-      pIsDown(mouse, areaL) ||
-      pIsDown(touch1, areaL) ||
-      pIsDown(touch2, areaL) ||
-      pIsDown(touch3, areaL) ||
-      pIsDown(touch4, areaL) ||
-      pIsDown(touch5, areaL) ||
-      pIsDown(touch6, areaL);
-
-    var isDownR =
-      pad1.isDown(inputPadR) ||
-      keyR.isDown ||
-      pIsDown(mouse, areaR) ||
-      pIsDown(touch1, areaR) ||
-      pIsDown(touch2, areaR) ||
-      pIsDown(touch3, areaR) ||
-      pIsDown(touch4, areaR) ||
-      pIsDown(touch5, areaR) ||
-      pIsDown(touch6, areaR);
-
-    var isDownS =
-      pad1.isDown(inputPadS) ||
-      keyS.isDown ||
-      pIsDown(mouse, areaS) ||
-      pIsDown(touch1, areaS) ||
-      pIsDown(touch2, areaS) ||
-      pIsDown(touch3, areaS) ||
-      pIsDown(touch4, areaS) ||
-      pIsDown(touch5, areaS) ||
-      pIsDown(touch6, areaS);
+    var bIsDown = function (pad, key, area) {
+      var ret =
+        pad1.isDown(pad)      ||
+        key.isDown            ||
+        pIsDown(mouse, area)  ||
+        pIsDown(touch1, area) ||
+        pIsDown(touch2, area) ||
+        pIsDown(touch3, area) ||
+        pIsDown(touch4, area) ||
+        pIsDown(touch5, area) ||
+        pIsDown(touch6, area);
+      return ret;
+    };
 
     // button graphic update
-    if (isDown1)
-      img_button1.frame=1;
-    else
-      img_button1.frame=0;
-    if (isDown2)
-      img_button2.frame=1;
-    else
-      img_button2.frame=0;
-    if (isDown3)
-      img_button3.frame=1;
-    else
-      img_button3.frame=0;
-    if (isDown4)
-      img_button4.frame=1;
-    else
-      img_button4.frame=0;
-    if (isDownL)
-      img_buttonL.frame=1;
-    else
-      img_buttonL.frame=0;
-    if (isDownR)
-      img_buttonR.frame=1;
-    else
-      img_buttonR.frame=0;
-    if (isDownS)
-      img_buttonS.frame=1;
-    else
-      img_buttonS.frame=0;
+    if (bIsDown(inputPad1, key1, area1)){
+      img_button1.frame=skindata.button1.sprite.pressed;
+      img_line1.frame=skindata.line1.sprite.pressed;
+    }
+    else{
+      img_button1.frame=skindata.button1.sprite.default;
+      img_line1.frame=skindata.line1.sprite.default;
+    }
+
+    if (bIsDown(inputPad2, key2, area2)){
+      img_button2.frame=skindata.button2.sprite.pressed;
+      img_line2.frame=skindata.line2.sprite.pressed;
+    }
+    else{
+      img_button2.frame=skindata.button2.sprite.default;
+      img_line2.frame=skindata.line2.sprite.default;
+    }
+
+    if (bIsDown(inputPad3, key3, area3)){
+      img_button3.frame=skindata.button3.sprite.pressed;
+      img_line3.frame=skindata.line3.sprite.pressed;
+    }
+    else{
+      img_button3.frame=skindata.button3.sprite.default;
+      img_line3.frame=skindata.line3.sprite.default;
+    }
+
+    if (bIsDown(inputPad4, key4, area4)){
+      img_button4.frame=skindata.button4.sprite.pressed;
+      img_line4.frame=skindata.line4.sprite.pressed;
+    }
+    else{
+      img_button4.frame=skindata.button4.sprite.default;
+      img_line4.frame=skindata.line4.sprite.default;
+    }
+
+    if (bIsDown(inputPadL, keyL, areaL)){
+      img_buttonL.frame=skindata.buttonL.sprite.pressed;
+      img_lineL.frame=skindata.lineL.sprite.pressed;
+    }
+    else{
+      img_buttonL.frame=skindata.buttonL.sprite.default;
+      img_lineL.frame=skindata.lineL.sprite.default;
+    }
+
+    if (bIsDown(inputPadR, keyR, areaR)){
+      img_buttonR.frame=skindata.buttonR.sprite.pressed;
+      img_lineR.frame=skindata.lineR.sprite.pressed;
+    }
+    else{
+      img_buttonR.frame=skindata.buttonR.sprite.default;
+      img_lineR.frame=skindata.lineR.sprite.default;
+    }
+
+    if (bIsDown(inputPadS, keyS, areaS)){
+      img_buttonS.frame=skindata.buttonS.sprite.pressed;
+    }
+    else{
+      img_buttonS.frame=skindata.buttonS.sprite.default;
+    }
   }
 
 };

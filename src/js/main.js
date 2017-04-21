@@ -6,7 +6,8 @@ IMG_PATH = 'assets/img/';
 SKIN_PATH = 'assets/img/skin/';
 
 // PATH VARIABLE
-skinName = 'default/';
+skinName = 'default';
+skinPath = SKIN_PATH + skinName + '/';
 
 // OVERRIDE SOME FUNCTIONS
 
