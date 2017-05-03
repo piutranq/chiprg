@@ -1,13 +1,39 @@
 var game = new Phaser.Game(320, 180, Phaser.AUTO, 'chiprg');
 
 // PATH CONSTANT
-FONT_PATH = 'assets/fonts/';
-IMG_PATH = 'assets/img/';
-SKIN_PATH = 'assets/img/skin/';
+var IMG_PATH = 'assets/img/';
+var FONT_PATH = 'assets/img/fonts/';
+var SKIN_PATH = 'assets/img/skin/';
+
+var SOUND_PATH = 'assets/sound/';
+var BGM_PATH = 'assets/sound/BGM/';
+var SE_PATH = 'assets/sound/SE/';
+
+var STAGE_PATH = 'assets/stage/';
 
 // PATH VARIABLE
-skinName = 'default';
-skinPath = SKIN_PATH + skinName + '/';
+var skinName = 'default';
+var skinPath = SKIN_PATH + skinName + '/';
+var stageName = 'temp';
+var stageLevel = 0;
+var stagePath = STAGE_PATH + stageName + '/';
+
+// BGM list for menu
+var menuBGMlist = [];
+function push_menuBGM(key, data) {
+  menuBGMlist.push(key);
+  var buffer = new Uint8Array(data);
+  return buffer;
+}
+
+// SE list for menu
+var menuSElist = [];
+function push_menuSE(key, data) {
+  menuSElist.push(key);
+  var buffer = new Uint8Array(data);
+  return buffer;
+}
+
 
 // OVERRIDE SOME FUNCTIONS
 
