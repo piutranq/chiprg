@@ -181,7 +181,6 @@ var screenPlay = {
 
     // Gamepad input setup
     game.input.gamepad.start();
-    pad1      = game.input.gamepad.pad1;
     inputPad1 = Phaser.Gamepad.XBOX360_DPAD_UP;
     inputPad2 = Phaser.Gamepad.XBOX360_DPAD_RIGHT;
     inputPad3 = Phaser.Gamepad.XBOX360_X;
@@ -189,6 +188,15 @@ var screenPlay = {
     inputPadL = Phaser.Gamepad.XBOX360_LEFT_BUMPER;
     inputPadR = Phaser.Gamepad.XBOX360_RIGHT_BUMPER;
     inputPadS = Phaser.Gamepad.XBOX360_START;
+
+    // Keyboard input setup
+    key1 = Phaser.Keyboard.S;
+    key2 = Phaser.Keyboard.F;
+    key3 = Phaser.Keyboard.J;
+    key4 = Phaser.Keyboard.L;
+    keyL = Phaser.Keyboard.E;
+    keyR = Phaser.Keyboard.I;
+    keyS = Phaser.Keyboard.ENTER;
 
     // Mouse & multi-touch input setup
     game.input.addPointer();
@@ -202,24 +210,6 @@ var screenPlay = {
     touch4 = game.input.pointer4;
     touch5 = game.input.pointer5;
     touch6 = game.input.pointer6;
-
-    // Keyboard input setup
-    key1 = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    key2 = game.input.keyboard.addKey(Phaser.Keyboard.F);
-    key3 = game.input.keyboard.addKey(Phaser.Keyboard.J);
-    key4 = game.input.keyboard.addKey(Phaser.Keyboard.L);
-    keyL = game.input.keyboard.addKey(Phaser.Keyboard.E);
-    keyR = game.input.keyboard.addKey(Phaser.Keyboard.I);
-    keyS = game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-
-    game.input.keyboard.addKeyCapture
-      ([Phaser.Keyboard.S,
-        Phaser.Keyboard.F,
-        Phaser.Keyboard.J,
-        Phaser.Keyboard.L,
-        Phaser.Keyboard.E,
-        Phaser.Keyboard.I,
-        Phaser.Keyboard.ENTER]);
 
   },
 
@@ -238,14 +228,14 @@ var screenPlay = {
 
     var bIsDown = function (pad, key, area) {
       var ret =
-        pad1.isDown(pad)      ||
-        key.isDown            ||
-        pIsDown(mouse, area)  ||
-        pIsDown(touch1, area) ||
-        pIsDown(touch2, area) ||
-        pIsDown(touch3, area) ||
-        pIsDown(touch4, area) ||
-        pIsDown(touch5, area) ||
+        game.input.gamepad.pad1.isDown(pad) ||
+        game.input.keyboard.isDown(key)     ||
+        pIsDown(mouse, area)                ||
+        pIsDown(touch1, area)               ||
+        pIsDown(touch2, area)               ||
+        pIsDown(touch3, area)               ||
+        pIsDown(touch4, area)               ||
+        pIsDown(touch5, area)               ||
         pIsDown(touch6, area);
       return ret;
     };

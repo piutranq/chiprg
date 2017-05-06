@@ -1,16 +1,7 @@
 var screenStart = {
 
   // STRINGS
-  name: "screenStart",
-
-  // OBJECTS
-  ascii1014: "",
-  ascii1418: "",
-  buttonGoMenu: "",
-
-  // OBJECTS: sounds
-  bgm: "",
-  se: "",
+  press: "PRESS START / ENTER",
 
   // FUNCTIONS
   preload: function(){
@@ -38,26 +29,48 @@ var screenStart = {
       'bgmStart', BGM_PATH + 'bgmStart.mod', push_menuBGM, this);
     game.load.binary(
       'bgmMenu', BGM_PATH + 'bgmMenu.mod', push_menuBGM, this);
+
+    game.load.image(
+      'titleImage', IMG_PATH + 'titleImage.png');
   },
 
   create: function(){
-    buttonGoMenu = game.add.button(
-      game.world.centerX-16, game.world.centerY-9,
-      'buttonCircle', this.goMenu, this);
 
+    // Graphic Setup
+    titleImage = game.add.button(0, 0, 'titleImage', this.titleTouched, this);
+    titletext = game.add.bitmapText(0, 0, 'font79', this.press, 9);
+
+
+    // BGM Setup
     bgm = new Protracker();
-    bgm.buffer = game.cache.getBinary(menuBGMlist[0]);
+    bgm.buffer = game.cache.getBinary(menuBGMlist[1]);
     bgm.parse();
     bgm.play();
+
+    // Gamepad Setup
+    pad1 = game.input.gamepad.pad1;
+    game.input.gamepad.start();
+
   },
 
-  update: function(){ },
+  update: function(){
+    // Press start
+    if (game.input.gamepad.supported && game.input.gamepad.active && pad1.connected)
+      if (pad1.justPressed(Phaser.Gamepad.XBOX360_START))
+        this.goLogin();
 
-  goMenu: function(buttonGoMenu, pointer, isOver){
+    // Press enter
+    if (game.input.keyboard.justPressed(Phaser.Keyboard.ENTER))
+      this.goLogin();
+  },
+
+  titleTouched: function(titleImage, pointer, isOver){
+    if (isOver) this.goLogin();
+  },
+
+  goLogin: function(){
     bgm.stop();
     bgm.clearsong();
-    bgm_temp.stop();
-    bgm_temp.clearsong();
-    if (isOver)this.state.start('screenPlay');
+    this.state.start('screenInputCheck');
   }
 };
