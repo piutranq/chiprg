@@ -5,6 +5,7 @@ var screenInputCheck = {
   padIndicatorText: "padIndicator: off",
   padCounterText: "padCounter: off",
   timestampText: 0,
+  buttontest: "",
 
   // OBJECTS
   padCount: {

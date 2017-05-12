@@ -3,8 +3,13 @@ var screenStart = {
   // STRINGS
   press: "PRESS START / ENTER",
 
+  // OBJECT
+  titleImage: "",
+  titleText: "",
+
   // FUNCTIONS
   preload: function(){
+
     // Enable scale is zoomed
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.scale.pageAlignHorizontally = true;
@@ -31,15 +36,14 @@ var screenStart = {
       'bgmMenu', BGM_PATH + 'bgmMenu.mod', push_menuBGM, this);
 
     game.load.image(
-      'titleImage', IMG_PATH + 'titleImage.png');
+      'titleImage', IMG_PATH + 'title/titleImage.png');
   },
 
   create: function(){
 
     // Graphic Setup
-    titleImage = game.add.button(0, 0, 'titleImage', this.titleTouched, this);
-    titletext = game.add.bitmapText(0, 0, 'font79', this.press, 9);
-
+    this.titleImage = game.add.button(0, 0, 'titleImage', this.titleTouched, this);
+    this.titleText = game.add.bitmapText(100, 112, 'font79', this.press, 9);
 
     // BGM Setup
     bgm = new Protracker();
@@ -71,6 +75,6 @@ var screenStart = {
   goLogin: function(){
     bgm.stop();
     bgm.clearsong();
-    this.state.start('screenInputCheck');
+    this.state.start('screenSelectAccount');
   }
 };
