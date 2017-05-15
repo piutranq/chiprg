@@ -48,7 +48,7 @@ Phaser.DeviceButton.prototype.justPressed = function(duration){
 
 // DECLARE GAME STATES
 game.state.add('screenStart', screenStart);
-game.state.add('screenMenu', screenMenu);
+game.state.add('screenLobby', screenLobby);
 game.state.add('screenConfig', screenConfig);
 game.state.add('screenRanking', screenRanking);
 game.state.add('screenSelectAccount', screenSelectAccount);
@@ -57,4 +57,3 @@ game.state.add('screenResult', screenResult);
 game.state.add('screenInputCheck', screenInputCheck);
 
 game.state.start('screenStart');
-
