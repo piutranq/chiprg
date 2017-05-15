@@ -75,6 +75,6 @@ var screenStart = {
   goLogin: function(){
     bgm.stop();
     bgm.clearsong();
-    this.state.start('screenSelectAccount');
+    this.state.start('screenInputCheck');
   }
 };

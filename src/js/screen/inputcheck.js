@@ -5,7 +5,7 @@ var screenInputCheck = {
   padIndicatorText: "padIndicator: off",
   padCounterText: "padCounter: off",
   timestampText: 0,
-  buttontest: "",
+  beatstampText: 0,
 
   // OBJECTS
   padCount: {
@@ -26,16 +26,27 @@ var screenInputCheck = {
     ENTER: 0
   },
 
+  // TextObject
+  title: "",
+  padIndicator: "",
+  padCounter: "",
+  timestamp: "",
+  beatstamp: "",
+
   // FUNCTIONS
   preload: function(){
   },
 
   create: function(){
-    title = game.add.bitmapText(0, 0, 'font57', this.name, 7);
-    padIndicator = game.add.bitmapText(0, 8, 'font57', this.padIndicatorText, 7);
-    padCounter = game.add.bitmapText(0, 16, 'font57', this.padCounterText, 7);
-    timestamp = game.add.bitmapText(0, 172, 'font57', this.timestampText, 7);
+    this.title = game.add.bitmapText(0, 0, 'font57', this.name, 7);
+    this.padIndicator = game.add.bitmapText(0, 8, 'font57', this.padIndicatorText, 7);
+    this.padCounter = game.add.bitmapText(0, 16, 'font57', this.padCounterText, 7);
+    this.timestamp = game.add.bitmapText(0, 172, 'font57', this.timestampText, 7);
+    this.beatstamp = game.add.bitmapText(0, 162, 'font57', this.beatstampText, 7);
     game.input.gamepad.start();
+
+    // Timer Setup
+    RGtimer.init(138);
   },
 
   update: function(){
@@ -44,9 +55,9 @@ var screenInputCheck = {
     if (game.input.gamepad.supported &&
         game.input.gamepad.active &&
         game.input.gamepad.pad1.connected)
-      padIndicatorText="pad1: on";
+      this.padIndicatorText="pad1: on";
     else
-      padIndicatorText="pad1: off";
+      this.padIndicatorText="pad1: off";
 
     // update padCounter
     if (game.input.keyboard.justPressed(Phaser.Keyboard.ENTER))
@@ -76,7 +87,7 @@ var screenInputCheck = {
     if (game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_RIGHT))
         this.padCount.DPAD_RIGHT++;
 
-    padCounterText=
+    this.padCounterText=
       "ENTER: " + this.keyCount.ENTER +
       "\nA: " + this.padCount.A +
       "\nB: " + this.padCount.B +
@@ -92,13 +103,14 @@ var screenInputCheck = {
       "\nRIGHT: " + this.padCount.DPAD_RIGHT + "\n";
 
     // write padIndicator & padCounter
-    padIndicator.setText(padIndicatorText);
-    padCounter.setText(padCounterText);
+    this.padIndicator.setText(this.padIndicatorText);
+    this.padCounter.setText(this.padCounterText);
 
     // update timestamp
-    this.timestampText++;
-    if (this.timestampText >= 60) this.timestampText = 0;
-    timestamp.setText(this.timestampText);
+    this.timestampText = RGtimer.getMsec();
+    this.beatstampText = RGtimer.getMbeat();
+    this.timestamp.setText(this.timestampText);
+    this.beatstamp.setText(this.beatstampText);
   },
 
   render: function(){
