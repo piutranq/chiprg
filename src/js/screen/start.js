@@ -32,12 +32,8 @@ var screenStart = {
 
   update: function(){
     // Press start
-    if (game.input.gamepad.supported && game.input.gamepad.active && pad1.connected)
-      if (pad1.justPressed(Phaser.Gamepad.XBOX360_START))
-        this.goLogin();
-
-    // Press enter
-    if (game.input.keyboard.justPressed(Phaser.Keyboard.ENTER))
+    if (pad1.justPressed(Phaser.Gamepad.XBOX360_START) ||
+        game.input.keyboard.justPressed(Phaser.Keyboard.ENTER))
       this.goLogin();
   },
 

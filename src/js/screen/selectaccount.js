@@ -46,7 +46,7 @@ var screenSelectAccount = {
   },
 
   preload: function(){
-    this.uiPath = PATH.uiPath('default') + this.name + '/';
+    this.uiPath = PATH.uiPath(PATH.uiName) + this.name + '/';
     game.load.image('background', this.uiPath+'background.png');
     game.load.image('selector', this.uiPath+'selector.png');
     game.load.image('button', this.uiPath+'button.png');

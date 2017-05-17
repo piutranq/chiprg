@@ -10,6 +10,11 @@ var PATH = {
 
   STAGE: 'assets/stage/',
 
+  skinName: 'default',
+  uiName: 'default',
+  stageName: '16cp2',
+  stageLevel: 0,
+
   skinPath: function(skinName){
     return this.SKIN + skinName + '/';
   },
