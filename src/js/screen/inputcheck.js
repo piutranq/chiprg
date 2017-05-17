@@ -43,7 +43,6 @@ var screenInputCheck = {
     this.padCounter = game.add.bitmapText(0, 16, 'font57', this.padCounterText, 7);
     this.timestamp = game.add.bitmapText(0, 172, 'font57', this.timestampText, 7);
     this.beatstamp = game.add.bitmapText(0, 162, 'font57', this.beatstampText, 7);
-    game.input.gamepad.start();
 
     // Timer Setup
     RGtimer.init(138);

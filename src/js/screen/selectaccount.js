@@ -46,7 +46,7 @@ var screenSelectAccount = {
   },
 
   preload: function(){
-    this.uiPath = uiPath + this.name + '/';
+    this.uiPath = PATH.uiPath('default') + this.name + '/';
     game.load.image('background', this.uiPath+'background.png');
     game.load.image('selector', this.uiPath+'selector.png');
     game.load.image('button', this.uiPath+'button.png');
@@ -75,11 +75,15 @@ var screenSelectAccount = {
   },
 
   update: function(){
-    if (game.input.keyboard.justPressed(Phaser.Keyboard.UP))
+    if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) ||
+        game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_UP))
       this.moveSelector('up');
-    if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN))
+    if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) ||
+        game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_DOWN))
       this.moveSelector('down');
-    if (game.input.keyboard.justPressed(Phaser.Keyboard.ENTER))
+    if (game.input.keyboard.justPressed(Phaser.Keyboard.ENTER) ||
+        game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_START) ||
+        game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_B))
       this.pressokbutton();
   },
 
