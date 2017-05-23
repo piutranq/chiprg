@@ -1,6 +1,7 @@
 
 var screenPlayInit = {
   skindata: "",
+  stagedata: "",
   preload: function(){
 
     // Load Song Data

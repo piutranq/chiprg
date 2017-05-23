@@ -11,18 +11,14 @@ var screenStart = {
   preload: function(){
     game.load.image(
       'titleImage', PATH.IMG + 'title/titleImage.png');
+    TrackerControl.load(0, 'assets/sound/BGM/bgmSelectAccount.mod');
   },
 
   create: function(){
-
+    TrackerControl.play(0);
     // Graphic Setup
     this.titleImage = game.add.button(0, 0, 'titleImage', this.titleTouched, this);
     this.titleText = game.add.bitmapText(100, 112, 'font79', this.press, 9);
-
-    // BGM Setup
-    Tracker.menu.bgmA.buffer = game.cache.getBinary(menuBGMlist[1]);
-    Tracker.menu.bgmA.parse();
-    Tracker.menu.bgmA.play();
 
     // Gamepad Setup
     pad1 = game.input.gamepad.pad1;
@@ -42,8 +38,7 @@ var screenStart = {
   },
 
   goLogin: function(){
-    Tracker.menu.bgmA.stop();
-    Tracker.menu.bgmA.clearsong();
+    TrackerControl.stop(0);
     this.state.start('screenSelectAccount');
   }
 };

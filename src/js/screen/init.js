@@ -1,4 +1,7 @@
 var screenInit = {
+
+  titleImage: "",
+
   preload: function(){
 
     // Enable scale is zoomed
@@ -11,39 +14,20 @@ var screenInit = {
     PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST; // for webGL renderer
     // Phaser.Canvas.setSmoothingEnabled(game.context, false); // Dosen't work. It may be legacy code.
 
-    // Load Plugins
-    game.load.script('protracker', 'js/lib/protracker.js');
-
     // Load Bitmap Font
     game.load.bitmapFont(
       'font57', PATH.FONT + 'font57.png', PATH.FONT + 'font57.xml');
     game.load.bitmapFont(
       'font79', PATH.FONT + 'font79.png', PATH.FONT + 'font79.xml');
 
-    // Load Menu BGM/SE
-    game.load.binary(
-      'bgmStart', PATH.BGM + 'bgmStart.mod', push_menuBGM, this);
-    game.load.binary(
-      'bgmSelectAccount', PATH.BGM + 'bgmSelectAccount.mod', push_menuBGM, this);
+    game.load.image(
+      'titleImage', PATH.IMG + 'title/studio2AOE_180p.png');
 
   },
 
   create: function(){
-
-    // Setup Trackers
-    Tracker.menu.bgmA  = new Protracker();
-    Tracker.menu.bgmB  = new Protracker();
-    Tracker.menu.seA   = new Protracker();
-    Tracker.menu.seB   = new Protracker();
-    Tracker.stage.bgmA = new Protracker();
-    Tracker.stage.bgmB = new Protracker();
-    Tracker.stage.se1  = new Protracker();
-    Tracker.stage.se2  = new Protracker();
-    Tracker.stage.se3  = new Protracker();
-    Tracker.stage.se4  = new Protracker();
-    Tracker.stage.seL  = new Protracker();
-    Tracker.stage.seR  = new Protracker();
-
+    RGtimer.init(120);
+    this.titleImage = game.add.button(0, 0, 'titleImage');
 
     // Setup Multitouch
     game.input.addPointer();
@@ -80,6 +64,8 @@ var screenInit = {
   },
 
   update: function(){
-    this.state.start('screenStart');
+    if(RGtimer.getMsec()>=2000) {
+      this.state.start('screenStart');
+    }
   }
 };
