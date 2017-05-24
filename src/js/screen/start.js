@@ -11,11 +11,12 @@ var screenStart = {
   preload: function(){
     game.load.image(
       'titleImage', PATH.IMG + 'title/titleImage.png');
-    TrackerControl.load(0, 'assets/sound/BGM/bgmSelectAccount.mod');
+    C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
   },
 
   create: function(){
-    TrackerControl.play(0);
+    C2TrackerControl.play(C2Trackers.bgmLoop);
+
     // Graphic Setup
     this.titleImage = game.add.button(0, 0, 'titleImage', this.titleTouched, this);
     this.titleText = game.add.bitmapText(100, 112, 'font79', this.press, 9);
@@ -38,7 +39,7 @@ var screenStart = {
   },
 
   goLogin: function(){
-    TrackerControl.stop(0);
+    C2TrackerControl.stop(C2Trackers.bgmLoop);
     this.state.start('screenSelectAccount');
   }
 };

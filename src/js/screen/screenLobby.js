@@ -69,8 +69,10 @@ var screenLobby = {
     game.load.image('selector', this.uiPath+'selector.png');
     game.load.image('button', this.uiPath+'button.png');
     game.load.spritesheet('ok', this.uiPath+'ok.png',110,23);
+    C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmStart.mod');
   },
   create: function(){
+    C2TrackerControl.play(C2Trackers.bgmLoop);
     this.text.title = game.add.bitmapText(0, 0, 'font79', this.string.title, 9);
     this.img.background = game.add.sprite(0, 0, 'background');
     this.img.selector = game.add.sprite(160, 30, 'selector');
@@ -211,6 +213,7 @@ var screenLobby = {
   },
 
   pressokbutton: function() {
+    C2TrackerControl.stop(C2Trackers.bgmLoop);
     switch(this.var.selectType){
       case 0:
         console.log('go free play');

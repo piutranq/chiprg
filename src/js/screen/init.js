@@ -14,6 +14,9 @@ var screenInit = {
     PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST; // for webGL renderer
     // Phaser.Canvas.setSmoothingEnabled(game.context, false); // Dosen't work. It may be legacy code.
 
+    // Load Plugins
+    game.load.script('protracker', 'js/lib/protracker.js');
+
     // Load Bitmap Font
     game.load.bitmapFont(
       'font57', PATH.FONT + 'font57.png', PATH.FONT + 'font57.xml');
