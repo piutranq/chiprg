@@ -217,7 +217,7 @@ var screenLobby = {
     switch(this.var.selectType){
       case 0:
         console.log('go free play');
-        this.state.start('screenPlayInit');
+        this.state.start('screenFreePlay');
         break;
       case 1:
         console.log('go course play');

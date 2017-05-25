@@ -8,6 +8,7 @@ var screenFreePlay = {
 
   text: {
     title: "",
+    song: []
   },
 
   img: {
@@ -23,10 +24,26 @@ var screenFreePlay = {
   var: {
     selectedSongNum: 0,
     selectedSongName: "",
-    selectedPattern: 0
+    selectedPattern: 0,
+
+    allPlaylist: "",
+    currentPlaylist: {
+      list: [],
+      init: function(allPlaylist){
+        this.update(allPlaylist, 0);
+      },
+      update: function(allPlaylist, selected){
+        for(var i=0; i<7; i++){
+          var j = SomeMath.modulo((i-3 + selected), allPlaylist.max);
+          this.list[i] = allPlaylist.list[j];
+        }
+      }
+    }
   },
 
   preload: function(){
+
+    // Load Images
     this.uiPath = PATH.uiPath(PATH.uiName) + this.name + '/';
     game.load.image('background', this.uiPath+'background.png');
     game.load.image('backspacebutton', this.uiPath+'backspace.png');
@@ -35,15 +52,28 @@ var screenFreePlay = {
     game.load.image('patternselector', this.uiPath+'patternselector.png');
     game.load.image('songselector', this.uiPath+'songselector.png');
     game.load.image('startbutton', this.uiPath+'start.png',110,23);
+
+    // Load Playlist
+    game.load.json(
+      'allPlaylist',
+      PATH.STAGE+'freeplaylist.json');
+
+    // Load BGM
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
   },
   create: function(){
+
+    // Play BGM
     C2TrackerControl.play(C2Trackers.bgmLoop);
-    this.text.title = game.add.bitmapText(0, 0, 'font79', this.string.title, 9);
+
+    // Playlist Init
+    this.var.allPlaylist = game.cache.getJSON('allPlaylist');
+    this.var.currentPlaylist.init(this.var.allPlaylist);
+
+    // Image Init
     this.img.background = game.add.sprite(0, 0, 'background');
     this.img.songselector= game.add.sprite(10, 90, 'songselector');
     this.img.patternselector = game.add.sprite(150, 135, 'patternselector');
-
     this.img.option = game.add.button(
       150, 170, 'option', this.optiontouched, this);
     this.img.backspacebutton = game.add.button(
@@ -53,19 +83,33 @@ var screenFreePlay = {
     this.img.startbutton = game.add.button(
       260, 135, 'startbutton', this.starttouched, this);
 
+    // Text Init
+    for(var i=0; i<7; i++){
+      this.text.song.push({
+        title: "",
+        level: "",
+        bpm: ""
+      });
+      this.text.song[i].title = game.add.bitmapText(15, 37+i*20, 'font57', this.var.currentPlaylist.list[i].name, 7);
+      this.text.song[i].level = game.add.bitmapText(100, 31+i*20, 'font57', 'LV.' + this.var.currentPlaylist.list[i].level[this.var.selectedPattern], 7);
+      this.text.song[i].bpm = game.add.bitmapText(95, 41+i*20, 'font57', 'BPM ' + this.var.currentPlaylist.list[i].tempo, 7);
+    }
+
+    this.text.title = game.add.bitmapText(0, 0, 'font79', this.string.title, 9);
+
   },
 
   update: function(){
     if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) ||
       game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_UP)){
-      console.log('uo');
-      // this.moveSongSelector('up');
+      this.moveSongSelector('up');
+      console.log('up ' + this.var.selectedSongNum);
     }
 
     if (game.input.keyboard.justPressed(Phaser.Keyboard.DOWN) ||
       game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_DOWN)){
-      console.log('down');
-        // this.moveSongSelector('down');
+      this.moveSongSelector('down');
+      console.log('down ' + this.var.selectedSongNum);
     }
 
     if (game.input.keyboard.justPressed(Phaser.Keyboard.LEFT) ||
@@ -95,38 +139,65 @@ var screenFreePlay = {
       case 2:
         this.var.selectedPattern = selection;
         break;
-      default:
-        if(selection == 'right'){
-          if(this.var.selectedPattern >= 2)
-            this.var.selectedPattern = 0;
-          else
-            this.var.selectedPattern++;
-        }
-        else if(selection == 'left'){
-          if(this.var.selectedPattern <= 0)
-            this.var.selectedPattern = 2;
-          else
-            this.var.selectedPattern--;
+      case 'right':
+        if(this.var.selectedPattern >= 2){
+          this.var.selectedPattern = 0;
         }
         else {
+          this.var.selectedPattern++;
         }
+        break;
+      case 'left':
+        if(this.var.selectedPattern <= 0){
+          this.var.selectedPattern = 2;
+        }
+        else {
+          this.var.selectedPattern--;
+        }
+        break;
     }
-    this.selectionUpdate();
+    this.patternSelectionUpdate();
   },
 
-  selectionUpdate: function() {
-    switch(this.var.selectedPattern){
-      case 0:
-        this.img.patternselector.x=150;
+  moveSongSelector: function(selection) {
+    switch(selection){
+      case 'up':
+        if(this.var.selectedSongNum > 0){
+          this.var.selectedSongNum --;
+        }
+        else {
+          this.var.selectedSongNum = this.var.allPlaylist.max-1;
+        }
         break;
-      case 1:
-        this.img.patternselector.x=185;
-        break;
-      case 2:
-        this.img.patternselector.x=220;
+      case 'down':
+        if(this.var.selectedSongNum < this.var.allPlaylist.max-1){
+          this.var.selectedSongNum ++;
+        }
+        else {
+          this.var.selectedSongNum = 0;
+        }
         break;
       default:
     }
+    this.songSelectionUpdate();
+  },
+
+  setCurrentPlaylist: function(index) {
+    this.var.currentPlaylist.update(this.var.allPlaylist, index);
+    for(var i=0; i<7; i++){
+      this.text.song[i].title.setText(this.var.currentPlaylist.list[i].name);
+      this.text.song[i].level.setText('LV.'+this.var.currentPlaylist.list[i].level[this.var.selectedPattern]);
+      this.text.song[i].bpm.setText('BPM ' + this.var.currentPlaylist.list[i].tempo, 7);
+    }
+  },
+
+  patternSelectionUpdate: function() {
+    this.img.patternselector.x = 150 + 35 * this.var.selectedPattern;
+    this.setCurrentPlaylist(this.var.selectedSongNum);
+  },
+
+  songSelectionUpdate: function() {
+    this.setCurrentPlaylist(this.var.selectedSongNum);
   },
 
   backspacetouched: function(backspacebutton, pointer, isOver){
