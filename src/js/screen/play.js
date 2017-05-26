@@ -36,6 +36,12 @@ var screenPlay = {
     buttonS: "",
   },
 
+  // Flag
+  flag: {
+    songStarted: 0,
+    paused: 0
+  },
+
   // Text
   text: {
     beatstamp: "",
@@ -346,67 +352,87 @@ var screenPlay = {
       }
     }
 
-    this.img.screen  = game.add.sprite(
+    this.img.screen = game.add.sprite(
       screenPlayInit.skindata.screen.pos.x,
       screenPlayInit.skindata.screen.pos.y,
       'screen');
 
     // Set Text
-    this.text.score =
-      game.add.bitmapText(100, 162, 'font57', 'SCORE:  0000000', 7);
-    this.text.maxcombo =
-      game.add.bitmapText(100, 172, 'font57', 'MAX COMBO: 0000', 7);
-    this.text.speed =
-      game.add.bitmapText(170, 172, 'font57', 'SPEED: 4.00x', 7);
+    this.text.genre = game.add.bitmapText(
+      110, 52, 'font57', screenPlayInit.stagedata.genre, 7);
+    this.text.title = game.add.bitmapText(
+      110, 60, 'font57', screenPlayInit.stagedata.title, 7);
+    this.text.pattern_and_level = game.add.bitmapText(
+      110, 68, 'font57',
+      'LV.'+screenPlayInit.stagedata.songLevel+' '+screenPlayInit.stagedata.pattern, 7);
+
+    this.text.score = game.add.bitmapText(
+      100, 162, 'font57', 'SCORE:  0000000', 7);
+    this.text.maxcombo = game.add.bitmapText(
+      100, 172, 'font57', 'MAX COMBO: 0000', 7);
+    this.text.speed = game.add.bitmapText(
+      170, 172, 'font57', 'SPEED: 4.00x', 7);
 
     // Play Song
 
     // Set Timer
-    RGtimer.init(screenPlayInit.stagedata.tempo);
     this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
+    RGtimer.init();
+    RGtimer.timerStart();
   },
 
   update: function() {
-
-    // Update Timer
-    this.var.elapsed_time = RGtimer.getMsec();
-    this.var.elapsed_beat = RGtimer.getMbeat();
-    this.text.beatstamp.setText(this.var.elapsed_beat);
-
-    // song is end?
-    if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
-      this.goToResult();
+    if(this.flag.songStarted===0){
+      if(RGtimer.getMsec()>3000){
+        this.text.genre.destroy();
+        this.text.title.destroy();
+        this.text.pattern_and_level.destroy();
+        RGtimer.init();
+        RGtimer.timerStart(screenPlayInit.stagedata.tempo);
+        this.flag.songStarted++;
+      }
     }
+    else{
+      // Update Timer
+      this.var.elapsed_time = RGtimer.getMsec();
+      this.var.elapsed_beat = RGtimer.getMbeat();
+      this.text.beatstamp.setText(this.var.elapsed_beat);
 
-    // Update Text
-    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
-    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
-    this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
+      // song is end?
+      if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
+        this.goToResult();
+      }
 
-    // Update ObjectImgPos
-    for(var i=0; this.object[i].type!="endofsong"; i++){
-      var judgeHeight = screenPlayInit.skindata.size.judgeLine.y;
-      var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
-      var speed = this.var.speed;
-      var beat = this.var.elapsed_beat;
-      var object = this.object[i];
-      switch(object.type) {
-      case 'single':
-        this.objimg[i].start.y =
-          this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
-        break;
-      case "long":
-        this.objimg[i].start.y =
-          this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
-        this.objimg[i].middle.y =
-          this.getObjectImgPos(lineHeight, speed, beat, object.end) + judgeHeight + lineHeight;
-        this.objimg[i].end.y =
-          this.getObjectImgPos(lineHeight, speed, beat, object.end) + lineHeight;
-        this.objimg[i].middle.height =
-          this.objimg[i].start.y - this.objimg[i].middle.y;
-        break;
-      case "keysound":
-        break;
+      // Update Text
+      this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
+      this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
+      this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
+
+      // Update ObjectImgPos
+      for(var i=0; this.object[i].type!="endofsong"; i++){
+        var judgeHeight = screenPlayInit.skindata.size.judgeLine.y;
+        var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
+        var speed = this.var.speed;
+        var beat = this.var.elapsed_beat;
+        var object = this.object[i];
+        switch(object.type) {
+        case 'single':
+          this.objimg[i].start.y =
+            this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
+          break;
+        case "long":
+          this.objimg[i].start.y =
+            this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
+          this.objimg[i].middle.y =
+            this.getObjectImgPos(lineHeight, speed, beat, object.end) + judgeHeight + lineHeight;
+          this.objimg[i].end.y =
+            this.getObjectImgPos(lineHeight, speed, beat, object.end) + lineHeight;
+          this.objimg[i].middle.height =
+            this.objimg[i].start.y - this.objimg[i].middle.y;
+          break;
+        case "keysound":
+          break;
+        }
       }
     }
 
@@ -497,6 +523,7 @@ var screenPlay = {
     else{
       this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.default;
     }
+
   },
 
   getObjectImgPos: function(
