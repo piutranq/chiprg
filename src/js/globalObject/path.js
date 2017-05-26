@@ -12,8 +12,13 @@ var PATH = {
 
   skinName: 'default',
   uiName: 'default',
-  stageName: '16cp2',
+  stageName: '',
   stageLevel: 0,
+
+  setStage: function(name, level){
+    PATH.stageName = name;
+    PATH.stageLevel = level;
+  },
 
   skinPath: function(skinName){
     return this.SKIN + skinName + '/';

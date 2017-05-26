@@ -33,8 +33,13 @@ var screenInputCheck = {
   timestamp: "",
   beatstamp: "",
 
+  notesample: "",
+
   // FUNCTIONS
   preload: function(){
+    game.load.spritesheet(
+      'noteCircle', PATH.skinPath('default') + 'noteCircle.png',
+      30,6);
   },
 
   create: function(){
@@ -44,11 +49,15 @@ var screenInputCheck = {
     this.timestamp = game.add.bitmapText(0, 172, 'font57', this.timestampText, 7);
     this.beatstamp = game.add.bitmapText(0, 162, 'font57', this.beatstampText, 7);
 
+    this.notesample = game.add.sprite(100, 30, 'noteCircle', 7);
+
     // Timer Setup
     RGtimer.init(138);
   },
 
   update: function(){
+
+    this.notesample.height = 137;
 
     // update padIndicator
     if (game.input.gamepad.supported &&

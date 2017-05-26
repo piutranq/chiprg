@@ -18,14 +18,14 @@ var screenFreePlay = {
     patternselector: "",
     backspacebutton: "",
     helpbutton: "",
-    startbutton: ""
+    startbutton: "",
+    songimg: ""
   },
 
   var: {
     selectedSongNum: 0,
     selectedSongName: "",
     selectedPattern: 0,
-
     allPlaylist: "",
     currentPlaylist: {
       list: [],
@@ -53,10 +53,9 @@ var screenFreePlay = {
     game.load.image('songselector', this.uiPath+'songselector.png');
     game.load.image('startbutton', this.uiPath+'start.png',110,23);
 
-    // Load Playlist
-    game.load.json(
-      'allPlaylist',
-      PATH.STAGE+'freeplaylist.json');
+    for(var i=0; i<screenFreePlayInit.allPlaylist.max; i++){
+      game.load.spritesheet(screenFreePlayInit.allPlaylist.list[i].name, PATH.STAGE+'freeplaylist/'+screenFreePlayInit.allPlaylist.list[i].name+'.png', 100, 100);
+    }
 
     // Load BGM
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
@@ -67,13 +66,15 @@ var screenFreePlay = {
     C2TrackerControl.play(C2Trackers.bgmLoop);
 
     // Playlist Init
-    this.var.allPlaylist = game.cache.getJSON('allPlaylist');
+    this.var.allPlaylist = screenFreePlayInit.allPlaylist;
     this.var.currentPlaylist.init(this.var.allPlaylist);
 
     // Image Init
     this.img.background = game.add.sprite(0, 0, 'background');
     this.img.songselector= game.add.sprite(10, 90, 'songselector');
     this.img.patternselector = game.add.sprite(150, 135, 'patternselector');
+    this.img.songimg = game.add.sprite(150, 30, this.var.allPlaylist.list[0].name, 0);
+
     this.img.option = game.add.button(
       150, 170, 'option', this.optiontouched, this);
     this.img.backspacebutton = game.add.button(
@@ -189,6 +190,9 @@ var screenFreePlay = {
       this.text.song[i].level.setText('LV.'+this.var.currentPlaylist.list[i].level[this.var.selectedPattern]);
       this.text.song[i].bpm.setText('BPM ' + this.var.currentPlaylist.list[i].tempo, 7);
     }
+    this.img.songimg.loadTexture(this.var.allPlaylist.list[this.var.selectedSongNum].name);
+    this.img.songimg.frame=this.var.selectedPattern;
+
   },
 
   patternSelectionUpdate: function() {
@@ -198,6 +202,12 @@ var screenFreePlay = {
 
   songSelectionUpdate: function() {
     this.setCurrentPlaylist(this.var.selectedSongNum);
+  },
+
+  sortByTitle: function(){
+  },
+
+  sortByLevel: function(pattern){
   },
 
   backspacetouched: function(backspacebutton, pointer, isOver){
@@ -228,6 +238,9 @@ var screenFreePlay = {
 
   pressstart: function(){
     C2TrackerControl.stop(C2Trackers.bgmLoop);
+    PATH.setStage(
+      this.var.allPlaylist.list[this.var.selectedSongNum].path,
+      this.var.selectedPattern);
     this.state.start('screenPlayInit');
   }
 };

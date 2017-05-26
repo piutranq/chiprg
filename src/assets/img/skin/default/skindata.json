@@ -5,7 +5,9 @@
     "buttonS"       : { "x":  40, "y":  20 },
     "lineCircle"    : { "x":  30, "y": 150 },
     "lineTrigger"   : { "x":  60, "y": 150 },
-    "judgeLine"     : { "x": 120, "y":   6 }
+    "judgeLine"     : { "x": 120, "y":   6 },
+    "noteCircle"    : { "x":  30, "y":   6 },
+    "noteTrigger"   : { "x":  60, "y":   6 }
   },
   "gear"   : {
     "pos"  : { "x":   0, "y": -30}
