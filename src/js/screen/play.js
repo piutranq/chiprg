@@ -377,8 +377,7 @@ var screenPlay = {
 
     // Set Timer
     this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
-    RGtimer.init();
-    RGtimer.timerStart();
+    RGtimer.start();
   },
 
   update: function() {
@@ -387,8 +386,7 @@ var screenPlay = {
         this.text.genre.destroy();
         this.text.title.destroy();
         this.text.pattern_and_level.destroy();
-        RGtimer.init();
-        RGtimer.timerStart(screenPlayInit.stagedata.tempo);
+        RGtimer.start(screenPlayInit.stagedata.tempo);
         this.flag.songStarted++;
       }
     }
