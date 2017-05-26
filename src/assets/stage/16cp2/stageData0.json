@@ -3,11 +3,10 @@
   "title" : "16-BEAT CRUEL PUNISHER",
   "artist": "PIU TRANQUILLO",
 
-  "songLevel": "EASY",
-  "songLength": 140,
+  "pattern": "EASY",
+  "songLevel": 4,
+  "songLength": 20,
   "tempo": 128,
-
-  "objectmax": 21,
 
   "objects": [
     {"type": "single", "line": "1", "start":   5000},

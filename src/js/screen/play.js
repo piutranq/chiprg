@@ -1,48 +1,82 @@
 var screenPlay = {
 
   // Strings
-  name: "screenPlay",
+  string: {
+    name: "screenPlay"
+  },
 
   // Touch Area
-  area1: "",
-  area2: "",
-  area3: "",
-  area4: "",
-  areaL: "",
-  areaR: "",
-  areaSTART: "",
-  areaSELECT: "",
+  area: {
+    circle1: "",
+    circle2: "",
+    circle3: "",
+    circle4: "",
+    triggerL: "",
+    triggerR: "",
+    buttonS: "",
+  },
 
   // Image
-  img_gear: "",
-  img_screen: "",
-  img_judgeline: "",
-  img_line1: "",
-  img_line2: "",
-  img_line3: "",
-  img_line4: "",
-  img_lineL: "",
-  img_lineR: "",
-  img_button1: "",
-  img_button2: "",
-  img_button3: "",
-  img_button4: "",
-  img_buttonL: "",
-  img_buttonR: "",
-  img_buttonS: "",
+  img: {
+    gear: "",
+    screen: "",
+    judgeline: "",
+    line1: "",
+    line2: "",
+    line3: "",
+    line4: "",
+    lineL: "",
+    lineR: "",
+    button1: "",
+    button2: "",
+    button3: "",
+    button4: "",
+    buttonL: "",
+    buttonR: "",
+    buttonS: "",
+  },
 
-  // text
-  beatstamp: "",
+  // Text
+  text: {
+    beatstamp: "",
 
-  // variable
-  speed: 400,
-  elapsed_time: 0,
-  elapsed_beat: 0,
+    genre: "",
+    title: "",
+    pattern_and_level: "",
+    artist: "",
 
-  // OBJECT (note object)
-  objects: "",
+    score: "",
+    maxcombo: "",
+    speed: "",
+  },
 
-  objectimg: [],
+  // Variable
+  var: {
+
+    // Speed & Timer
+    speed: 400,
+    elapsed_time: 0,
+    elapsed_beat: 0,
+
+    // Score & Judge
+    maxcombo: 0,
+    currentcombo: 0,
+    score: 0,
+    perfect: 0,
+    great: 0,
+    good: 0,
+    bad: 0,
+    miss: 0,
+    fail: 0,
+
+    // Meter Gague
+    beatmeter: 0,
+    lifegague: 1000
+  },
+
+  // Note Object
+  object: "",
+  objimg: [],
 
   preload: function(){
 
@@ -97,98 +131,98 @@ var screenPlay = {
   },
   create: function(){
     // Add touch area
-    this.area1 = screenPlayInit.skindata.button1.area;
-    this.area2 = screenPlayInit.skindata.button2.area;
-    this.area3 = screenPlayInit.skindata.button3.area;
-    this.area4 = screenPlayInit.skindata.button4.area;
-    this.areaL = screenPlayInit.skindata.buttonL.area;
-    this.areaR = screenPlayInit.skindata.buttonR.area;
-    this.areaS = screenPlayInit.skindata.buttonS.area;
+    this.area.circle1 = screenPlayInit.skindata.button1.area;
+    this.area.circle2 = screenPlayInit.skindata.button2.area;
+    this.area.circle3 = screenPlayInit.skindata.button3.area;
+    this.area.circle4 = screenPlayInit.skindata.button4.area;
+    this.area.triggerL = screenPlayInit.skindata.buttonL.area;
+    this.area.triggerR = screenPlayInit.skindata.buttonR.area;
+    this.area.buttonS = screenPlayInit.skindata.buttonS.area;
 
     // Add image, text on screen
-    this.img_lineL   = game.add.sprite(
+    this.img.lineL   = game.add.sprite(
       screenPlayInit.skindata.lineL.pos.x,
       screenPlayInit.skindata.lineL.pos.y,
       'lineTrigger',
       screenPlayInit.skindata.lineL.sprite.default);
 
-    this.img_lineR   = game.add.sprite(
+    this.img.lineR   = game.add.sprite(
       screenPlayInit.skindata.lineR.pos.x,
       screenPlayInit.skindata.lineR.pos.y,
       'lineTrigger',
       screenPlayInit.skindata.lineR.sprite.default);
 
-    this.img_line1   = game.add.sprite(
+    this.img.line1   = game.add.sprite(
       screenPlayInit.skindata.line1.pos.x,
       screenPlayInit.skindata.line1.pos.y,
       'lineCircle',
       screenPlayInit.skindata.line1.sprite.default);
 
-    this.img_line2   = game.add.sprite(
+    this.img.line2   = game.add.sprite(
       screenPlayInit.skindata.line2.pos.x,
       screenPlayInit.skindata.line2.pos.y,
       'lineCircle',
       screenPlayInit.skindata.line2.sprite.default);
 
-    this.img_line3   = game.add.sprite(
+    this.img.line3   = game.add.sprite(
       screenPlayInit.skindata.line3.pos.x,
       screenPlayInit.skindata.line3.pos.y,
       'lineCircle',
       screenPlayInit.skindata.line3.sprite.default);
 
-    this.img_line4   = game.add.sprite(
+    this.img.line4   = game.add.sprite(
       screenPlayInit.skindata.line4.pos.x,
       screenPlayInit.skindata.line4.pos.y,
       'lineCircle',
       screenPlayInit.skindata.line4.sprite.default);
 
-    this.img_judgeline  = game.add.sprite(
+    this.img.judgeline  = game.add.sprite(
       screenPlayInit.skindata.judgeLine.pos.x,
       screenPlayInit.skindata.judgeLine.pos.y,
       'judgeLine', 0);
 
-    this.img_gear    = game.add.sprite(
+    this.img.gear    = game.add.sprite(
       screenPlayInit.skindata.gear.pos.x,
       screenPlayInit.skindata.gear.pos.y,
       'gear');
 
-    this.img_button1 = game.add.sprite(
+    this.img.button1 = game.add.sprite(
       screenPlayInit.skindata.button1.pos.x,
       screenPlayInit.skindata.button1.pos.y,
       'buttonCircle',
       screenPlayInit.skindata.button1.sprite.default);
 
-    this.img_button2 = game.add.sprite(
+    this.img.button2 = game.add.sprite(
       screenPlayInit.skindata.button2.pos.x,
       screenPlayInit.skindata.button2.pos.y,
       'buttonCircle',
       screenPlayInit.skindata.button2.sprite.default);
 
-    this.img_button3 = game.add.sprite(
+    this.img.button3 = game.add.sprite(
       screenPlayInit.skindata.button3.pos.x,
       screenPlayInit.skindata.button3.pos.y,
       'buttonCircle',
       screenPlayInit.skindata.button3.sprite.default);
 
-    this.img_button4 = game.add.sprite(
+    this.img.button4 = game.add.sprite(
       screenPlayInit.skindata.button4.pos.x,
       screenPlayInit.skindata.button4.pos.y,
       'buttonCircle',
       screenPlayInit.skindata.button4.sprite.default);
 
-    this.img_buttonL = game.add.sprite(
+    this.img.buttonL = game.add.sprite(
       screenPlayInit.skindata.buttonL.pos.x,
       screenPlayInit.skindata.buttonL.pos.y,
       'buttonTrigger',
       screenPlayInit.skindata.buttonL.sprite.default);
 
-    this.img_buttonR = game.add.sprite(
+    this.img.buttonR = game.add.sprite(
       screenPlayInit.skindata.buttonR.pos.x,
       screenPlayInit.skindata.buttonR.pos.y,
       'buttonTrigger',
       screenPlayInit.skindata.buttonR.sprite.default);
 
-    this.img_buttonS = game.add.sprite(
+    this.img.buttonS = game.add.sprite(
       screenPlayInit.skindata.buttonS.pos.x,
       screenPlayInit.skindata.buttonS.pos.y,
       'buttonS',
@@ -196,158 +230,182 @@ var screenPlay = {
 
 
     // Load object data
-    this.objects = screenPlayInit.stagedata.objects;
+    this.object = screenPlayInit.stagedata.objects;
 
     // Load object image
-    for(var i=0; i<screenPlayInit.stagedata.objectmax; i++){
-      this.objectimg.push({start:"", middle:"", end:""});
-      switch(this.objects[i].type){
+    for(var i=0; this.object[i].type!="endofsong"; i++){
+      this.objimg.push({start:"", middle:"", end:""});
+      switch(this.object[i].type){
       case "single":
-        switch(this.objects[i].line){
+        switch(this.object[i].line){
         case "1":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x,-10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line1.pos.x,-180,
             'noteCircle', 1);
           break;
         case "2":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x,-10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line2.pos.x,-180,
             'noteCircle', 2);
           break;
         case "3":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x,-10*i,
-            'noteCircle', 1);
-          break;
-        case "4":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line3.pos.x,-180,
             'noteCircle', 2);
           break;
+        case "4":
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line4.pos.x, -180,
+            'noteCircle', 1);
+          break;
         case "L":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.lineL.pos.x, -180,
             'noteTrigger', 1);
           break;
         case "R":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x,-10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.lineR.pos.x,-180,
             'noteTrigger', 1);
           break;
         }
         break;
       case "long":
-        switch(this.objects[i].line){
+        switch(this.object[i].line){
         case "1":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line1.pos.x, -180,
             'noteCircle', 10);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -10*i,
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.line1.pos.x, -180,
             'noteCircle', 7);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -10*i,
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.line1.pos.x, -180,
             'noteCircle', 4);
           break;
         case "2":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line2.pos.x, -180,
             'noteCircle', 11);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -10*i,
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.line2.pos.x, -180,
             'noteCircle', 8);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -10*i,
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.line2.pos.x, -180,
             'noteCircle', 5);
           break;
         case "3":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -10*i,
-            'noteCircle', 10);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -10*i,
-            'noteCircle', 7);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -10*i,
-            'noteCircle', 4);
-          break;
-        case "4":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line3.pos.x, -180,
             'noteCircle', 11);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -10*i,
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.line3.pos.x, -180,
             'noteCircle', 8);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -10*i,
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.line3.pos.x, -180,
             'noteCircle', 5);
           break;
+        case "4":
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.line4.pos.x, -180,
+            'noteCircle', 10);
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.line4.pos.x, -180,
+            'noteCircle', 7);
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.line4.pos.x, -180,
+            'noteCircle', 4);
+          break;
         case "L":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.lineL.pos.x, -180,
             'noteTrigger', 7);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -10*i,
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.lineL.pos.x, -180,
             'noteTrigger', 5);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -10*i,
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.lineL.pos.x, -180,
             'noteTrigger', 3);
           break;
         case "R":
-          this.objectimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -10*i,
+          this.objimg[i].start = game.add.sprite(
+            screenPlayInit.skindata.lineR.pos.x, -180,
             'noteTrigger', 7);
-          this.objectimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -10*i,
+          this.objimg[i].middle = game.add.sprite(
+            screenPlayInit.skindata.lineR.pos.x, -180,
             'noteTrigger', 5);
-          this.objectimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -10*i,
+          this.objimg[i].end = game.add.sprite(
+            screenPlayInit.skindata.lineR.pos.x, -180,
             'noteTrigger', 3);
           break;
         }
         break;
       case "keysound":
-        break;
-      case "endofsong":
         break;
       default:
       }
     }
 
-    this.img_screen  = game.add.sprite(
+    this.img.screen  = game.add.sprite(
       screenPlayInit.skindata.screen.pos.x,
       screenPlayInit.skindata.screen.pos.y,
       'screen');
+
+    // Set Text
+    this.text.score =
+      game.add.bitmapText(100, 162, 'font57', 'SCORE:  0000000', 7);
+    this.text.maxcombo =
+      game.add.bitmapText(100, 172, 'font57', 'MAX COMBO: 0000', 7);
+    this.text.speed =
+      game.add.bitmapText(170, 172, 'font57', 'SPEED: 4.00x', 7);
 
     // Play Song
 
     // Set Timer
     RGtimer.init(screenPlayInit.stagedata.tempo);
-    this.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
+    this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
   },
 
   update: function() {
 
     // Update Timer
-    this.elapsed_time = RGtimer.getMsec();
-    this.elapsed_beat = RGtimer.getMbeat();
-    this.beatstamp.setText(this.elapsed_beat);
+    this.var.elapsed_time = RGtimer.getMsec();
+    this.var.elapsed_beat = RGtimer.getMbeat();
+    this.text.beatstamp.setText(this.var.elapsed_beat);
+
+    // song is end?
+    if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
+      this.goToResult();
+    }
+
+    // Update Text
+    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
+    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
+    this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
 
     // Update ObjectImgPos
-    for(var i=0; i<screenPlayInit.stagedata.objectmax; i++){
-      switch(this.objects[i].type) {
+    for(var i=0; this.object[i].type!="endofsong"; i++){
+      var judgeHeight = screenPlayInit.skindata.size.judgeLine.y;
+      var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
+      var speed = this.var.speed;
+      var beat = this.var.elapsed_beat;
+      var object = this.object[i];
+      switch(object.type) {
       case 'single':
-        this.objectimg[i].start.y = this.getObjectImgPos(screenPlayInit.skindata.judgeLine.pos.y, this.speed, this.elapsed_beat, this.objects[i].start);
+        this.objimg[i].start.y =
+          this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
         break;
       case "long":
-        this.objectimg[i].start.y = this.getObjectImgPos(screenPlayInit.skindata.judgeLine.pos.y, this.speed, this.elapsed_beat, this.objects[i].start);
-        this.objectimg[i].middle.y = this.getObjectImgPos(screenPlayInit.skindata.judgeLine.pos.y, this.speed, this.elapsed_beat, this.objects[i].end) + screenPlayInit.skindata.size.judgeLine.y;
-        this.objectimg[i].end.y = this.getObjectImgPos(screenPlayInit.skindata.judgeLine.pos.y, this.speed, this.elapsed_beat, this.objects[i].end);
-        this.objectimg[i].middle.height = this.objectimg[i].start.y - this.objectimg[i].middle.y;
+        this.objimg[i].start.y =
+          this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
+        this.objimg[i].middle.y =
+          this.getObjectImgPos(lineHeight, speed, beat, object.end) + judgeHeight + lineHeight;
+        this.objimg[i].end.y =
+          this.getObjectImgPos(lineHeight, speed, beat, object.end) + lineHeight;
+        this.objimg[i].middle.height =
+          this.objimg[i].start.y - this.objimg[i].middle.y;
         break;
       case "keysound":
-        break;
-      case "endofsong":
         break;
       }
     }
@@ -368,76 +426,76 @@ var screenPlay = {
       var ret =
         game.input.gamepad.pad1.isDown(pad) ||
         game.input.keyboard.isDown(key)     ||
-        pIsDown(Input.touch.mo, area)               ||
-        pIsDown(Input.touch.t1, area)               ||
-        pIsDown(Input.touch.t2, area)               ||
-        pIsDown(Input.touch.t3, area)               ||
-        pIsDown(Input.touch.t4, area)               ||
-        pIsDown(Input.touch.t5, area)               ||
+        pIsDown(Input.touch.mo, area)       ||
+        pIsDown(Input.touch.t1, area)       ||
+        pIsDown(Input.touch.t2, area)       ||
+        pIsDown(Input.touch.t3, area)       ||
+        pIsDown(Input.touch.t4, area)       ||
+        pIsDown(Input.touch.t5, area)       ||
         pIsDown(Input.touch.t6, area);
       return ret;
     };
 
     // Button Graphic Update
-    if (bIsDown(Input.stage.pad1, Input.stage.key1, this.area1)){
-      this.img_button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
-      this.img_line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
+    if (bIsDown(Input.stage.pad1, Input.stage.key1, this.area.circle1)){
+      this.img.button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
+      this.img.line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
     }
     else{
-      this.img_button1.frame=screenPlayInit.skindata.button1.sprite.default;
-      this.img_line1.frame=screenPlayInit.skindata.line1.sprite.default;
+      this.img.button1.frame=screenPlayInit.skindata.button1.sprite.default;
+      this.img.line1.frame=screenPlayInit.skindata.line1.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad2, Input.stage.key2, this.area2)){
-      this.img_button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
-      this.img_line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
+    if (bIsDown(Input.stage.pad2, Input.stage.key2, this.area.circle2)){
+      this.img.button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
+      this.img.line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
     }
     else{
-      this.img_button2.frame=screenPlayInit.skindata.button2.sprite.default;
-      this.img_line2.frame=screenPlayInit.skindata.line2.sprite.default;
+      this.img.button2.frame=screenPlayInit.skindata.button2.sprite.default;
+      this.img.line2.frame=screenPlayInit.skindata.line2.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad3, Input.stage.key3, this.area3)){
-      this.img_button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
-      this.img_line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
+    if (bIsDown(Input.stage.pad3, Input.stage.key3, this.area.circle3)){
+      this.img.button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
+      this.img.line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
     }
     else{
-      this.img_button3.frame=screenPlayInit.skindata.button3.sprite.default;
-      this.img_line3.frame=screenPlayInit.skindata.line3.sprite.default;
+      this.img.button3.frame=screenPlayInit.skindata.button3.sprite.default;
+      this.img.line3.frame=screenPlayInit.skindata.line3.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad4, Input.stage.key4, this.area4)){
-      this.img_button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
-      this.img_line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
+    if (bIsDown(Input.stage.pad4, Input.stage.key4, this.area.circle4)){
+      this.img.button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
+      this.img.line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
     }
     else{
-      this.img_button4.frame=screenPlayInit.skindata.button4.sprite.default;
-      this.img_line4.frame=screenPlayInit.skindata.line4.sprite.default;
+      this.img.button4.frame=screenPlayInit.skindata.button4.sprite.default;
+      this.img.line4.frame=screenPlayInit.skindata.line4.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padL, Input.stage.keyL, this.areaL)){
-      this.img_buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
-      this.img_lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
+    if (bIsDown(Input.stage.padL, Input.stage.keyL, this.area.triggerL)){
+      this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
+      this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
     }
     else{
-      this.img_buttonL.frame=screenPlayInit.skindata.buttonL.sprite.default;
-      this.img_lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
+      this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.default;
+      this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padR, Input.stage.keyR, this.areaR)){
-      this.img_buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
-      this.img_lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
+    if (bIsDown(Input.stage.padR, Input.stage.keyR, this.area.triggerR)){
+      this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
+      this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
     }
     else{
-      this.img_buttonR.frame=screenPlayInit.skindata.buttonR.sprite.default;
-      this.img_lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
+      this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.default;
+      this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padS, Input.stage.keyS, this.areaS)){
-      this.img_buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
+    if (bIsDown(Input.stage.padS, Input.stage.keyS, this.area.buttonS)){
+      this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
     }
     else{
-      this.img_buttonS.frame=screenPlayInit.skindata.buttonS.sprite.default;
+      this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.default;
     }
   },
 
@@ -449,6 +507,10 @@ var screenPlay = {
     ret /= 400000;
 
     return ret;
+  },
+
+  goToResult: function() {
+    this.state.start('screenResult');
   }
 
 };
