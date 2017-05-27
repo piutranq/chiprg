@@ -656,12 +656,11 @@ var screenPlay = {
            objline[i].type===Type.longMid){
           if(time > objline[i].start){
             if(isDownState[line]){
-              console.log(objline[i-1].judge);
-              if(objline[i-1].judge>=4){
+              if(objline[i-1].judge>=Judge.great){
                 screenPlay.object[line][i].judge=Judge.perfect;
                 ret = 'perfect';
               }
-              else if(objline[i-1].judge<4){
+              else if(objline[i-1].judge<Judge.great){
                 screenPlay.object[line][i].judge=Judge.good;
                 ret = 'good';
               }
