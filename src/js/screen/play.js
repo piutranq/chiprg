@@ -469,8 +469,8 @@ var screenPlay = {
       }
     }
 
-    // Touch IsDown Check
-    var pIsDown = function (p, a) { // p is pointer, a is area
+    // Touch isOn Check
+    var pIsOn = function (p, a) { // p is pointer, a is area
       var ret;
       if(a.shape == 'rectangle')
         ret = (p.x > a.x1 && p.x < a.x2 && p.y > a.y1 && p.y < a.y2);
@@ -478,33 +478,20 @@ var screenPlay = {
         ret = Math.pow(a.ox-p.x, 2)+Math.pow(a.oy-p.y, 2) < Math.pow(a.r, 2);
       else
         return 0;
-      return ret && p.isDown;
+      return ret;
     };
-
-    // Touch JustPressed Check
-    var pJustPressed = function (p, a) { // p is pointer, a is area
-      var ret;
-      if(a.shape == 'rectangle')
-        ret = (p.x > a.x1 && p.x < a.x2 && p.y > a.y1 && p.y < a.y2);
-      else if(a.shape == 'circle')
-        ret = Math.pow(a.ox-p.x, 2)+Math.pow(a.oy-p.y, 2) < Math.pow(a.r, 2);
-      else
-        return 0;
-      return ret && p.justPressed(50);
-    };
-
     // All input isDown Check
     var bIsDown = function (pad, key, area) {
       var ret =
         game.input.gamepad.pad1.isDown(pad) ||
         game.input.keyboard.isDown(key)     ||
-        pIsDown(RGinput.touch.mo, area)     ||
-        pIsDown(RGinput.touch.t1, area)     ||
-        pIsDown(RGinput.touch.t2, area)     ||
-        pIsDown(RGinput.touch.t3, area)     ||
-        pIsDown(RGinput.touch.t4, area)     ||
-        pIsDown(RGinput.touch.t5, area)     ||
-        pIsDown(RGinput.touch.t6, area);
+        (pIsOn(RGinput.touch.mo, area) && RGinput.touch.mo.isDown)||
+        (pIsOn(RGinput.touch.t1, area) && RGinput.touch.t1.isDown)||
+        (pIsOn(RGinput.touch.t2, area) && RGinput.touch.t2.isDown)||
+        (pIsOn(RGinput.touch.t3, area) && RGinput.touch.t3.isDown)||
+        (pIsOn(RGinput.touch.t4, area) && RGinput.touch.t4.isDown)||
+        (pIsOn(RGinput.touch.t5, area) && RGinput.touch.t5.isDown)||
+        (pIsOn(RGinput.touch.t6, area) && RGinput.touch.t6.isDown);
       return ret;
     };
 
@@ -513,13 +500,13 @@ var screenPlay = {
       var ret=
         game.input.gamepad.pad1.justPressed(pad, 50) ||
         game.input.keyboard.justPressed(key, 50)     ||
-        pJustPressed(RGinput.touch.mo, area)       ||
-        pJustPressed(RGinput.touch.t1, area)       ||
-        pJustPressed(RGinput.touch.t2, area)       ||
-        pJustPressed(RGinput.touch.t3, area)       ||
-        pJustPressed(RGinput.touch.t4, area)       ||
-        pJustPressed(RGinput.touch.t5, area)       ||
-        pJustPressed(RGinput.touch.t6, area);
+        (pIsOn(RGinput.touch.mo, area) && RGinput.touch.mo.justPressed(50))||
+        (pIsOn(RGinput.touch.t1, area) && RGinput.touch.t1.justPressed(50))||
+        (pIsOn(RGinput.touch.t2, area) && RGinput.touch.t2.justPressed(50))||
+        (pIsOn(RGinput.touch.t3, area) && RGinput.touch.t3.justPressed(50))||
+        (pIsOn(RGinput.touch.t4, area) && RGinput.touch.t4.justPressed(50))||
+        (pIsOn(RGinput.touch.t5, area) && RGinput.touch.t5.justPressed(50))||
+        (pIsOn(RGinput.touch.t6, area) && RGinput.touch.t6.justPressed(50));
       return ret;
     };
 
