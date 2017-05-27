@@ -9,11 +9,12 @@
   "tempo": 128,
 
   "judgeTime": {
-    "fail": 125,
     "perfect": 31,
     "great": 125,
     "good": 250,
-    "bad": 375
+    "bad": 375,
+    "fail": 125,
+    "miss": 63
   },
 
   "object": [

@@ -699,8 +699,8 @@ var screenPlay = {
           for(var i=0; objline[i].type!==Type.endofline; i++){
             if(objline[i].state!==State.destroyed &&
                objline[i].type!==Type.longMid){
-              if((time > objline[i].start - judgeTime.great) &&
-                 (time < objline[i].start + judgeTime.great)){
+              if((time > objline[i].start - judgeTime.miss) &&
+                 (time < objline[i].start + judgeTime.miss)){
                 console.log('time:' +time+' / line'+line+' / object['+j+']['+i+'] miss');
               }
             }
