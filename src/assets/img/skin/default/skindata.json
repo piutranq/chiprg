@@ -1,4 +1,5 @@
 {
+  "linePos": [100, 130, 160, 190, 100, 160],
   "size"   : {
     "buttonCircle"  : { "x":  28, "y":  31 },
     "buttonTrigger" : { "x":  80, "y":  40 },

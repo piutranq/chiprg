@@ -59,7 +59,6 @@ var screenPlay = {
 
   // Variable
   var: {
-
     // Speed & Timer
     speed: 400,
     elapsed_time: 0,
@@ -77,8 +76,11 @@ var screenPlay = {
     lifegague: 1000
   },
 
-  preload: function(){
+  // ObjectList
+  object: "",
+  objimg: [ [], [], [], [], [], [] ],
 
+  preload: function(){
     game.load.image('gear', PATH.skinPath('default') + 'gear.png');
     game.load.image('screen', PATH.skinPath('default') + 'screen.png');
 
@@ -257,6 +259,86 @@ var screenPlay = {
       'buttonS',
       screenPlayInit.skindata.buttonS.sprite.default);
 
+    // Create ObjectImage
+
+    this.object = screenPlayInit.stagedata.object;
+
+    var createObjImg = function(line){
+      var initY = 0;
+      var Type = RGobjectType;
+      var objline = screenPlay.object[line];
+      var linePos = screenPlayInit.skindata.linePos[line];
+      var note;
+      switch(line){
+      case 0:
+      case 3:
+        note = {
+          sprite: 'noteCircle',
+          frame: {
+            single: 1,
+            end: 4,
+            mid: 7,
+            start: 10
+          }
+        };
+      break;
+      case 1:
+      case 2:
+        note = {
+          sprite: 'noteCircle',
+          frame: {
+            single: 2,
+            end: 5,
+            mid: 8,
+            start: 11
+          }
+        };
+      break;
+      case 4:
+      case 5:
+        note = {
+          sprite: 'noteTrigger',
+          frame: {
+            single: 1,
+            end: 3,
+            mid: 5,
+            start: 7
+          }
+        };
+      break;
+      }
+
+      for(var i=0; objline[i].type!=Type.endofline; i++){
+      if(objline[i].type!==Type.longMid){
+        if(objline[i].type===Type.long)
+          screenPlay.objimg[line].push({start: "", mid: "", end:""});
+        else
+          screenPlay.objimg[line].push({start: ""});
+        switch(objline[i].type){
+        case Type.single:
+          screenPlay.objimg[line][i].start = game.add.sprite(linePos, initY,
+            note.sprite, note.frame.single);
+          break;
+        case Type.long:
+          screenPlay.objimg[line][i].start = game.add.sprite(linePos, initY,
+            note.sprite, note.frame.start);
+          screenPlay.objimg[line][i].mid = game.add.sprite(linePos, initY,
+            note.sprite, note.frame.mid);
+          screenPlay.objimg[line][i].end = game.add.sprite(linePos, initY,
+            note.sprite, note.frame.end);
+          break;
+        }
+      }
+      }
+    };
+
+    createObjImg(5);
+    createObjImg(4);
+    createObjImg(3);
+    createObjImg(2);
+    createObjImg(1);
+    createObjImg(0);
+
     this.img.judgeFont = game.add.sprite(
       screenPlayInit.skindata.judgeFont.pos.x,
       screenPlayInit.skindata.judgeFont.pos.y,
@@ -319,6 +401,48 @@ var screenPlay = {
       this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
       this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
       this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
+
+      // Update objimg position
+      var updateObj = function(line){
+        var Type = RGobjectType;
+        var objline = screenPlay.object[line];
+        var time = screenPlay.var.elapsed_beat;
+
+        var getPos = screenPlay.getObjectImgPos;
+        var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
+        var noteHeight = screenPlayInit.skindata.size.noteCircle.y;
+        var speed = screenPlay.var.speed;
+        for(var i=0; objline[i].type!=Type.endofline; i++){
+        if(objline[i].type!==Type.longMiddle){
+          switch(objline[i].type){
+          case Type.single:
+            screenPlay.objimg[line][i].start.y =
+              getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
+            break;
+          case Type.long:
+            screenPlay.objimg[line][i].start.y =
+              getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
+            screenPlay.objimg[line][i].end.y =
+              getPos(lineHeight, speed, time, objline[i].end) + lineHeight;
+            screenPlay.objimg[line][i].mid.y =
+              getPos(lineHeight, speed, time, objline[i].end) + lineHeight + noteHeight;
+            screenPlay.objimg[line][i].mid.height =
+                screenPlay.objimg[line][i].start.y -
+                screenPlay.objimg[line][i].mid.y;
+            break;
+          }
+        }
+        }
+      };
+      updateObj(5);
+      updateObj(4);
+      updateObj(3);
+      updateObj(2);
+      updateObj(1);
+      updateObj(0);
+
+
+
     }
     // Touch isOn Check
     var pIsOn = function (p, a) { // p is pointer, a is area

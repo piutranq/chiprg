@@ -6,5 +6,50 @@
   "pattern": "EASY",
   "songLevel": 4,
   "songLength": 20,
-  "tempo": 128
+  "tempo": 128,
+
+  "object": [
+    [
+      {"type": 10, "start":  5000},
+      {"type": 10, "start":  6000},
+      {"type": 10, "start":  7000},
+      {"type": 10, "start":  8000},
+      {"type": 0               }
+    ],
+    [
+      {"type": 10, "start":  5250},
+      {"type": 10, "start":  6250},
+      {"type": 10, "start":  7250},
+      {"type": 10, "start":  8250},
+      {"type": 0               }
+    ],
+    [
+      {"type": 10, "start":  5500},
+      {"type": 10, "start":  6500},
+      {"type": 10, "start":  7500},
+      {"type": 10, "start":  8500},
+      {"type": 0               }
+    ],
+    [
+      {"type": 10, "start":  5750},
+      {"type": 10, "start":  6750},
+      {"type": 10, "start":  7750},
+      {"type": 10, "start":  8750},
+      {"type": 0               }
+    ],
+    [
+      {"type": 10, "start":  9000},
+      {"type": 10, "start": 10000},
+      {"type": 10, "start": 11000},
+      {"type": 20, "start": 12000, "end": 13000},
+      {"type": 0               }
+    ],
+    [
+      {"type": 10, "start":  9500},
+      {"type": 10, "start": 10500},
+      {"type": 10, "start": 11500},
+      {"type": 20, "start": 12500, "end": 13500},
+      {"type": 0               }
+    ]
+  ]
 }
