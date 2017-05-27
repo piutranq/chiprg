@@ -77,10 +77,6 @@ var screenPlay = {
     lifegague: 1000
   },
 
-  // Note Object
-  object: "",
-  objimg: [],
-
   preload: function(){
 
     game.load.image('gear', PATH.skinPath('default') + 'gear.png');
@@ -261,123 +257,6 @@ var screenPlay = {
       'buttonS',
       screenPlayInit.skindata.buttonS.sprite.default);
 
-    // Load object data
-    this.object = screenPlayInit.stagedata.objects;
-
-    // Load object image
-    for(var i=0; this.object[i].type!="endofsong"; i++){
-      this.objimg.push({start:"", middle:"", end:""});
-      switch(this.object[i].type){
-      case "single":
-        switch(this.object[i].line){
-        case "1":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x,-180,
-            'noteCircle', 1);
-          break;
-        case "2":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x,-180,
-            'noteCircle', 2);
-          break;
-        case "3":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x,-180,
-            'noteCircle', 2);
-          break;
-        case "4":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -180,
-            'noteCircle', 1);
-          break;
-        case "L":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -180,
-            'noteTrigger', 1);
-          break;
-        case "R":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x,-180,
-            'noteTrigger', 1);
-          break;
-        }
-        break;
-      case "long":
-        switch(this.object[i].line){
-        case "1":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -180,
-            'noteCircle', 10);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -180,
-            'noteCircle', 7);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line1.pos.x, -180,
-            'noteCircle', 4);
-          break;
-        case "2":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -180,
-            'noteCircle', 11);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -180,
-            'noteCircle', 8);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line2.pos.x, -180,
-            'noteCircle', 5);
-          break;
-        case "3":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -180,
-            'noteCircle', 11);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -180,
-            'noteCircle', 8);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line3.pos.x, -180,
-            'noteCircle', 5);
-          break;
-        case "4":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -180,
-            'noteCircle', 10);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -180,
-            'noteCircle', 7);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.line4.pos.x, -180,
-            'noteCircle', 4);
-          break;
-        case "L":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -180,
-            'noteTrigger', 7);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -180,
-            'noteTrigger', 5);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.lineL.pos.x, -180,
-            'noteTrigger', 3);
-          break;
-        case "R":
-          this.objimg[i].start = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -180,
-            'noteTrigger', 7);
-          this.objimg[i].middle = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -180,
-            'noteTrigger', 5);
-          this.objimg[i].end = game.add.sprite(
-            screenPlayInit.skindata.lineR.pos.x, -180,
-            'noteTrigger', 3);
-          break;
-        }
-        break;
-      case "keysound":
-        break;
-      default:
-      }
-    }
-
     this.img.judgeFont = game.add.sprite(
       screenPlayInit.skindata.judgeFont.pos.x,
       screenPlayInit.skindata.judgeFont.pos.y,
@@ -440,35 +319,7 @@ var screenPlay = {
       this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
       this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
       this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
-
-      // Update ObjectImgPos
-      for(var i=0; this.object[i].type!="endofsong"; i++){
-        var judgeHeight = screenPlayInit.skindata.size.judgeLine.y;
-        var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
-        var speed = this.var.speed;
-        var beat = this.var.elapsed_beat;
-        var object = this.object[i];
-        switch(object.type) {
-        case 'single':
-          this.objimg[i].start.y =
-            this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
-          break;
-        case "long":
-          this.objimg[i].start.y =
-            this.getObjectImgPos(lineHeight, speed, beat, object.start) + lineHeight;
-          this.objimg[i].middle.y =
-            this.getObjectImgPos(lineHeight, speed, beat, object.end) + judgeHeight + lineHeight;
-          this.objimg[i].end.y =
-            this.getObjectImgPos(lineHeight, speed, beat, object.end) + lineHeight;
-          this.objimg[i].middle.height =
-            this.objimg[i].start.y - this.objimg[i].middle.y;
-          break;
-        case "keysound":
-          break;
-        }
-      }
     }
-
     // Touch isOn Check
     var pIsOn = function (p, a) { // p is pointer, a is area
       var ret;
@@ -597,7 +448,6 @@ var screenPlay = {
     else{
       this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.default;
     }
-
   },
 
   getObjectImgPos: function(

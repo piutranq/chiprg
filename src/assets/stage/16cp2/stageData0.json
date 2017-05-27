@@ -6,30 +6,5 @@
   "pattern": "EASY",
   "songLevel": 4,
   "songLength": 20,
-  "tempo": 128,
-
-  "objects": [
-    {"type": "single", "line": "1", "start":   5000},
-    {"type": "single", "line": "2", "start":   6000},
-    {"type": "single", "line": "3", "start":   7000},
-    {"type": "single", "line": "4", "start":   8000},
-    {"type": "single", "line": "L", "start":   9000},
-    {"type": "single", "line": "R", "start":  10000},
-    {"type": "single", "line": "1", "start":  11000},
-    {"type": "single", "line": "2", "start":  12000},
-    {"type": "single", "line": "3", "start":  13000},
-    {"type": "single", "line": "4", "start":  14000},
-    {"type": "single", "line": "L", "start":  15000},
-    {"type": "single", "line": "R", "start":  16000},
-    {"type": "long", "line": "1", "start":  17000, "end": 20000},
-    {"type": "long", "line": "2", "start":  17250, "end": 20000},
-    {"type": "long", "line": "3", "start":  17500, "end": 20000},
-    {"type": "long", "line": "4", "start":  17750, "end": 20000},
-    {"type": "long", "line": "L", "start":  21000, "end": 24000},
-    {"type": "long", "line": "1", "start":  21500, "end": 24000},
-    {"type": "long", "line": "R", "start":  21000, "end": 24000},
-    {"type": "long", "line": "4", "start":  21500, "end": 24000},
-
-    {"type": "endofsong"}
-  ]
+  "tempo": 128
 }
