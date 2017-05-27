@@ -1,4 +1,4 @@
-var Input = {
+var RGinput = {
   menu: {
   },
   stage: {

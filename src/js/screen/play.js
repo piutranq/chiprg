@@ -7,12 +7,12 @@ var screenPlay = {
 
   // Touch Area
   area: {
-    circle1: "",
-    circle2: "",
-    circle3: "",
-    circle4: "",
-    triggerL: "",
-    triggerR: "",
+    button1: "",
+    button2: "",
+    button3: "",
+    button4: "",
+    buttonL: "",
+    buttonR: "",
     buttonS: "",
   },
 
@@ -45,6 +45,7 @@ var screenPlay = {
   // Text
   text: {
     beatstamp: "",
+    justPressed: "",
 
     genre: "",
     title: "",
@@ -68,12 +69,8 @@ var screenPlay = {
     maxcombo: 0,
     currentcombo: 0,
     score: 0,
-    perfect: 0,
-    great: 0,
-    good: 0,
-    bad: 0,
-    miss: 0,
-    fail: 0,
+
+    judgeData: [0, 0, 0, 0, 0, 0],
 
     // Meter Gague
     beatmeter: 0,
@@ -134,15 +131,45 @@ var screenPlay = {
       screenPlayInit.skindata.size.noteTrigger.x,
       screenPlayInit.skindata.size.noteTrigger.y);
 
+    game.load.spritesheet(
+      'judgePerfect', PATH.skinPath('default') + 'judgePerfect.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'judgeGreat', PATH.skinPath('default') + 'judgeGreat.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'judgeGood', PATH.skinPath('default') + 'judgeGood.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'judgeBad', PATH.skinPath('default') + 'judgeBad.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'judgeMiss', PATH.skinPath('default') + 'judgeMiss.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'judgeFail', PATH.skinPath('default') + 'judgeFail.png',
+      screenPlayInit.skindata.size.judgeFont.x,
+      screenPlayInit.skindata.size.judgeFont.y);
+
   },
   create: function(){
     // Add touch area
-    this.area.circle1 = screenPlayInit.skindata.button1.area;
-    this.area.circle2 = screenPlayInit.skindata.button2.area;
-    this.area.circle3 = screenPlayInit.skindata.button3.area;
-    this.area.circle4 = screenPlayInit.skindata.button4.area;
-    this.area.triggerL = screenPlayInit.skindata.buttonL.area;
-    this.area.triggerR = screenPlayInit.skindata.buttonR.area;
+    this.area.button1 = screenPlayInit.skindata.button1.area;
+    this.area.button2 = screenPlayInit.skindata.button2.area;
+    this.area.button3 = screenPlayInit.skindata.button3.area;
+    this.area.button4 = screenPlayInit.skindata.button4.area;
+    this.area.buttonL = screenPlayInit.skindata.buttonL.area;
+    this.area.buttonR = screenPlayInit.skindata.buttonR.area;
     this.area.buttonS = screenPlayInit.skindata.buttonS.area;
 
     // Add image, text on screen
@@ -233,7 +260,6 @@ var screenPlay = {
       screenPlayInit.skindata.buttonS.pos.y,
       'buttonS',
       screenPlayInit.skindata.buttonS.sprite.default);
-
 
     // Load object data
     this.object = screenPlayInit.stagedata.objects;
@@ -352,10 +378,18 @@ var screenPlay = {
       }
     }
 
+    this.img.judgeFont = game.add.sprite(
+      screenPlayInit.skindata.judgeFont.pos.x,
+      screenPlayInit.skindata.judgeFont.pos.y,
+      'judgeFail',
+      0);
+
     this.img.screen = game.add.sprite(
       screenPlayInit.skindata.screen.pos.x,
       screenPlayInit.skindata.screen.pos.y,
       'screen');
+
+
 
     // Set Text
     this.text.genre = game.add.bitmapText(
@@ -377,6 +411,7 @@ var screenPlay = {
 
     // Set Timer
     this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
+    this.text.justPressed = game.add.bitmapText(0, 162, 'font57', '', 7);
     RGtimer.start();
   },
 
@@ -434,7 +469,7 @@ var screenPlay = {
       }
     }
 
-    // Button IsDown Check
+    // Touch IsDown Check
     var pIsDown = function (p, a) { // p is pointer, a is area
       var ret;
       if(a.shape == 'rectangle')
@@ -446,22 +481,76 @@ var screenPlay = {
       return ret && p.isDown;
     };
 
+    // Touch JustPressed Check
+    var pJustPressed = function (p, a) { // p is pointer, a is area
+      var ret;
+      if(a.shape == 'rectangle')
+        ret = (p.x > a.x1 && p.x < a.x2 && p.y > a.y1 && p.y < a.y2);
+      else if(a.shape == 'circle')
+        ret = Math.pow(a.ox-p.x, 2)+Math.pow(a.oy-p.y, 2) < Math.pow(a.r, 2);
+      else
+        return 0;
+      return ret && p.justPressed(50);
+    };
+
+    // All input isDown Check
     var bIsDown = function (pad, key, area) {
       var ret =
         game.input.gamepad.pad1.isDown(pad) ||
         game.input.keyboard.isDown(key)     ||
-        pIsDown(Input.touch.mo, area)       ||
-        pIsDown(Input.touch.t1, area)       ||
-        pIsDown(Input.touch.t2, area)       ||
-        pIsDown(Input.touch.t3, area)       ||
-        pIsDown(Input.touch.t4, area)       ||
-        pIsDown(Input.touch.t5, area)       ||
-        pIsDown(Input.touch.t6, area);
+        pIsDown(RGinput.touch.mo, area)     ||
+        pIsDown(RGinput.touch.t1, area)     ||
+        pIsDown(RGinput.touch.t2, area)     ||
+        pIsDown(RGinput.touch.t3, area)     ||
+        pIsDown(RGinput.touch.t4, area)     ||
+        pIsDown(RGinput.touch.t5, area)     ||
+        pIsDown(RGinput.touch.t6, area);
       return ret;
     };
 
+    // All input justPressed Check
+    var bJustPressed = function (pad, key, area) {
+      var ret=
+        game.input.gamepad.pad1.justPressed(pad, 50) ||
+        game.input.keyboard.justPressed(key, 50)     ||
+        pJustPressed(RGinput.touch.mo, area)       ||
+        pJustPressed(RGinput.touch.t1, area)       ||
+        pJustPressed(RGinput.touch.t2, area)       ||
+        pJustPressed(RGinput.touch.t3, area)       ||
+        pJustPressed(RGinput.touch.t4, area)       ||
+        pJustPressed(RGinput.touch.t5, area)       ||
+        pJustPressed(RGinput.touch.t6, area);
+      return ret;
+    };
+
+    // Check justPressed
+    if (bJustPressed(RGinput.stage.pad1, RGinput.stage.key1, this.area.button1)){
+      this.text.justPressed.setText('justPressed(1)');
+    }
+    else if (bJustPressed(RGinput.stage.pad2, RGinput.stage.key2, this.area.button2)){
+      this.text.justPressed.setText('justPressed(2)');
+    }
+    else if (bJustPressed(RGinput.stage.pad3, RGinput.stage.key3, this.area.button3)){
+      this.text.justPressed.setText('justPressed(3)');
+    }
+    else if (bJustPressed(RGinput.stage.pad4, RGinput.stage.key4, this.area.button4)){
+      this.text.justPressed.setText('justPressed(4)');
+    }
+    else if (bJustPressed(RGinput.stage.padL, RGinput.stage.keyL, this.area.buttonL)){
+      this.text.justPressed.setText('justPressed(L)');
+    }
+    else if (bJustPressed(RGinput.stage.padR, RGinput.stage.keyR, this.area.buttonR)){
+      this.text.justPressed.setText('justPressed(R)');
+    }
+    else if (bJustPressed(RGinput.stage.padS, RGinput.stage.keyS, this.area.buttonS)){
+      this.text.justPressed.setText('justPressed(S)');
+    }
+    else
+      this.text.justPressed.setText('');
+
+
     // Button Graphic Update
-    if (bIsDown(Input.stage.pad1, Input.stage.key1, this.area.circle1)){
+    if (bIsDown(RGinput.stage.pad1, RGinput.stage.key1, this.area.button1)){
       this.img.button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
     }
@@ -470,7 +559,7 @@ var screenPlay = {
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad2, Input.stage.key2, this.area.circle2)){
+    if (bIsDown(RGinput.stage.pad2, RGinput.stage.key2, this.area.button2)){
       this.img.button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
     }
@@ -479,7 +568,7 @@ var screenPlay = {
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad3, Input.stage.key3, this.area.circle3)){
+    if (bIsDown(RGinput.stage.pad3, RGinput.stage.key3, this.area.button3)){
       this.img.button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
     }
@@ -488,7 +577,7 @@ var screenPlay = {
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.default;
     }
 
-    if (bIsDown(Input.stage.pad4, Input.stage.key4, this.area.circle4)){
+    if (bIsDown(RGinput.stage.pad4, RGinput.stage.key4, this.area.button4)){
       this.img.button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
     }
@@ -497,7 +586,7 @@ var screenPlay = {
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padL, Input.stage.keyL, this.area.triggerL)){
+    if (bIsDown(RGinput.stage.padL, RGinput.stage.keyL, this.area.buttonL)){
       this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
     }
@@ -506,7 +595,7 @@ var screenPlay = {
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padR, Input.stage.keyR, this.area.triggerR)){
+    if (bIsDown(RGinput.stage.padR, RGinput.stage.keyR, this.area.buttonR)){
       this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
     }
@@ -515,7 +604,7 @@ var screenPlay = {
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
     }
 
-    if (bIsDown(Input.stage.padS, Input.stage.keyS, this.area.buttonS)){
+    if (bIsDown(RGinput.stage.padS, RGinput.stage.keyS, this.area.buttonS)){
       this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
     }
     else{
