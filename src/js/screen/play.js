@@ -40,12 +40,6 @@ var screenPlay = {
     songStarted: 0,
     paused: 0
   },
-
-  buttonState:{
-    isDown:[],
-    justPressed:[]
-  },
-
   // Text
   text: {
     beatstamp: "",
@@ -505,6 +499,14 @@ var screenPlay = {
       return ret;
     };
 
+    // Save current InputState
+    var isDownState = [];
+    var justPressedState = [];
+    for(i=0; i<7; i++) {
+      isDownState.push(bIsDown(i));
+      justPressedState.push(bJustPressed(i));
+    }
+
     // Wait for 3sec
     if(this.flag.songStarted===0){
       // Get Ready? & Start
@@ -543,7 +545,7 @@ var screenPlay = {
       var noteHeight = screenPlayInit.skindata.size.noteCircle.y;
       var speed = screenPlay.var.speed;
       for(var i=0; objline[i].type!=Type.endofline; i++){
-      if(objline[i].type!==Type.longMiddle){
+      if(objline[i].type!==Type.longMid){
         switch(objline[i].type){
         case Type.single:
           screenPlay.objimg[line][i].start.y =
@@ -575,13 +577,16 @@ var screenPlay = {
     var checkSingleFail = function(line){
       var judgeTime = screenPlayInit.stagedata.judgeTime;
       var Type = RGobjectType;
+      var State = RGobjectState;
+      var Judge = RGobjectJudge;
       var objline = screenPlay.object[line];
       var time = screenPlay.var.elapsed_beat;
       var ret = false;
       for(var i=0; objline[i].type!==Type.endofline; i++){
-        if(objline[i].state!==Type.destroyed){
+        if(objline[i].state!==State.destroyed && objline[i].type!==Type.longMid){
           if(time > objline[i].start + judgeTime.fail){
-            screenPlay.object[line][i].state=Type.destroyed;
+            screenPlay.object[line][i].state=State.destroyed;
+            screenPlay.object[line][i].judge=Judge.fail;
             console.log('time:' +time+'/ object['+line+']['+i+'] fail');
             return true;
           }
@@ -594,34 +599,40 @@ var screenPlay = {
     var checkSingleHit = function(line){
       var judgeTime = screenPlayInit.stagedata.judgeTime;
       var Type = RGobjectType;
+      var State = RGobjectState;
+      var Judge = RGobjectJudge;
       var objline = screenPlay.object[line];
       var time = screenPlay.var.elapsed_beat;
       var ret = false;
       for(var i=0; objline[i].type!==Type.endofline; i++){
         if((objline[i].type!==Type.longMid) &&
-           (objline[i].state!==Type.destroyed)){
-        if(bJustPressed(line)){
+           (objline[i].state!==State.destroyed)){
+        if(justPressedState[line]){
           if((time > objline[i].start - judgeTime.perfect) &&
              (time < objline[i].start + judgeTime.perfect)){
-            screenPlay.object[line][i].state=Type.destroyed;
+            screenPlay.object[line][i].state=State.destroyed;
+            screenPlay.object[line][i].judge=Judge.perfect;
             ret = 'perfect';
             console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.great) &&
                   (time < objline[i].start + judgeTime.great)){
-            screenPlay.object[line][i].state=Type.destroyed;
+            screenPlay.object[line][i].state=State.destroyed;
+            screenPlay.object[line][i].judge=Judge.great;
             ret = 'great';
             console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.good) &&
                   (time < objline[i].start + judgeTime.good)){
-            screenPlay.object[line][i].state=Type.destroyed;
+            screenPlay.object[line][i].state=State.destroyed;
+            screenPlay.object[line][i].judge=Judge.good;
             ret = 'good';
             console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.bad) &&
                   (time < objline[i].start + judgeTime.bad)){
-            screenPlay.object[line][i].state=Type.destroyed;
+            screenPlay.object[line][i].state=State.destroyed;
+            screenPlay.object[line][i].judge=Judge.bad;
             ret = 'bad';
             console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
@@ -630,49 +641,77 @@ var screenPlay = {
       }
       return ret;
     };
+
+    // Check Long Object
     var checkLongHit = function(line){
-
+      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var Type = RGobjectType;
+      var State = RGobjectState;
+      var Judge = RGobjectJudge;
+      var objline = screenPlay.object[line];
+      var time = screenPlay.var.elapsed_beat;
+      var ret = false;
+      for(var i=0; objline[i].type!==Type.endofline; i++){
+        if(objline[i].state!==State.destroyed &&
+           objline[i].type===Type.longMid){
+          if(time > objline[i].start){
+            if(isDownState[line]){
+              if(objline[i-1].judge===Type.perfect &&
+                 objline[i-1].judge===Type.great){
+                screenPlay.object[line][i].judge=Judge.perfect;
+                ret = 'perfect';
+              }
+              else{
+                screenPlay.object[line][i].judge=Judge.good;
+                ret = 'good';
+              }
+            }
+            else{
+              screenPlay.object[line][i].judge=Judge.fail;
+              ret = 'fail';
+            }
+            screenPlay.object[line][i].state=State.destroyed;
+            console.log('time:' +time+'/ object['+line+']['+i+'] '+ret);
+            return ret;
+          }
+        }
+      }
+      return ret;
     };
-    checkSingleFail(0);
-    checkSingleFail(1);
-    checkSingleFail(2);
-    checkSingleFail(3);
-    checkSingleFail(4);
-    checkSingleFail(5);
-    checkSingleHit(0);
-    checkSingleHit(1);
-    checkSingleHit(2);
-    checkSingleHit(3);
-    checkSingleHit(4);
-    checkSingleHit(5);
 
-    // justPressedCheck
-    if (bJustPressed(0)){
+    for(var i=0; i<6; i++){
+      checkSingleHit(i);
+      checkLongHit(i);
+      checkSingleFail(i);
+    }
+
+    // Check Just Pressed
+    if (justPressedState[0]){
       this.text.justPressed.setText('bJustPressed("1")');
     }
-    else if (bJustPressed(1)){
+    else if (justPressedState[1]){
       this.text.justPressed.setText('bJustPressed("2")');
     }
-    else if (bJustPressed(2)){
+    else if (justPressedState[2]){
       this.text.justPressed.setText('bJustPressed("3")');
     }
-    else if (bJustPressed(3)){
+    else if (justPressedState[3]){
       this.text.justPressed.setText('bJustPressed("4")');
     }
-    else if (bJustPressed(4)){
+    else if (justPressedState[4]){
       this.text.justPressed.setText('bJustPressed("L")');
     }
-    else if (bJustPressed(5)){
+    else if (justPressedState[5]){
       this.text.justPressed.setText('bJustPressed("R")');
     }
-    else if (bJustPressed(6)){
+    else if (justPressedState[6]){
       this.text.justPressed.setText('bJustPressed("S")');
     }
     else
       this.text.justPressed.setText('');
 
-    // isDownCheck
-    if (bIsDown(0)){
+    // Check is Down
+    if (isDownState[0]){
       this.img.button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
     }
@@ -681,7 +720,7 @@ var screenPlay = {
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.default;
     }
 
-    if (bIsDown(1)){
+    if (isDownState[1]){
       this.img.button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
     }
@@ -690,7 +729,7 @@ var screenPlay = {
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.default;
     }
 
-    if (bIsDown(2)){
+    if (isDownState[2]){
       this.img.button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
     }
@@ -699,7 +738,7 @@ var screenPlay = {
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.default;
     }
 
-    if (bIsDown(3)){
+    if (isDownState[3]){
       this.img.button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
     }
@@ -708,7 +747,7 @@ var screenPlay = {
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.default;
     }
 
-    if (bIsDown(4)){
+    if (isDownState[4]){
       this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
     }
@@ -717,7 +756,7 @@ var screenPlay = {
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
     }
 
-    if (bIsDown(5)){
+    if (isDownState[5]){
       this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
     }
@@ -726,7 +765,7 @@ var screenPlay = {
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
     }
 
-    if (bIsDown(6)){
+    if (isDownState[6]){
       this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
     }
     else{

@@ -54,6 +54,10 @@
       {"type": 21, "start": 12500},
       {"type": 21, "start": 12750},
       {"type": 21, "start": 13000},
+      {"type": 21, "start": 13250},
+      {"type": 21, "start": 13500},
+      {"type": 21, "start": 13750},
+      {"type": 21, "start": 14000},
       {"type": 0               }
     ],
     [
@@ -65,6 +69,10 @@
       {"type": 21, "start": 13000},
       {"type": 21, "start": 13250},
       {"type": 21, "start": 13500},
+      {"type": 21, "start": 13750},
+      {"type": 21, "start": 14000},
+      {"type": 21, "start": 14250},
+      {"type": 21, "start": 14500},
       {"type": 0               }
     ]
   ]
