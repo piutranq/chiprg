@@ -1,5 +1,4 @@
 var screenPlay = {
-
   // Strings
   string: {
     name: "screenPlay"
@@ -42,6 +41,11 @@ var screenPlay = {
     paused: 0
   },
 
+  buttonState:{
+    isDown:[],
+    justPressed:[]
+  },
+
   // Text
   text: {
     beatstamp: "",
@@ -80,7 +84,12 @@ var screenPlay = {
   object: "",
   objimg: [ [], [], [], [], [], [] ],
 
+  // Timer
+  waitTimer: new RGtimer(),
+  songTimer: new RGtimer(),
+
   preload: function(){
+    // Load Image
     game.load.image('gear', PATH.skinPath('default') + 'gear.png');
     game.load.image('screen', PATH.skinPath('default') + 'screen.png');
 
@@ -260,11 +269,9 @@ var screenPlay = {
       screenPlayInit.skindata.buttonS.sprite.default);
 
     // Create ObjectImage
-
     this.object = screenPlayInit.stagedata.object;
-
     var createObjImg = function(line){
-      var initY = 0;
+      var initY = -screenPlayInit.skindata.size.judgeLine;
       var Type = RGobjectType;
       var objline = screenPlay.object[line];
       var linePos = screenPlayInit.skindata.linePos[line];
@@ -274,36 +281,21 @@ var screenPlay = {
       case 3:
         note = {
           sprite: 'noteCircle',
-          frame: {
-            single: 1,
-            end: 4,
-            mid: 7,
-            start: 10
-          }
+          frame: { single: 1, end: 4, mid: 7, start: 10 }
         };
       break;
       case 1:
       case 2:
         note = {
           sprite: 'noteCircle',
-          frame: {
-            single: 2,
-            end: 5,
-            mid: 8,
-            start: 11
-          }
+          frame: { single: 2, end: 5, mid: 8, start: 11 }
         };
       break;
       case 4:
       case 5:
         note = {
           sprite: 'noteTrigger',
-          frame: {
-            single: 1,
-            end: 3,
-            mid: 5,
-            start: 7
-          }
+          frame: { single: 1, end: 3, mid: 5, start: 7 }
         };
       break;
       }
@@ -331,7 +323,6 @@ var screenPlay = {
       }
       }
     };
-
     createObjImg(5);
     createObjImg(4);
     createObjImg(3);
@@ -339,6 +330,7 @@ var screenPlay = {
     createObjImg(1);
     createObjImg(0);
 
+    // Set Text & ScreenUI
     this.img.judgeFont = game.add.sprite(
       screenPlayInit.skindata.judgeFont.pos.x,
       screenPlayInit.skindata.judgeFont.pos.y,
@@ -351,8 +343,6 @@ var screenPlay = {
       'screen');
 
 
-
-    // Set Text
     this.text.genre = game.add.bitmapText(
       110, 52, 'font57', screenPlayInit.stagedata.genre, 7);
     this.text.title = game.add.bitmapText(
@@ -368,82 +358,18 @@ var screenPlay = {
     this.text.speed = game.add.bitmapText(
       170, 172, 'font57', 'SPEED: 4.00x', 7);
 
+
     // Play Song
 
     // Set Timer
     this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
     this.text.justPressed = game.add.bitmapText(0, 162, 'font57', '', 7);
-    RGtimer.start();
+    this.songTimer.init();
+    this.waitTimer.start();
   },
 
   update: function() {
-    if(this.flag.songStarted===0){
-      if(RGtimer.getMsec()>3000){
-        this.text.genre.destroy();
-        this.text.title.destroy();
-        this.text.pattern_and_level.destroy();
-        RGtimer.start(screenPlayInit.stagedata.tempo);
-        this.flag.songStarted++;
-      }
-    }
-    else{
-      // Update Timer
-      this.var.elapsed_time = RGtimer.getMsec();
-      this.var.elapsed_beat = RGtimer.getMbeat();
-      this.text.beatstamp.setText(this.var.elapsed_beat);
 
-      // song is end?
-      if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
-        this.goToResult();
-      }
-
-      // Update Text
-      this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
-      this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
-      this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
-
-      // Update objimg position
-      var updateObj = function(line){
-        var Type = RGobjectType;
-        var objline = screenPlay.object[line];
-        var time = screenPlay.var.elapsed_beat;
-
-        var getPos = screenPlay.getObjectImgPos;
-        var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
-        var noteHeight = screenPlayInit.skindata.size.noteCircle.y;
-        var speed = screenPlay.var.speed;
-        for(var i=0; objline[i].type!=Type.endofline; i++){
-        if(objline[i].type!==Type.longMiddle){
-          switch(objline[i].type){
-          case Type.single:
-            screenPlay.objimg[line][i].start.y =
-              getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
-            break;
-          case Type.long:
-            screenPlay.objimg[line][i].start.y =
-              getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
-            screenPlay.objimg[line][i].end.y =
-              getPos(lineHeight, speed, time, objline[i].end) + lineHeight;
-            screenPlay.objimg[line][i].mid.y =
-              getPos(lineHeight, speed, time, objline[i].end) + lineHeight + noteHeight;
-            screenPlay.objimg[line][i].mid.height =
-                screenPlay.objimg[line][i].start.y -
-                screenPlay.objimg[line][i].mid.y;
-            break;
-          }
-        }
-        }
-      };
-      updateObj(5);
-      updateObj(4);
-      updateObj(3);
-      updateObj(2);
-      updateObj(1);
-      updateObj(0);
-
-
-
-    }
     // Touch isOn Check
     var pIsOn = function (p, a) { // p is pointer, a is area
       var ret;
@@ -456,7 +382,54 @@ var screenPlay = {
       return ret;
     };
     // All input isDown Check
-    var bIsDown = function (pad, key, area) {
+    var bIsDown = function(button) {
+      var pad;
+      var key;
+      var area;
+      switch(button) {
+        case 0:
+        case "1":
+          pad = RGinput.stage.pad1;
+          key = RGinput.stage.key1;
+          area = screenPlay.area.button1;
+          break;
+        case 1:
+        case "2":
+          pad = RGinput.stage.pad2;
+          key = RGinput.stage.key2;
+          area = screenPlay.area.button2;
+          break;
+        case 2:
+        case "3":
+          pad = RGinput.stage.pad3;
+          key = RGinput.stage.key3;
+          area = screenPlay.area.button3;
+          break;
+        case 3:
+        case "4":
+          pad = RGinput.stage.pad4;
+          key = RGinput.stage.key4;
+          area = screenPlay.area.button4;
+          break;
+        case 4:
+        case "L":
+          pad = RGinput.stage.padL;
+          key = RGinput.stage.keyL;
+          area = screenPlay.area.buttonL;
+          break;
+        case 5:
+        case "R":
+          pad = RGinput.stage.padR;
+          key = RGinput.stage.keyR;
+          area = screenPlay.area.buttonR;
+          break;
+        case 6:
+        case "S":
+          pad = RGinput.stage.padS;
+          key = RGinput.stage.keyS;
+          area = screenPlay.area.buttonS;
+          break;
+      }
       var ret =
         game.input.gamepad.pad1.isDown(pad) ||
         game.input.keyboard.isDown(key)     ||
@@ -471,48 +444,235 @@ var screenPlay = {
     };
 
     // All input justPressed Check
-    var bJustPressed = function (pad, key, area) {
+    var bJustPressed = function (button) {
+      var pad;
+      var key;
+      var area;
+      switch(button) {
+      case 0:
+      case "1":
+        pad = RGinput.stage.pad1;
+        key = RGinput.stage.key1;
+        area = screenPlay.area.button1;
+        break;
+      case 1:
+      case "2":
+        pad = RGinput.stage.pad2;
+        key = RGinput.stage.key2;
+        area = screenPlay.area.button2;
+        break;
+      case 2:
+      case "3":
+        pad = RGinput.stage.pad3;
+        key = RGinput.stage.key3;
+        area = screenPlay.area.button3;
+        break;
+      case 3:
+      case "4":
+        pad = RGinput.stage.pad4;
+        key = RGinput.stage.key4;
+        area = screenPlay.area.button4;
+        break;
+      case 4:
+      case "L":
+        pad = RGinput.stage.padL;
+        key = RGinput.stage.keyL;
+        area = screenPlay.area.buttonL;
+        break;
+      case 5:
+      case "R":
+        pad = RGinput.stage.padR;
+        key = RGinput.stage.keyR;
+        area = screenPlay.area.buttonR;
+        break;
+      case 6:
+      case "S":
+        pad = RGinput.stage.padS;
+        key = RGinput.stage.keyS;
+        area = screenPlay.area.buttonS;
+        break;
+      }
       var ret=
-        game.input.gamepad.pad1.justPressed(pad, 50) ||
-        game.input.keyboard.justPressed(key, 50)     ||
-        (pIsOn(RGinput.touch.mo, area) && RGinput.touch.mo.justPressed(50))||
-        (pIsOn(RGinput.touch.t1, area) && RGinput.touch.t1.justPressed(50))||
-        (pIsOn(RGinput.touch.t2, area) && RGinput.touch.t2.justPressed(50))||
-        (pIsOn(RGinput.touch.t3, area) && RGinput.touch.t3.justPressed(50))||
-        (pIsOn(RGinput.touch.t4, area) && RGinput.touch.t4.justPressed(50))||
-        (pIsOn(RGinput.touch.t5, area) && RGinput.touch.t5.justPressed(50))||
-        (pIsOn(RGinput.touch.t6, area) && RGinput.touch.t6.justPressed(50));
+        game.input.gamepad.pad1.justPressed(pad) ||
+        game.input.keyboard.justPressed(key)     ||
+        (pIsOn(RGinput.touch.mo, area) && RGinput.touch.mo.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t1, area) && RGinput.touch.t1.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t2, area) && RGinput.touch.t2.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t3, area) && RGinput.touch.t3.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t4, area) && RGinput.touch.t4.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t5, area) && RGinput.touch.t5.justPressed(JUST_TIME))||
+        (pIsOn(RGinput.touch.t6, area) && RGinput.touch.t6.justPressed(JUST_TIME));
       return ret;
     };
 
-    // Check justPressed
-    if (bJustPressed(RGinput.stage.pad1, RGinput.stage.key1, this.area.button1)){
-      this.text.justPressed.setText('justPressed(1)');
+    // Wait for 3sec
+    if(this.flag.songStarted===0){
+      // Get Ready? & Start
+      if(this.waitTimer.getMsec()>3000){
+        this.text.genre.destroy();
+        this.text.title.destroy();
+        this.text.pattern_and_level.destroy();
+        this.waitTimer.init();
+        this.songTimer.start(screenPlayInit.stagedata.tempo);
+        this.flag.songStarted++;
+      }
     }
-    else if (bJustPressed(RGinput.stage.pad2, RGinput.stage.key2, this.area.button2)){
-      this.text.justPressed.setText('justPressed(2)');
+    // Update Timer
+    this.var.elapsed_time = this.songTimer.getMsec();
+    this.var.elapsed_beat = this.songTimer.getMbeat();
+    this.text.beatstamp.setText(this.var.elapsed_beat);
+
+    // song is end?
+    if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
+      this.goToResult();
     }
-    else if (bJustPressed(RGinput.stage.pad3, RGinput.stage.key3, this.area.button3)){
-      this.text.justPressed.setText('justPressed(3)');
+
+    // Update Text
+    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
+    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
+    this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
+
+    // Update objimg position
+    var updateObj = function(line){
+      var Type = RGobjectType;
+      var objline = screenPlay.object[line];
+      var time = screenPlay.var.elapsed_beat;
+
+      var getPos = screenPlay.getObjectImgPos;
+      var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
+      var noteHeight = screenPlayInit.skindata.size.noteCircle.y;
+      var speed = screenPlay.var.speed;
+      for(var i=0; objline[i].type!=Type.endofline; i++){
+      if(objline[i].type!==Type.longMiddle){
+        switch(objline[i].type){
+        case Type.single:
+          screenPlay.objimg[line][i].start.y =
+            getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
+          break;
+        case Type.long:
+          screenPlay.objimg[line][i].start.y =
+            getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
+          screenPlay.objimg[line][i].end.y =
+            getPos(lineHeight, speed, time, objline[i].end) + lineHeight;
+          screenPlay.objimg[line][i].mid.y =
+            getPos(lineHeight, speed, time, objline[i].end) + lineHeight + noteHeight;
+          screenPlay.objimg[line][i].mid.height =
+              screenPlay.objimg[line][i].start.y -
+              screenPlay.objimg[line][i].mid.y;
+          break;
+        }
+      }
+      }
+    };
+    updateObj(5);
+    updateObj(4);
+    updateObj(3);
+    updateObj(2);
+    updateObj(1);
+    updateObj(0);
+
+    // Check Object Fail
+    var checkSingleFail = function(line){
+      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var Type = RGobjectType;
+      var objline = screenPlay.object[line];
+      var time = screenPlay.var.elapsed_beat;
+      var ret = false;
+      for(var i=0; objline[i].type!==Type.endofline; i++){
+        if(objline[i].state!==Type.destroyed){
+          if(time > objline[i].start + judgeTime.fail){
+            screenPlay.object[line][i].state=Type.destroyed;
+            console.log('time:' +time+'/ object['+line+']['+i+'] fail');
+            return true;
+          }
+        }
+      }
+      return ret;
+    };
+
+    // Check Single Object Hit
+    var checkSingleHit = function(line){
+      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var Type = RGobjectType;
+      var objline = screenPlay.object[line];
+      var time = screenPlay.var.elapsed_beat;
+      var ret = false;
+      for(var i=0; objline[i].type!==Type.endofline; i++){
+        if((objline[i].type!==Type.longMid) &&
+           (objline[i].state!==Type.destroyed)){
+        if(bJustPressed(line)){
+          if((time > objline[i].start - judgeTime.perfect) &&
+             (time < objline[i].start + judgeTime.perfect)){
+            screenPlay.object[line][i].state=Type.destroyed;
+            ret = 'perfect';
+            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
+          }
+          else if((time > objline[i].start - judgeTime.great) &&
+                  (time < objline[i].start + judgeTime.great)){
+            screenPlay.object[line][i].state=Type.destroyed;
+            ret = 'great';
+            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
+          }
+          else if((time > objline[i].start - judgeTime.good) &&
+                  (time < objline[i].start + judgeTime.good)){
+            screenPlay.object[line][i].state=Type.destroyed;
+            ret = 'good';
+            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
+          }
+          else if((time > objline[i].start - judgeTime.bad) &&
+                  (time < objline[i].start + judgeTime.bad)){
+            screenPlay.object[line][i].state=Type.destroyed;
+            ret = 'bad';
+            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
+          }
+        }
+        }
+      }
+      return ret;
+    };
+    var checkLongHit = function(line){
+
+    };
+    checkSingleFail(0);
+    checkSingleFail(1);
+    checkSingleFail(2);
+    checkSingleFail(3);
+    checkSingleFail(4);
+    checkSingleFail(5);
+    checkSingleHit(0);
+    checkSingleHit(1);
+    checkSingleHit(2);
+    checkSingleHit(3);
+    checkSingleHit(4);
+    checkSingleHit(5);
+
+    // justPressedCheck
+    if (bJustPressed(0)){
+      this.text.justPressed.setText('bJustPressed("1")');
     }
-    else if (bJustPressed(RGinput.stage.pad4, RGinput.stage.key4, this.area.button4)){
-      this.text.justPressed.setText('justPressed(4)');
+    else if (bJustPressed(1)){
+      this.text.justPressed.setText('bJustPressed("2")');
     }
-    else if (bJustPressed(RGinput.stage.padL, RGinput.stage.keyL, this.area.buttonL)){
-      this.text.justPressed.setText('justPressed(L)');
+    else if (bJustPressed(2)){
+      this.text.justPressed.setText('bJustPressed("3")');
     }
-    else if (bJustPressed(RGinput.stage.padR, RGinput.stage.keyR, this.area.buttonR)){
-      this.text.justPressed.setText('justPressed(R)');
+    else if (bJustPressed(3)){
+      this.text.justPressed.setText('bJustPressed("4")');
     }
-    else if (bJustPressed(RGinput.stage.padS, RGinput.stage.keyS, this.area.buttonS)){
-      this.text.justPressed.setText('justPressed(S)');
+    else if (bJustPressed(4)){
+      this.text.justPressed.setText('bJustPressed("L")');
+    }
+    else if (bJustPressed(5)){
+      this.text.justPressed.setText('bJustPressed("R")');
+    }
+    else if (bJustPressed(6)){
+      this.text.justPressed.setText('bJustPressed("S")');
     }
     else
       this.text.justPressed.setText('');
 
-
-    // Button Graphic Update
-    if (bIsDown(RGinput.stage.pad1, RGinput.stage.key1, this.area.button1)){
+    // isDownCheck
+    if (bIsDown(0)){
       this.img.button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
     }
@@ -521,7 +681,7 @@ var screenPlay = {
       this.img.line1.frame=screenPlayInit.skindata.line1.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.pad2, RGinput.stage.key2, this.area.button2)){
+    if (bIsDown(1)){
       this.img.button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
     }
@@ -530,7 +690,7 @@ var screenPlay = {
       this.img.line2.frame=screenPlayInit.skindata.line2.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.pad3, RGinput.stage.key3, this.area.button3)){
+    if (bIsDown(2)){
       this.img.button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
     }
@@ -539,7 +699,7 @@ var screenPlay = {
       this.img.line3.frame=screenPlayInit.skindata.line3.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.pad4, RGinput.stage.key4, this.area.button4)){
+    if (bIsDown(3)){
       this.img.button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
     }
@@ -548,7 +708,7 @@ var screenPlay = {
       this.img.line4.frame=screenPlayInit.skindata.line4.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.padL, RGinput.stage.keyL, this.area.buttonL)){
+    if (bIsDown(4)){
       this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
     }
@@ -557,7 +717,7 @@ var screenPlay = {
       this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.padR, RGinput.stage.keyR, this.area.buttonR)){
+    if (bIsDown(5)){
       this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
     }
@@ -566,7 +726,7 @@ var screenPlay = {
       this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
     }
 
-    if (bIsDown(RGinput.stage.padS, RGinput.stage.keyS, this.area.buttonS)){
+    if (bIsDown(6)){
       this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
     }
     else{

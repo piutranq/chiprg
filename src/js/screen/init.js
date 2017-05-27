@@ -1,5 +1,5 @@
 var screenInit = {
-
+  timer: new RGtimer(),
   titleImage: "",
 
   preload: function(){
@@ -29,7 +29,7 @@ var screenInit = {
   },
 
   create: function(){
-    RGtimer.init(120);
+    this.timer.start(120);
     this.titleImage = game.add.button(0, 0, 'titleImage');
 
     // Setup Multitouch
@@ -67,7 +67,7 @@ var screenInit = {
   },
 
   update: function(){
-    if(RGtimer.getMsec()>=2000) {
+    if(this.timer.getMsec()>=2000) {
       this.state.start('screenStart');
     }
   }

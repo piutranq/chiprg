@@ -1,21 +1,22 @@
-var RGtimer = {
+function RGtimer(){
 
-  start_msec: 0,
-  tempo: 120,
-  beatSlicer: 0,
+  this.start_msec = false;
+  this.tempo = 120;
+  this.beatSlicer = 0;
 
-  current_msec: 0,
-  current_mbeat: 0,
+  this.current_msec = 0;
+  this.current_mbeat = 0;
 
   // Initialize. bpm decides song tempo for beat per second unit.
-  init: function(){
-    this.start_msec=0;
+  this.init = function(){
+    this.start_msec=false;
     this.tempo=120;
     this.beatSlicer=0;
     this.current_msec=0;
     this.current_mbeat=0;
-  },
-  start: function(bpm){
+  };
+
+  this.start = function(bpm){
     this.init();
     this.start_msec = Date.now();
     this.current_msec = 0;
@@ -29,21 +30,24 @@ var RGtimer = {
     else {
       this.setTempo(120);
     }
-  },
-  setTempo: function(bpm){
+  };
+
+  this.setTempo = function(bpm){
     this.Tempo = bpm;
     this.beatSlicer = 60/this.Tempo;
-  },
+  };
 
   // Get current time for msec unit
-  getMsec: function(){
+  this.getMsec = function(){
+    if(this.start_msec === false)
+      return 0;
     this.current_msec = Date.now()-this.start_msec;
     return parseInt(this.current_msec);
-  },
+  };
 
   // Get current time for beat unit
-  getMbeat: function(){
+  this.getMbeat = function(){
     this.current_mbeat = this.current_msec/this.beatSlicer;
     return parseInt(this.current_mbeat);
-  }
-};
+  };
+}
