@@ -537,6 +537,7 @@ var screenPlay = {
     // Update objimg position
     var updateObj = function(line){
       var Type = RGobjectType;
+      var State = RGobjectState;
       var objline = screenPlay.object[line];
       var time = screenPlay.var.elapsed_beat;
 
@@ -563,6 +564,10 @@ var screenPlay = {
               screenPlay.objimg[line][i].mid.y;
           break;
         }
+      }
+      if(objline[i].state===State.destroyed &&
+         objline[i].type===Type.single){
+        screenPlay.objimg[line][i].start.destroy();
       }
       }
     };
