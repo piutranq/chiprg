@@ -683,10 +683,37 @@ var screenPlay = {
       return ret;
     };
 
+    // Check Miss
+    var checkMiss = function(line) {
+      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var Type = RGobjectType;
+      var State = RGobjectState;
+      var Judge = RGobjectJudge;
+      var objline;
+      var time = screenPlay.var.elapsed_beat;
+      var ret = false;
+      for(var j=0; j<6; j++){
+        if(j==line) continue;
+        objline = screenPlay.object[j];
+        if(justPressedState[line]){
+          for(var i=0; objline[i].type!==Type.endofline; i++){
+            if(objline[i].state!==State.destroyed &&
+               objline[i].type!==Type.longMid){
+              if((time > objline[i].start - judgeTime.great) &&
+                 (time < objline[i].start + judgeTime.great)){
+                console.log('time:' +time+' / line'+line+' / object['+j+']['+i+'] miss');
+              }
+            }
+          }
+        }
+      }
+    };
+
     for(var i=0; i<6; i++){
       checkSingleHit(i);
       checkLongHit(i);
       checkSingleFail(i);
+      checkMiss(i);
     }
 
     // Check Just Pressed
