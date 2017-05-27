@@ -35,6 +35,12 @@ var screenPlay = {
     buttonS: "",
   },
 
+  // Animations
+  ani: {
+    judgeEffect: "",
+    lineEffect: ""
+  },
+
   // Flag
   flag: {
     songStarted: 0,
@@ -331,6 +337,8 @@ var screenPlay = {
       'judgeFail',
       0);
 
+    this.img.judgeFont.animations.add('judgeEffect');
+
     this.img.screen = game.add.sprite(
       screenPlayInit.skindata.screen.pos.x,
       screenPlayInit.skindata.screen.pos.y,
@@ -571,12 +579,9 @@ var screenPlay = {
       }
       }
     };
-    updateObj(5);
-    updateObj(4);
-    updateObj(3);
-    updateObj(2);
-    updateObj(1);
-    updateObj(0);
+    for(var i=5; i>=0; i--){
+      updateObj(i);
+    }
 
     // Check Object Fail
     var checkSingleFail = function(line){
@@ -592,10 +597,12 @@ var screenPlay = {
           if(time > objline[i].start + judgeTime.fail){
             screenPlay.object[line][i].state=State.destroyed;
             screenPlay.object[line][i].judge=Judge.fail;
-            console.log('time:' +time+'/ object['+line+']['+i+'] fail');
-            return true;
+            ret = 'fail';
           }
         }
+      }
+      if(ret!==false){
+        //console.log('time:' +time+'/ object['+line+']['+i+'] fail');
       }
       return ret;
     };
@@ -618,31 +625,30 @@ var screenPlay = {
             screenPlay.object[line][i].state=State.destroyed;
             screenPlay.object[line][i].judge=Judge.perfect;
             ret = 'perfect';
-            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.great) &&
                   (time < objline[i].start + judgeTime.great)){
             screenPlay.object[line][i].state=State.destroyed;
             screenPlay.object[line][i].judge=Judge.great;
             ret = 'great';
-            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.good) &&
                   (time < objline[i].start + judgeTime.good)){
             screenPlay.object[line][i].state=State.destroyed;
             screenPlay.object[line][i].judge=Judge.good;
             ret = 'good';
-            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
           else if((time > objline[i].start - judgeTime.bad) &&
                   (time < objline[i].start + judgeTime.bad)){
             screenPlay.object[line][i].state=State.destroyed;
             screenPlay.object[line][i].judge=Judge.bad;
             ret = 'bad';
-            console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
           }
         }
         }
+      }
+      if(ret!==false){
+        //console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
       }
       return ret;
     };
@@ -675,10 +681,11 @@ var screenPlay = {
               ret = 'fail';
             }
             screenPlay.object[line][i].state=State.destroyed;
-            console.log('time:' +time+'/ object['+line+']['+i+'] '+ret);
-            return ret;
           }
         }
+      }
+      if(ret!==false){
+        //console.log('time:' +time+'/ object['+line+']['+i+'] '+ret);
       }
       return ret;
     };
@@ -701,19 +708,82 @@ var screenPlay = {
                objline[i].type!==Type.longMid){
               if((time > objline[i].start - judgeTime.miss) &&
                  (time < objline[i].start + judgeTime.miss)){
-                console.log('time:' +time+' / line'+line+' / object['+j+']['+i+'] miss');
+                ret = 'miss';
               }
             }
           }
         }
       }
+      if(ret!==false){
+        //console.log('time:' +time+' / line'+line+' miss');
+      }
+      return ret;
     };
 
-    for(var i=0; i<6; i++){
-      checkSingleHit(i);
-      checkLongHit(i);
-      checkSingleFail(i);
-      checkMiss(i);
+
+    // Judge Effect Animation
+    var decideJudgeEffect = function(){
+      var Weight={perfect:1, great:2, miss:3, good:4, bad:5, fail:6};
+      var judge;
+      var ret=0;
+      for(var i=5; i>=0; i--){
+        judge = checkSingleHit(i);
+        if(judge=='perfect')
+          ret = (Weight.perfect>ret) ? Weight.perfect:ret;
+        if(judge=='great')
+          ret = (Weight.great>ret) ? Weight.great:ret;
+        if(judge=='good')
+          ret = (Weight.good>ret) ? Weight.good:ret;
+        if(judge=='bad')
+          ret = (Weight.bad>ret) ? Weight.bad:ret;
+
+        judge = checkLongHit(i);
+        if(judge=='perfect')
+          ret = (Weight.perfect>ret) ? Weight.perfect:ret;
+        if(judge=='good')
+          ret = (Weight.good>ret) ? Weight.good:ret;
+
+        judge = checkSingleFail(i);
+        if(judge=='fail')
+          ret = (Weight.fail>ret) ? Weight.fail:ret;
+
+        judge = checkMiss(i);
+        if(judge=='miss')
+          ret = (Weight.miss>ret) ? Weight.miss:ret;
+      }
+      return ret;
+    };
+    switch(decideJudgeEffect()){
+    case 6:
+      console.log(screenPlay.var.elapsed_beat+' / fail');
+      this.img.judgeFont.loadTexture('judgeFail');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
+    case 5:
+      console.log(screenPlay.var.elapsed_beat+' / bad');
+      this.img.judgeFont.loadTexture('judgeBad');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
+    case 4:
+      console.log(screenPlay.var.elapsed_beat+' / good');
+      this.img.judgeFont.loadTexture('judgeGood');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
+    case 3:
+      console.log(screenPlay.var.elapsed_beat+' / miss');
+      this.img.judgeFont.loadTexture('judgeMiss');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
+    case 2:
+      console.log(screenPlay.var.elapsed_beat+' / great');
+      this.img.judgeFont.loadTexture('judgeGreat');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
+    case 1:
+      console.log(screenPlay.var.elapsed_beat+' / perfect');
+      this.img.judgeFont.loadTexture('judgePerfect');
+      this.img.judgeFont.animations.play('judgeEffect', 120, false);
+      break;
     }
 
     // Check Just Pressed
