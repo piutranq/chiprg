@@ -33,12 +33,7 @@ var screenPlay = {
     buttonL: "",
     buttonR: "",
     buttonS: "",
-  },
-
-  // Animations
-  ani: {
-    judgeEffect: "",
-    lineEffect: ""
+    effect:["","","","","",""]
   },
 
   // Flag
@@ -167,6 +162,32 @@ var screenPlay = {
       'judgeFail', PATH.skinPath('default') + 'judgeFail.png',
       screenPlayInit.skindata.size.judgeFont.x,
       screenPlayInit.skindata.size.judgeFont.y);
+
+    game.load.spritesheet(
+      'effectCirclePerfect', PATH.skinPath('default')+ 'effectCirclePerfect.png',
+      screenPlayInit.skindata.size.effectCircle.x,
+      screenPlayInit.skindata.size.effectCircle.y);
+    game.load.spritesheet(
+      'effectCircleGreat', PATH.skinPath('default')+ 'effectCircleGreat.png',
+      screenPlayInit.skindata.size.effectCircle.x,
+      screenPlayInit.skindata.size.effectCircle.y);
+    game.load.spritesheet(
+      'effectCircleGood', PATH.skinPath('default')+ 'effectCircleGood.png',
+      screenPlayInit.skindata.size.effectCircle.x,
+      screenPlayInit.skindata.size.effectCircle.y);
+
+    game.load.spritesheet(
+      'effectTriggerPerfect', PATH.skinPath('default')+ 'effectTriggerPerfect.png',
+      screenPlayInit.skindata.size.effectTrigger.x,
+      screenPlayInit.skindata.size.effectTrigger.y);
+    game.load.spritesheet(
+      'effectTriggerGreat', PATH.skinPath('default')+ 'effectTriggerGreat.png',
+      screenPlayInit.skindata.size.effectTrigger.x,
+      screenPlayInit.skindata.size.effectTrigger.y);
+    game.load.spritesheet(
+      'effectTriggerGood', PATH.skinPath('default')+ 'effectTriggerGood.png',
+      screenPlayInit.skindata.size.effectTrigger.x,
+      screenPlayInit.skindata.size.effectTrigger.y);
 
   },
   create: function(){
@@ -330,7 +351,7 @@ var screenPlay = {
     createObjImg(1);
     createObjImg(0);
 
-    // Set Text & ScreenUI
+    // Set Text & Effect
     this.img.judgeFont = game.add.sprite(
       screenPlayInit.skindata.judgeFont.pos.x,
       screenPlayInit.skindata.judgeFont.pos.y,
@@ -343,6 +364,38 @@ var screenPlay = {
       screenPlayInit.skindata.screen.pos.x,
       screenPlayInit.skindata.screen.pos.y,
       'screen');
+
+    this.img.effect[0] = game.add.sprite(
+      screenPlayInit.skindata.effect1.pos.x,
+      screenPlayInit.skindata.effect1.pos.y,
+      'effectCirclePerfect');
+    this.img.effect[1] = game.add.sprite(
+      screenPlayInit.skindata.effect2.pos.x,
+      screenPlayInit.skindata.effect2.pos.y,
+      'effectCirclePerfect');
+    this.img.effect[2] = game.add.sprite(
+      screenPlayInit.skindata.effect3.pos.x,
+      screenPlayInit.skindata.effect3.pos.y,
+      'effectCirclePerfect');
+    this.img.effect[3] = game.add.sprite(
+      screenPlayInit.skindata.effect4.pos.x,
+      screenPlayInit.skindata.effect4.pos.y,
+      'effectCirclePerfect');
+    this.img.effect[4] = game.add.sprite(
+      screenPlayInit.skindata.effectL.pos.x,
+      screenPlayInit.skindata.effectL.pos.y,
+      'effectTriggerPerfect');
+    this.img.effect[5] = game.add.sprite(
+      screenPlayInit.skindata.effectR.pos.x,
+      screenPlayInit.skindata.effectR.pos.y,
+      'effectTriggerPerfect');
+
+    this.img.effect[0].animations.add('effect');
+    this.img.effect[1].animations.add('effect');
+    this.img.effect[2].animations.add('effect');
+    this.img.effect[3].animations.add('effect');
+    this.img.effect[4].animations.add('effect');
+    this.img.effect[5].animations.add('effect');
 
 
     this.text.genre = game.add.bitmapText(
@@ -534,7 +587,7 @@ var screenPlay = {
 
     // song is end?
     if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
-      this.goToResult();
+      // this.goToResult();
     }
 
     // Update Text
@@ -647,7 +700,28 @@ var screenPlay = {
         }
         }
       }
+      switch(ret){
+      case 'perfect':
+        if(line>=4)
+          screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
+        else
+          screenPlay.img.effect[line].loadTexture('effectCirclePerfect');
+        break;
+      case 'great':
+        if(line>=4)
+          screenPlay.img.effect[line].loadTexture('effectTriggerGreat');
+        else
+          screenPlay.img.effect[line].loadTexture('effectCircleGreat');
+        break;
+      case 'good':
+        if(line>=4)
+          screenPlay.img.effect[line].loadTexture('effectTriggerGood');
+        else
+          screenPlay.img.effect[line].loadTexture('effectCircleGood');
+        break;
+      }
       if(ret!==false){
+        screenPlay.img.effect[line].animations.play('effect', 120, false);
         //console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
       }
       return ret;
@@ -684,7 +758,22 @@ var screenPlay = {
           }
         }
       }
+      switch(ret){
+      case 'perfect':
+        if(line>=4)
+          screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
+        else
+          screenPlay.img.effect[line].loadTexture('effectCirclePerfect');
+        break;
+      case 'good':
+        if(line>=4)
+          screenPlay.img.effect[line].loadTexture('effectTriggerGood');
+        else
+          screenPlay.img.effect[line].loadTexture('effectCircleGood');
+        break;
+      }
       if(ret!==false){
+        screenPlay.img.effect[line].animations.play('effect', 120, false);
         //console.log('time:' +time+'/ object['+line+']['+i+'] '+ret);
       }
       return ret;
@@ -785,6 +874,8 @@ var screenPlay = {
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     }
+
+
 
     // Check Just Pressed
     if (justPressedState[0]){

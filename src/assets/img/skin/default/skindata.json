@@ -9,6 +9,8 @@
     "judgeLine"     : { "x": 120, "y":   6 },
     "noteCircle"    : { "x":  30, "y":   6 },
     "noteTrigger"   : { "x":  60, "y":   6 },
+    "effectCircle"  : { "x":  60, "y":  60 },
+    "effectTrigger" : { "x": 120, "y":  60 },
     "judgeFont"     : { "x":  80, "y":  15 }
   },
   "gear"   : {
@@ -78,6 +80,24 @@
   "lineR"  : {
     "pos"  : { "x": 160, "y":   0},
     "sprite": { "default": 0, "pressed": 1}
+  },
+  "effect1"  : {
+    "pos"  : { "x":  85, "y":  110}
+  },
+  "effect2"  : {
+    "pos"  : { "x": 115, "y":  110}
+  },
+  "effect3"  : {
+    "pos"  : { "x": 145, "y":  110}
+  },
+  "effect4"  : {
+    "pos"  : { "x": 175, "y":  110}
+  },
+  "effectL"  : {
+    "pos"  : { "x":  70, "y":  110}
+  },
+  "effectR"  : {
+    "pos"  : { "x": 130, "y":  110}
   },
   "judgeFont" : {
     "pos"  : { "x": 120, "y": 100}
