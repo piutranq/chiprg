@@ -1,9 +1,201 @@
 var screenResult = {
   name: "screenResult",
+  var: {
+    songGenre: "",
+    songTitle: "",
+    songArtist: "",
+    songPattern: "",
+    songLevel: "",
+    score: "",
+    advScore: "",
+    judgeData: "",
+    lastCombo: "",
+    maxCombo: "",
+    total: "",
+    gradeRate: "",
+    isAllCombo: "",
+    isAllGreat: "",
+    isAllPerfect: "",
+    totalScore:"",
+    getResultData: function(){
+      this.songGenre = screenPlayInit.stagedata.genre;
+      this.songTitle = screenPlayInit.stagedata.title;
+      this.songArtist = screenPlayInit.stagedata.artist;
+      this.songPattern = screenPlayInit.stagedata.pattern;
+      this.songLevel = screenPlayInit.stagedata.songLevel;
+      this.score = screenPlay.var.score.value;
+      this.advScore = screenPlay.var.score.advanced;
+      this.judgeData = screenPlay.var.score.judgeData;
+      this.lastCombo = screenPlay.var.combo.value;
+      this.maxCombo = screenPlay.var.combo.max;
+      this.total = screenPlayInit.stagedata.total;
+      this.gradeRate = this.score / (this.total*10);
+      this.isAllCombo = screenPlay.var.score.isAllCombo();
+      this.isAllGreat = screenPlay.var.score.isAllGreat();
+      this.isAllPerfect = screenPlay.var.score.isAllPerfect();
+      this.totalScore = screenPlay.var.score.value+
+                        screenPlay.var.score.advanced;
+    },
+    isCleared: function(){
+      return 0;
+    },
+  },
+  string: {
+    screenTitle: function(){
+      switch(screenResult.var.isCleared()){
+      case 0:
+        return "STAGE CLEAR";
+      case 1:
+        return "STAGE FAILED";
+      case 2:
+        return "STAGE SAVED";
+      }
+    },
+    bestRecord:[
+      "BEST RECORD"
+    ],
+    rank:[ "1ST PLACE", "2ND PLACE", "3RD PLACE", "4TH PLACE", "5TH PLACE" ],
+    grade: "GRADE",
+    gradeValue: function(){
+      if(screenResult.var.gradeRate>=98)      return 'SS';
+      else if(screenResult.var.gradeRate>=95) return 'S';
+      else if(screenResult.var.gradeRate>=90) return 'A';
+      else if(screenResult.var.gradeRate>=80) return 'B';
+      else if(screenResult.var.gradeRate>=70) return 'C';
+      else if(screenResult.var.gradeRate>=50) return 'D';
+      else                                   return 'F';
+    },
+    isAll: function(){
+      if(screenResult.var.isAllPerfect)
+        return 'ALL PERFECT';
+      else if(screenResult.var.isAllGreat)
+        return 'ALL GREAT';
+      else if(screenResult.var.isAllCombo)
+        return 'ALL COMBO';
+      else
+        return '';
+    },
+
+    total      : "TOTAL NOTE  : ",
+    maxCombo   : "MAX COMBO   : ",
+    perfect    : "PERFECT     : ",
+    great      : "GREAT       : ",
+    good       : "GOOD        : ",
+    miss       : "MISS        : ",
+    bad        : "BAD         : ",
+    fail       : "FAIL        : ",
+    score      : "SCORE       : ",
+    totalScore : "TOTAL SCORE : ",
+    advBonus: "ALL GREAT BONUS",
+
+    retry: "RETRY",
+    lobby: "LOBBY",
+    songSelect: "SONG SELECT",
+  },
+  text: {
+    screenTitle: "",
+    songGenre: "",
+    songTitle: "",
+    songArtist: "",
+    songPattern: "",
+    songLevel: "",
+    songLength: "",
+
+    bestRecord: "",
+    rank: "",
+    grade: "",
+    gradeValue: "",
+
+    total: "",
+    score: "",
+    totalScore: "",
+    advBonus: "",
+    judgeData: {
+      perfect: "",
+      great: "",
+      good: "",
+      miss: "",
+      bad: "",
+      fail: ""
+    },
+    maxCombo: "",
+    isAll: "",
+    retry: "",
+    lobby: "",
+    songSelect: "",
+  },
+
+
+  img: {
+    background: "",
+    selector1:"",
+    selector2:"",
+    rank:"",
+    isAll:"",
+  },
+
   title: "",
   preload: function(){
+    this.uiPath = PATH.uiPath(PATH.uiName) + this.name + '/';
+    game.load.image('background', this.uiPath+'background.png');
   },
   create: function(){
-    this.title = game.add.text(0, 0, this.name, { font: "14px Arial", fill: "#ffffff"});
+    this.var.getResultData();
+    this.img.background = game.add.sprite(0, 0, 'background');
+
+    this.text.screenTitle = game.add.bitmapText(
+      10, 11, 'font79', this.string.screenTitle(), 9);
+    this.text.songTitle = game.add.bitmapText(
+      20, 37, 'font57', this.var.songTitle, 7);
+    this.text.total = game.add.bitmapText(
+      20, 56, 'font57', this.string.total+
+      SomeMath.pad0(this.var.total, 4, 0), 7);
+    this.text.maxCombo = game.add.bitmapText(
+      20, 66, 'font57', this.string.maxCombo+
+      SomeMath.pad0(this.var.maxCombo, 4, 0), 7);
+    this.text.perfect = game.add.bitmapText(
+      20, 81, 'font57', this.string.perfect+
+      SomeMath.pad0(this.var.judgeData.perfect, 4, 0), 7);
+    this.text.great = game.add.bitmapText(
+      20, 91, 'font57', this.string.great+
+      SomeMath.pad0(this.var.judgeData.great, 4, 0), 7);
+    this.text.good = game.add.bitmapText(
+      20,101, 'font57', this.string.good+
+      SomeMath.pad0(this.var.judgeData.good, 4, 0), 7);
+    this.text.bad = game.add.bitmapText(
+      20,111, 'font57', this.string.bad+
+      SomeMath.pad0(this.var.judgeData.bad, 4, 0), 7);
+    this.text.fail = game.add.bitmapText(
+      20,121, 'font57', this.string.fail+
+      SomeMath.pad0(this.var.judgeData.fail, 4, 0), 7);
+    this.text.miss = game.add.bitmapText(
+      20,131, 'font57', this.string.miss+
+      SomeMath.pad0(this.var.judgeData.miss, 4, 0), 7);
+    this.text.score = game.add.bitmapText(
+      20,145, 'font57', this.string.score+
+      SomeMath.pad0(this.var.score, 7, 0)+
+      '', 7);
+    this.text.totalScore = game.add.bitmapText(
+      20,155, 'font57', '', 7);
+
+    this.text.grade = game.add.bitmapText(
+      115, 56, 'font57', this.string.grade, 7);
+    this.text.gradeValue = game.add.bitmapText(
+      110, 62, 'font79', this.string.gradeValue(), 45);
+
+    this.text.isAll = game.add.bitmapText(
+      125, 104, 'font57', this.string.isAll(), 7);
+
+  },
+  update: function(){
+    if(this.var.isAllGreat) {
+      this.text.score.setText(
+        this.string.score+
+        SomeMath.pad0(this.var.score, 7, 0)+' + '+
+        SomeMath.pad0(this.var.advScore, 6, 0));
+      this.text.totalScore.setText(
+        this.string.totalScore+
+        SomeMath.pad0(this.var.totalScore, 8, 0));
+    }
   },
 };

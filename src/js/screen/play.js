@@ -152,6 +152,7 @@ var screenPlay = {
         case 'perfect':
           this.judgeData.perfect++;
           this.value+=Score.perfect;
+          this.advanced+=Score.advanced;
           break;
         }
       },
@@ -689,7 +690,7 @@ var screenPlay = {
 
     // song is end?
     if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
-      // this.goToResult();
+      this.goToResult();
     }
 
     // Update objimg position
