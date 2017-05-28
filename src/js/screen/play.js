@@ -64,8 +64,58 @@ var screenPlay = {
     elapsed_beat: 0,
 
     // Score & Judge
+    combo: {
+      value: 0,
+      timer: 0,
+      getPosX: function(){
+        if(this.value<10)
+          return 153;
+        else if(this.value<100)
+          return 146;
+        else if(this.value<1000)
+          return 139;
+        else if(this.value<10000)
+          return 132;
+        else if(this.value<100000)
+          return 125;
+        else
+          return 118;
+      },
+      getPosY: function(){
+        switch(this.timer){
+        case 0:
+          return 28;
+        case 1:
+          return 32;
+        case 2:
+          return 35;
+        case 3:
+          return 38;
+        case 4:
+          return 40;
+        default:
+          return 41;
+        }
+      },
+      timeAdd: function(){
+        this.timer++;
+      },
+      timeReset: function(){
+        this.timer=0;
+      },
+      isVisible: function(){
+        return (this.timer<120) && (this.value>=5);
+      },
+      add: function(){
+        this.value++;
+        this.timeReset();
+      },
+      reset: function(){
+        this.value=0;
+        this.timeReset();
+      }
+    },
     maxcombo: 0,
-    currentcombo: 0,
     score: 0,
 
     judgeData: [0, 0, 0, 0, 0, 0],
@@ -406,6 +456,12 @@ var screenPlay = {
       110, 68, 'font57',
       'LV.'+screenPlayInit.stagedata.songLevel+' '+screenPlayInit.stagedata.pattern, 7);
 
+    this.text.combo = game.add.bitmapText(
+      148, 33, 'font57', '', 7);
+    this.text.comboCount = game.add.bitmapText(
+      125, 41, 'font79', '', 18);
+
+
     this.text.score = game.add.bitmapText(
       100, 162, 'font57', 'SCORE:  0000000', 7);
     this.text.maxcombo = game.add.bitmapText(
@@ -590,11 +646,6 @@ var screenPlay = {
       // this.goToResult();
     }
 
-    // Update Text
-    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
-    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
-    this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
-
     // Update objimg position
     var updateObj = function(line){
       var Type = RGobjectType;
@@ -654,7 +705,8 @@ var screenPlay = {
           }
         }
       }
-      if(ret!==false){
+      if(ret=='fail'){
+        screenPlay.var.combo.reset();
         //console.log('time:' +time+'/ object['+line+']['+i+'] fail');
       }
       return ret;
@@ -702,22 +754,28 @@ var screenPlay = {
       }
       switch(ret){
       case 'perfect':
+        screenPlay.var.combo.add();
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
           screenPlay.img.effect[line].loadTexture('effectCirclePerfect');
         break;
       case 'great':
+        screenPlay.var.combo.add();
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGreat');
         else
           screenPlay.img.effect[line].loadTexture('effectCircleGreat');
         break;
       case 'good':
+        screenPlay.var.combo.add();
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
           screenPlay.img.effect[line].loadTexture('effectCircleGood');
+        break;
+      case 'bad':
+        screenPlay.var.combo.reset();
         break;
       }
       if(ret!==false){
@@ -760,16 +818,21 @@ var screenPlay = {
       }
       switch(ret){
       case 'perfect':
+        screenPlay.var.combo.add();
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
           screenPlay.img.effect[line].loadTexture('effectCirclePerfect');
         break;
       case 'good':
+        screenPlay.var.combo.add();
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
           screenPlay.img.effect[line].loadTexture('effectCircleGood');
+        break;
+      case 'fail':
+        screenPlay.var.combo.reset();
         break;
       }
       if(ret!==false){
@@ -875,6 +938,32 @@ var screenPlay = {
       break;
     }
 
+    // Set position of comfo font
+    this.text.comboCount.x = this.var.combo.getPosX();
+    this.text.comboCount.y = this.var.combo.getPosY();
+    this.text.combo.y = this.var.combo.getPosY()-8;
+
+    // view combo font
+    if(this.var.combo.isVisible()) {
+      this.text.combo.setText('COMBO');
+      this.text.comboCount.setText(this.var.combo.value);
+    }
+    else{
+      this.text.combo.setText('');
+      this.text.comboCount.setText('');
+    }
+    // combo font timer;
+    this.var.combo.timeAdd();
+
+    // Get max combo
+    this.var.maxcombo = (this.var.maxcombo>this.var.combo.value) ? this.var.maxcombo : this.var.combo.value;
+
+
+
+    // Update Text
+    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
+    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
+    this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
 
 
     // Check Just Pressed
