@@ -19,3 +19,13 @@ var RGobjectJudge = {
   great: 4,
   perfect: 5
 };
+
+var RGjudgeScore = {
+  fail: 0,
+  bad: 0,
+  miss: 0,
+  good: 200,
+  great: 1000,
+  perfect: 1000,
+  advanced: 100,
+};

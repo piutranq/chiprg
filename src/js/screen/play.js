@@ -62,11 +62,18 @@ var screenPlay = {
     speed: 400,
     elapsed_time: 0,
     elapsed_beat: 0,
+    beatFrame: function(){
+      return SomeMath.modulo(this.elapsed_beat, 1000);
+    },
 
     // Score & Judge
     combo: {
       value: 0,
+      max: 0,
       timer: 0,
+      updateMax: function(){
+        this.max = (this.value>this.max) ? this.value:this.max;
+      },
       getPosX: function(){
         if(this.value<10)
           return 153;
@@ -115,10 +122,49 @@ var screenPlay = {
         this.timeReset();
       }
     },
-    maxcombo: 0,
-    score: 0,
-
-    judgeData: [0, 0, 0, 0, 0, 0],
+    score: {
+      judgeData: { fail:0, bad:0, miss:0, good:0, great:0, perfect:0 },
+      value: 0,
+      advanced: 0,
+      add: function(judge){
+        var Score = RGjudgeScore;
+        switch(judge){
+        case 'fail':
+          this.judgeData.fail++;
+          this.value+=Score.fail;
+          break;
+        case 'bad':
+          this.judgeData.bad++;
+          this.value+=Score.bad;
+          break;
+        case 'miss':
+          this.judgeData.miss++;
+          this.value+=Score.miss;
+          break;
+        case 'good':
+          this.judgeData.good++;
+          this.value+=Score.good;
+          break;
+        case 'great':
+          this.judgeData.great++;
+          this.value+=Score.great;
+          break;
+        case 'perfect':
+          this.judgeData.perfect++;
+          this.value+=Score.perfect;
+          break;
+        }
+      },
+      isAllPerfect: function(){
+        return this.judgeData.fail===0 && this.judgeData.bad===0 && this.judgeData.good===0 && this.judgeData.great===0;
+      },
+      isAllGreat: function(){
+        return this.judgeData.fail===0 && this.judgeData.bad===0 && this.judgeData.good===0;
+      },
+      isAllCombo: function(){
+        return this.judgeData.fail===0 && this.judgeData.bad===0;
+      }
+    },
 
     // Meter Gague
     beatmeter: 0,
@@ -707,6 +753,7 @@ var screenPlay = {
       }
       if(ret=='fail'){
         screenPlay.var.combo.reset();
+        screenPlay.var.score.add('fail');
         //console.log('time:' +time+'/ object['+line+']['+i+'] fail');
       }
       return ret;
@@ -755,6 +802,7 @@ var screenPlay = {
       switch(ret){
       case 'perfect':
         screenPlay.var.combo.add();
+        screenPlay.var.score.add('perfect');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
@@ -762,6 +810,7 @@ var screenPlay = {
         break;
       case 'great':
         screenPlay.var.combo.add();
+        screenPlay.var.score.add('great');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGreat');
         else
@@ -769,6 +818,7 @@ var screenPlay = {
         break;
       case 'good':
         screenPlay.var.combo.add();
+        screenPlay.var.score.add('good');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
@@ -776,6 +826,7 @@ var screenPlay = {
         break;
       case 'bad':
         screenPlay.var.combo.reset();
+        screenPlay.var.score.add('bad');
         break;
       }
       if(ret!==false){
@@ -819,6 +870,7 @@ var screenPlay = {
       switch(ret){
       case 'perfect':
         screenPlay.var.combo.add();
+        screenPlay.var.score.add('perfect');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
@@ -826,6 +878,7 @@ var screenPlay = {
         break;
       case 'good':
         screenPlay.var.combo.add();
+        screenPlay.var.score.add('good');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
@@ -833,6 +886,7 @@ var screenPlay = {
         break;
       case 'fail':
         screenPlay.var.combo.reset();
+        screenPlay.var.score.add('fail');
         break;
       }
       if(ret!==false){
@@ -867,6 +921,7 @@ var screenPlay = {
         }
       }
       if(ret!==false){
+        screenPlay.var.score.add('miss');
         //console.log('time:' +time+' / line'+line+' miss');
       }
       return ret;
@@ -956,13 +1011,11 @@ var screenPlay = {
     this.var.combo.timeAdd();
 
     // Get max combo
-    this.var.maxcombo = (this.var.maxcombo>this.var.combo.value) ? this.var.maxcombo : this.var.combo.value;
-
-
+    this.var.combo.updateMax();
 
     // Update Text
-    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score, 7));
-    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.maxcombo, 4));
+    this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score.value, 7));
+    this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.combo.max, 4));
     this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
 
 
