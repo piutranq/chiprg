@@ -58,6 +58,7 @@ var screenPlay = {
 
   // Variable
   var: {
+    total: 0,
     // Speed & Timer
     speed: 400,
     elapsed_time: 0,
@@ -71,6 +72,11 @@ var screenPlay = {
       value: 0,
       max: 0,
       timer: 0,
+      init: function(){
+        this.value = 0;
+        this.max = 0;
+        this.timer = 0;
+      },
       updateMax: function(){
         this.max = (this.value>this.max) ? this.value:this.max;
       },
@@ -126,6 +132,17 @@ var screenPlay = {
       judgeData: { fail:0, bad:0, miss:0, good:0, great:0, perfect:0 },
       value: 0,
       advanced: 0,
+      init: function(){
+        screenPlay.var.total=0;
+        this.judgeData.fail=0;
+        this.judgeData.bad=0;
+        this.judgeData.miss=0;
+        this.judgeData.good=0;
+        this.judgeData.great=0;
+        this.judgeData.perfect=0;
+        this.value=0;
+        this.advanced=0;
+      },
       add: function(judge){
         var Score = RGjudgeScore;
         switch(judge){
@@ -157,13 +174,13 @@ var screenPlay = {
         }
       },
       isAllPerfect: function(){
-        return this.judgeData.fail===0 && this.judgeData.bad===0 && this.judgeData.good===0 && this.judgeData.great===0;
+        return this.judgeData.perfect == screenPlay.var.total;
       },
       isAllGreat: function(){
-        return this.judgeData.fail===0 && this.judgeData.bad===0 && this.judgeData.good===0;
+        return this.judgeData.perfect+this.judgeData.great == screenPlay.var.total;
       },
       isAllCombo: function(){
-        return this.judgeData.fail===0 && this.judgeData.bad===0;
+        return this.judgeData.perfect+this.judgeData.great+this.judgeData.good == screenPlay.var.total;
       }
     },
 
@@ -177,8 +194,8 @@ var screenPlay = {
   objimg: [ [], [], [], [], [], [] ],
 
   // Timer
-  waitTimer: new RGtimer(),
-  songTimer: new RGtimer(),
+  waitTimer: "",
+  songTimer: "",
 
   preload: function(){
     // Load Image
@@ -286,9 +303,13 @@ var screenPlay = {
       screenPlayInit.skindata.size.effectTrigger.x,
       screenPlayInit.skindata.size.effectTrigger.y);
 
+    // Load BGM
+    C2TrackerControl.load(C2Trackers.bgmNonLoop, PATH.stagePath(PATH.stageName) + 'bgm.xm');
+
   },
   create: function(){
     // Add touch area
+
     this.area.button1 = screenPlayInit.skindata.button1.area;
     this.area.button2 = screenPlayInit.skindata.button2.area;
     this.area.button3 = screenPlayInit.skindata.button3.area;
@@ -386,6 +407,13 @@ var screenPlay = {
       'buttonS',
       screenPlayInit.skindata.buttonS.sprite.default);
 
+
+
+    // Init vars
+    this.var.score.init();
+    this.var.combo.init();
+
+
     // Create ObjectImage
     this.object = screenPlayInit.stagedata.object;
     var createObjImg = function(line){
@@ -419,17 +447,16 @@ var screenPlay = {
       }
 
       for(var i=0; objline[i].type!=Type.endofline; i++){
-      if(objline[i].type!==Type.longMid){
-        if(objline[i].type===Type.long)
-          screenPlay.objimg[line].push({start: "", mid: "", end:""});
-        else
-          screenPlay.objimg[line].push({start: ""});
         switch(objline[i].type){
         case Type.single:
+          screenPlay.var.total++;
+          screenPlay.objimg[line].push({start: ""});
           screenPlay.objimg[line][i].start = game.add.sprite(linePos, initY,
             note.sprite, note.frame.single);
           break;
         case Type.long:
+          screenPlay.var.total++;
+          screenPlay.objimg[line].push({start: "", mid: "", end:""});
           screenPlay.objimg[line][i].start = game.add.sprite(linePos, initY,
             note.sprite, note.frame.start);
           screenPlay.objimg[line][i].mid = game.add.sprite(linePos, initY,
@@ -437,8 +464,10 @@ var screenPlay = {
           screenPlay.objimg[line][i].end = game.add.sprite(linePos, initY,
             note.sprite, note.frame.end);
           break;
+        case Type.longMid:
+          screenPlay.var.total++;
+          screenPlay.objimg[line].push("");
         }
-      }
       }
     };
     createObjImg(5);
@@ -515,15 +544,14 @@ var screenPlay = {
       100, 172, 'font57', 'MAX COMBO: 0000', 7);
     this.text.speed = game.add.bitmapText(
       170, 172, 'font57', 'SPEED: 4.00x', 7);
-
-
-    // Play Song
-
     // Set Timer
+    this.songTimer = new RGtimer();
+    this.waitTimer = new RGtimer();
     this.text.beatstamp = game.add.bitmapText(0, 170, 'font57', 0, 7);
     this.text.justPressed = game.add.bitmapText(0, 162, 'font57', '', 7);
     this.songTimer.init();
     this.waitTimer.start();
+    this.flag.songStarted = 0;
   },
 
   update: function() {
@@ -679,14 +707,15 @@ var screenPlay = {
         this.text.title.destroy();
         this.text.pattern_and_level.destroy();
         this.waitTimer.init();
-        this.songTimer.start(screenPlayInit.stagedata.tempo);
+        C2TrackerControl.songStart(C2Trackers.bgmNonLoop);
         this.flag.songStarted++;
+        this.songTimer.start(screenPlayInit.stagedata.tempo);
       }
     }
     // Update Timer
     this.var.elapsed_time = this.songTimer.getMsec();
     this.var.elapsed_beat = this.songTimer.getMbeat();
-    this.text.beatstamp.setText(this.var.elapsed_beat);
+    // this.text.beatstamp.setText(this.var.elapsed_beat);
 
     // song is end?
     if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
@@ -715,9 +744,9 @@ var screenPlay = {
           screenPlay.objimg[line][i].start.y =
             getPos(lineHeight, speed, time, objline[i].start) + lineHeight;
           screenPlay.objimg[line][i].end.y =
-            getPos(lineHeight, speed, time, objline[i].end) + lineHeight;
-          screenPlay.objimg[line][i].mid.y =
             getPos(lineHeight, speed, time, objline[i].end) + lineHeight + noteHeight;
+          screenPlay.objimg[line][i].mid.y =
+            getPos(lineHeight, speed, time, objline[i].end) + lineHeight + noteHeight + noteHeight;
           screenPlay.objimg[line][i].mid.height =
               screenPlay.objimg[line][i].start.y -
               screenPlay.objimg[line][i].mid.y;
@@ -963,32 +992,32 @@ var screenPlay = {
     };
     switch(decideJudgeEffect()){
     case 6:
-      console.log(screenPlay.var.elapsed_beat+' / fail');
+      //console.log(screenPlay.var.elapsed_beat+' / fail');
       this.img.judgeFont.loadTexture('judgeFail');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     case 5:
-      console.log(screenPlay.var.elapsed_beat+' / bad');
+      //console.log(screenPlay.var.elapsed_beat+' / bad');
       this.img.judgeFont.loadTexture('judgeBad');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     case 4:
-      console.log(screenPlay.var.elapsed_beat+' / good');
+      //console.log(screenPlay.var.elapsed_beat+' / good');
       this.img.judgeFont.loadTexture('judgeGood');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     case 3:
-      console.log(screenPlay.var.elapsed_beat+' / miss');
+      //console.log(screenPlay.var.elapsed_beat+' / miss');
       this.img.judgeFont.loadTexture('judgeMiss');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     case 2:
-      console.log(screenPlay.var.elapsed_beat+' / great');
+      //console.log(screenPlay.var.elapsed_beat+' / great');
       this.img.judgeFont.loadTexture('judgeGreat');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
     case 1:
-      console.log(screenPlay.var.elapsed_beat+' / perfect');
+      //console.log(screenPlay.var.elapsed_beat+' / perfect');
       this.img.judgeFont.loadTexture('judgePerfect');
       this.img.judgeFont.animations.play('judgeEffect', 120, false);
       break;
@@ -1018,32 +1047,6 @@ var screenPlay = {
     this.text.score.setText('SCORE:  ' + SomeMath.pad0(this.var.score.value, 7));
     this.text.maxcombo.setText('MAX COMBO: ' + SomeMath.pad0(this.var.combo.max, 4));
     this.text.speed.setText('SPEED: ' + Number(this.var.speed/100).toFixed(2) + 'x');
-
-
-    // Check Just Pressed
-    if (justPressedState[0]){
-      this.text.justPressed.setText('bJustPressed("1")');
-    }
-    else if (justPressedState[1]){
-      this.text.justPressed.setText('bJustPressed("2")');
-    }
-    else if (justPressedState[2]){
-      this.text.justPressed.setText('bJustPressed("3")');
-    }
-    else if (justPressedState[3]){
-      this.text.justPressed.setText('bJustPressed("4")');
-    }
-    else if (justPressedState[4]){
-      this.text.justPressed.setText('bJustPressed("L")');
-    }
-    else if (justPressedState[5]){
-      this.text.justPressed.setText('bJustPressed("R")');
-    }
-    else if (justPressedState[6]){
-      this.text.justPressed.setText('bJustPressed("S")');
-    }
-    else
-      this.text.justPressed.setText('');
 
     // Check is Down
     if (isDownState[0]){

@@ -28,7 +28,7 @@ var screenResult = {
       this.judgeData = screenPlay.var.score.judgeData;
       this.lastCombo = screenPlay.var.combo.value;
       this.maxCombo = screenPlay.var.combo.max;
-      this.total = screenPlayInit.stagedata.total;
+      this.total = screenPlay.var.total;
       this.gradeRate = this.score / (this.total*10);
       this.isAllCombo = screenPlay.var.score.isAllCombo();
       this.isAllGreat = screenPlay.var.score.isAllGreat();
@@ -138,15 +138,20 @@ var screenResult = {
   preload: function(){
     this.uiPath = PATH.uiPath(PATH.uiName) + this.name + '/';
     game.load.image('background', this.uiPath+'background.png');
+    game.load.image('buttonLong', this.uiPath+'buttonLong.png');
   },
   create: function(){
     this.var.getResultData();
     this.img.background = game.add.sprite(0, 0, 'background');
+    this.img.button3 = game.add.button(190, 150, 'buttonLong',
+      this.button3touched, this);
 
     this.text.screenTitle = game.add.bitmapText(
       10, 11, 'font79', this.string.screenTitle(), 9);
     this.text.songTitle = game.add.bitmapText(
       20, 37, 'font57', this.var.songTitle, 7);
+    this.text.songPattern = game.add.bitmapText(
+      130, 37, 'font57', 'LV.'+this.var.songLevel+' '+this.var.songPattern, 7);
     this.text.total = game.add.bitmapText(
       20, 56, 'font57', this.string.total+
       SomeMath.pad0(this.var.total, 4, 0), 7);
@@ -186,6 +191,9 @@ var screenResult = {
     this.text.isAll = game.add.bitmapText(
       125, 104, 'font57', this.string.isAll(), 7);
 
+    this.text.retry = game.add.bitmapText(
+      237, 157, 'font57', this.string.retry, 7);
+
   },
   update: function(){
     if(this.var.isAllGreat) {
@@ -198,4 +206,11 @@ var screenResult = {
         SomeMath.pad0(this.var.totalScore, 8, 0));
     }
   },
+
+  button3touched: function(){
+    this.retry();
+  },
+  retry: function(){
+    this.state.start('screenPlayInit');
+  }
 };
