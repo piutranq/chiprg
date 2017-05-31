@@ -1,6 +1,8 @@
 var screenPlayInit = {
   skindata: "",
   stagedata: "",
+  loadimg: "",
+  loadTimer: new RGtimer(),
   preload: function(){
 
     // for only showcase build
@@ -10,6 +12,9 @@ var screenPlayInit = {
     */
 
     // Load Song Data
+    game.load.spritesheet(
+      'loadimg',
+      PATH.stagePath(PATH.stageName)+'loadimg.png', 320, 180);
     game.load.json(
       'stagedata',
       PATH.stagePath(PATH.stageName)+'stageData'+PATH.stageLevel+'.json');
@@ -20,12 +25,16 @@ var screenPlayInit = {
       PATH.skinPath(PATH.skinName)+'skindata.json');
   },
   create: function(){
+    this.loadTimer.start(120);
+    this.loadimg = game.add.sprite(0, 0, 'loadimg', PATH.stageLevel);
     this.skindata = game.cache.getJSON('skindata');
     this.stagedata = game.cache.getJSON('stagedata');
     C2TrackerControl.load(C2Trackers.bgmNonLoop, PATH.stagePath(PATH.stageName) + 'bgm.it');
   },
   update: function(){
-    this.state.start('screenPlay');
+    if(this.loadTimer.getMsec()>=2000) {
+      this.state.start('screenPlay');
+    }
   }
 
 };
