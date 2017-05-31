@@ -132,6 +132,10 @@ var screenResult = {
     selector2:"",
     rank:"",
     isAll:"",
+
+    button1: "",
+    button2: "",
+    button3: ""
   },
 
   title: "",
@@ -139,10 +143,18 @@ var screenResult = {
     this.uiPath = PATH.uiPath(PATH.uiName) + this.name + '/';
     game.load.image('background', this.uiPath+'background.png');
     game.load.image('buttonLong', this.uiPath+'buttonLong.png');
+    game.load.image('buttonShort', this.uiPath+'buttonShort.png');
   },
   create: function(){
     this.var.getResultData();
     this.img.background = game.add.sprite(0, 0, 'background');
+
+    this.img.button1 = game.add.button(190, 125, 'buttonShort',
+      this.button1touched, this);
+
+    this.img.button2 = game.add.button(253, 125, 'buttonShort',
+      this.button2touched, this);
+
     this.img.button3 = game.add.button(190, 150, 'buttonLong',
       this.button3touched, this);
 
@@ -191,8 +203,12 @@ var screenResult = {
     this.text.isAll = game.add.bitmapText(
       125, 104, 'font57', this.string.isAll(), 7);
 
+    this.text.retry = game.add.bitmapText(
+      210, 132, 'font57', this.string.retry, 7);
+    this.text.lobby = game.add.bitmapText(
+      272, 132, 'font57', this.string.lobby, 7);
     this.text.songSelect = game.add.bitmapText(
-      237, 157, 'font57', this.string.songSelect, 7);
+      215, 157, 'font57', this.string.songSelect, 7);
 
   },
   update: function(){
@@ -207,8 +223,17 @@ var screenResult = {
     }
   },
 
+  button1touched: function(){
+    this.retry();
+  },
+  button2touched: function(){
+    this.lobby();
+  },
   button3touched: function(){
     this.songSelect();
+  },
+  lobby: function() {
+    this.state.start('screenLobby');
   },
   songSelect: function() {
     this.state.start('screenFreePlayInit');
