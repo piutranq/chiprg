@@ -1,5 +1,25 @@
 var RGinput = {
   menu: {
+    padUP: "",
+    padDOWN: "",
+    padLEFT: "",
+    padRIGHT: "",
+    padCancel: "",
+    padOK: "",
+    padOption1: "",
+    padOption2: "",
+    padHelp: "",
+
+    keyUP: "",
+    keyDOWN: "",
+    keyLEFT: "",
+    keyRIGHT: "",
+    keyCancel: "",
+    keyOK: "",
+    keyOption1: "",
+    keyOption2: "",
+    keyHelp: "",
+
   },
   stage: {
     pad1: "",
