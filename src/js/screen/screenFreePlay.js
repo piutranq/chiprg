@@ -21,7 +21,10 @@ var screenFreePlay = {
     startbutton: "",
     songimg: ""
   },
-
+  flag: {
+    start: false,
+    OptionPanel: false,
+  },
   var: {
     selectedSongNum: 0,
     selectedSongName: "",
@@ -54,9 +57,8 @@ var screenFreePlay = {
     game.load.image('startbutton', this.uiPath+'start.png',110,23);
 
     for(var i=0; i<screenFreePlayInit.allPlaylist.max; i++){
-      game.load.spritesheet(screenFreePlayInit.allPlaylist.list[i].name, PATH.STAGE+'freeplaylist/'+screenFreePlayInit.allPlaylist.list[i].name+'.png', 100, 100);
+      game.load.spritesheet(screenFreePlayInit.allPlaylist.list[i].path, PATH.STAGE+'freeplaylist/'+screenFreePlayInit.allPlaylist.list[i].path+'.png', 100, 100);
     }
-
     // Load BGM
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
   },
@@ -73,7 +75,7 @@ var screenFreePlay = {
     this.img.background = game.add.sprite(0, 0, 'background');
     this.img.songselector= game.add.sprite(10, 90, 'songselector');
     this.img.patternselector = game.add.sprite(150, 135, 'patternselector');
-    this.img.songimg = game.add.sprite(150, 30, this.var.allPlaylist.list[0].name, 0);
+    this.img.songimg = game.add.sprite(150, 30, this.var.allPlaylist.list[0].path, 0);
 
     this.img.option = game.add.button(
       150, 170, 'option', this.optiontouched, this);
@@ -91,16 +93,20 @@ var screenFreePlay = {
         level: "",
         bpm: ""
       });
-      this.text.song[i].title = game.add.bitmapText(15, 37+i*20, 'font57', this.var.currentPlaylist.list[i].name, 7);
-      this.text.song[i].level = game.add.bitmapText(100, 31+i*20, 'font57', 'LV.' + this.var.currentPlaylist.list[i].level[this.var.selectedPattern], 7);
+      this.text.song[i].title = game.add.bitmapText(15, 31+i*20, 'font57', this.var.currentPlaylist.list[i].name, 7);
+      this.text.song[i].level = game.add.bitmapText(65, 41+i*20, 'font57', 'LV.' + this.var.currentPlaylist.list[i].level[this.var.selectedPattern]+' / ', 7);
       this.text.song[i].bpm = game.add.bitmapText(95, 41+i*20, 'font57', 'BPM ' + this.var.currentPlaylist.list[i].tempo, 7);
     }
 
     this.text.title = game.add.bitmapText(0, 0, 'font79', this.string.title, 9);
-
+    this.flag.start = false;
   },
 
   update: function(){
+    if(!this.flag.start){
+      this.selectionUpdate();
+      this.flag.start = true;
+    }
     if (game.input.keyboard.justPressed(Phaser.Keyboard.UP) ||
       game.input.gamepad.pad1.justPressed(Phaser.Gamepad.XBOX360_DPAD_UP)){
       this.moveSongSelector('up');
@@ -157,7 +163,7 @@ var screenFreePlay = {
         }
         break;
     }
-    this.patternSelectionUpdate();
+    this.selectionUpdate();
   },
 
   moveSongSelector: function(selection) {
@@ -180,7 +186,7 @@ var screenFreePlay = {
         break;
       default:
     }
-    this.songSelectionUpdate();
+    this.selectionUpdate();
   },
 
   setCurrentPlaylist: function(index) {
@@ -190,20 +196,14 @@ var screenFreePlay = {
       this.text.song[i].level.setText('LV.'+this.var.currentPlaylist.list[i].level[this.var.selectedPattern]);
       this.text.song[i].bpm.setText('BPM ' + this.var.currentPlaylist.list[i].tempo, 7);
     }
-    this.img.songimg.loadTexture(this.var.allPlaylist.list[this.var.selectedSongNum].name);
+    this.img.songimg.loadTexture(this.var.allPlaylist.list[this.var.selectedSongNum].path);
     this.img.songimg.frame=this.var.selectedPattern;
 
   },
-
-  patternSelectionUpdate: function() {
+  selectionUpdate: function(){
+    this.setCurrentPlaylist(this.var.selectedSongNum);
     this.img.patternselector.x = 150 + 35 * this.var.selectedPattern;
-    this.setCurrentPlaylist(this.var.selectedSongNum);
   },
-
-  songSelectionUpdate: function() {
-    this.setCurrentPlaylist(this.var.selectedSongNum);
-  },
-
   sortByTitle: function(){
   },
 

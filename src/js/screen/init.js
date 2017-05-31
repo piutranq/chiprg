@@ -12,10 +12,7 @@ var screenInit = {
     // Disable Anti-ailas when scale is zoomed
     Phaser.Canvas.setImageRenderingCrisp(game.canvas); // for Canvas renderer
     PIXI.scaleModes.DEFAULT = PIXI.scaleModes.NEAREST; // for webGL renderer
-    // Phaser.Canvas.setSmoothingEnabled(game.context, false); // Dosen't work. It may be legacy code.
-
-    // Load Plugins
-    game.load.script('protracker', 'js/lib/protracker.js');
+    // Phaser.Canvas.setSmoothingEnabled(game.context, false); // Dosen't work on Chrome.
 
     // Load Bitmap Font
     game.load.bitmapFont(

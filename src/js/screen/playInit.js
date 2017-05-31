@@ -4,8 +4,10 @@ var screenPlayInit = {
   preload: function(){
 
     // for only showcase build
+    /*
     PATH.stageName = '16cp2';
     PATH.stageLevel = '1';
+    */
 
     // Load Song Data
     game.load.json(

@@ -191,8 +191,8 @@ var screenResult = {
     this.text.isAll = game.add.bitmapText(
       125, 104, 'font57', this.string.isAll(), 7);
 
-    this.text.retry = game.add.bitmapText(
-      237, 157, 'font57', this.string.retry, 7);
+    this.text.songSelect = game.add.bitmapText(
+      237, 157, 'font57', this.string.songSelect, 7);
 
   },
   update: function(){
@@ -208,7 +208,10 @@ var screenResult = {
   },
 
   button3touched: function(){
-    this.retry();
+    this.songSelect();
+  },
+  songSelect: function() {
+    this.state.start('screenFreePlayInit');
   },
   retry: function(){
     this.state.start('screenPlayInit');
