@@ -185,8 +185,37 @@ var screenPlay = {
     },
 
     // Meter Gague
-    beatmeter: 0,
-    lifegague: 1000
+    beatMeter: 0,
+    lifeGague: {
+      value: 10000,
+      init: function() {
+        this.value = 10000;
+      },
+      add: function(judge){
+        switch(judge){
+          case 'perfect':
+            this.value += screenPlayInit.stagedata.judgeLife.perfect;
+          break;
+          case 'great':
+            this.value += screenPlayInit.stagedata.judgeLife.great;
+          break;
+          case 'good':
+            this.value += screenPlayInit.stagedata.judgeLife.good;
+          break;
+          case 'miss':
+            this.value += screenPlayInit.stagedata.judgeLife.miss;
+          break;
+          case 'bad':
+            this.value += screenPlayInit.stagedata.judgeLife.bad;
+          break;
+          case 'fail':
+            this.value += screenPlayInit.stagedata.judgeLife.fail;
+          break;
+        }
+        this.value = (this.value>0) ? this.value : 0;
+        this.value = (this.value<10000) ? this.value : 10000;
+      }
+    }
   },
 
   // ObjectList
@@ -303,13 +332,32 @@ var screenPlay = {
       screenPlayInit.skindata.size.effectTrigger.x,
       screenPlayInit.skindata.size.effectTrigger.y);
 
+    game.load.spritesheet(
+      'lifeGague', PATH.skinPath('default')+ 'lifeGague.png',
+      screenPlayInit.skindata.size.lifeGague.x,
+      screenPlayInit.skindata.size.lifeGague.y);
+    game.load.spritesheet(
+      'lifeGagueBlack', PATH.skinPath('default')+ 'lifeGagueBlack.png',
+      screenPlayInit.skindata.size.lifeGague.x,
+      screenPlayInit.skindata.size.lifeGague.y);
+
+    game.load.spritesheet(
+      'beatMeter', PATH.skinPath('default')+ 'beatMeter.png',
+      screenPlayInit.skindata.size.beatMeter.x,
+      screenPlayInit.skindata.size.beatMeter.y);
+    game.load.spritesheet(
+      'beatMeterBlack', PATH.skinPath('default')+ 'beatMeterBlack.png',
+      screenPlayInit.skindata.size.beatMeter.x,
+      screenPlayInit.skindata.size.beatMeter.y);
+
+
     // Load BGM
     C2TrackerControl.load(C2Trackers.bgmNonLoop, PATH.stagePath(PATH.stageName) + 'bgm.xm');
 
   },
   create: function(){
-    // Add touch area
 
+    // Add touch area
     this.area.button1 = screenPlayInit.skindata.button1.area;
     this.area.button2 = screenPlayInit.skindata.button2.area;
     this.area.button3 = screenPlayInit.skindata.button3.area;
@@ -407,10 +455,29 @@ var screenPlay = {
       'buttonS',
       screenPlayInit.skindata.buttonS.sprite.default);
 
+    this.img.lifeGague = game.add.sprite(
+      screenPlayInit.skindata.lifeGague.pos.x,
+      screenPlayInit.skindata.lifeGague.pos.y,
+      'lifeGague', 0);
+    this.img.lifeGagueBlack = game.add.sprite(
+      screenPlayInit.skindata.lifeGague.pos.x,
+      screenPlayInit.skindata.lifeGague.pos.y,
+      'lifeGagueBlack');
+
+    this.img.beatMeter = game.add.sprite(
+      screenPlayInit.skindata.beatMeter.pos.x,
+      screenPlayInit.skindata.beatMeter.pos.y,
+      'beatMeter', 0);
+    this.img.beatMeterBlack = game.add.sprite(
+      screenPlayInit.skindata.beatMeter.pos.x,
+      screenPlayInit.skindata.beatMeter.pos.y,
+      'beatMeterBlack');
+
 
 
     // Init vars
     this.var.score.init();
+    this.var.lifeGague.init();
     this.var.combo.init();
 
 
@@ -717,8 +784,18 @@ var screenPlay = {
     this.var.elapsed_beat = this.songTimer.getMbeat();
     // this.text.beatstamp.setText(this.var.elapsed_beat);
 
+    // Update lifeGague & beatMeter Frame
+    this.img.lifeGague.frame = parseInt(this.var.beatFrame()/250);
+    this.img.beatMeter.frame = parseInt(this.var.beatFrame()/250);
+
+    // Update lifeGague Length
+    this.img.lifeGagueBlack.height =
+      (10000-this.var.lifeGague.value)/(10000/this.img.lifeGague.height);
+
     // song is end?
-    if(this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) {
+    if((this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) ||
+      (this.var.lifeGague.value <= 0)) {
+      C2Trackers.bgmNonLoop.tk.stop();
       this.goToResult();
     }
 
@@ -783,7 +860,8 @@ var screenPlay = {
       }
       if(ret=='fail'){
         screenPlay.var.combo.reset();
-        screenPlay.var.score.add('fail');
+        screenPlay.var.score.add(ret);
+        screenPlay.var.lifeGague.add(ret);
         //console.log('time:' +time+'/ object['+line+']['+i+'] fail');
       }
       return ret;
@@ -832,7 +910,6 @@ var screenPlay = {
       switch(ret){
       case 'perfect':
         screenPlay.var.combo.add();
-        screenPlay.var.score.add('perfect');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
@@ -840,7 +917,6 @@ var screenPlay = {
         break;
       case 'great':
         screenPlay.var.combo.add();
-        screenPlay.var.score.add('great');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGreat');
         else
@@ -848,7 +924,6 @@ var screenPlay = {
         break;
       case 'good':
         screenPlay.var.combo.add();
-        screenPlay.var.score.add('good');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
@@ -856,10 +931,11 @@ var screenPlay = {
         break;
       case 'bad':
         screenPlay.var.combo.reset();
-        screenPlay.var.score.add('bad');
         break;
       }
       if(ret!==false){
+        screenPlay.var.score.add(ret);
+        screenPlay.var.lifeGague.add(ret);
         screenPlay.img.effect[line].animations.play('effect', 120, false);
         //console.log('time:' +time+' / object['+line+']['+i+']: '+objline[i].start+' / '+ret);
       }
@@ -900,7 +976,6 @@ var screenPlay = {
       switch(ret){
       case 'perfect':
         screenPlay.var.combo.add();
-        screenPlay.var.score.add('perfect');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerPerfect');
         else
@@ -908,7 +983,6 @@ var screenPlay = {
         break;
       case 'good':
         screenPlay.var.combo.add();
-        screenPlay.var.score.add('good');
         if(line>=4)
           screenPlay.img.effect[line].loadTexture('effectTriggerGood');
         else
@@ -916,10 +990,11 @@ var screenPlay = {
         break;
       case 'fail':
         screenPlay.var.combo.reset();
-        screenPlay.var.score.add('fail');
         break;
       }
       if(ret!==false){
+        screenPlay.var.score.add(ret);
+        screenPlay.var.lifeGague.add(ret);
         screenPlay.img.effect[line].animations.play('effect', 120, false);
         //console.log('time:' +time+'/ object['+line+']['+i+'] '+ret);
       }

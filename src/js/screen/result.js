@@ -37,18 +37,17 @@ var screenResult = {
                         screenPlay.var.score.advanced;
     },
     isCleared: function(){
-      return 0;
+      if(screenPlay.var.lifeGague.value > 0) return true;
+      else return false;
     },
   },
   string: {
     screenTitle: function(){
       switch(screenResult.var.isCleared()){
-      case 0:
+      case true:
         return "STAGE CLEAR";
-      case 1:
+      case false:
         return "STAGE FAILED";
-      case 2:
-        return "STAGE SAVED";
       }
     },
     bestRecord:[

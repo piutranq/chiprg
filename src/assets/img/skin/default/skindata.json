@@ -11,7 +11,15 @@
     "noteTrigger"   : { "x":  60, "y":   6 },
     "effectCircle"  : { "x":  60, "y":  60 },
     "effectTrigger" : { "x": 120, "y":  60 },
-    "judgeFont"     : { "x":  80, "y":  15 }
+    "judgeFont"     : { "x":  80, "y":  15 },
+    "lifeGague"     : { "x":  10, "y": 100 },
+    "beatMeter"     : { "x":  10, "y": 100 }
+  },
+  "lifeGague" : {
+    "pos"  : { "x": 220, "y":  20}
+  },
+  "beatMeter" : {
+    "pos"  : { "x":  90, "y":  20}
   },
   "gear"   : {
     "pos"  : { "x":   0, "y": -30}
