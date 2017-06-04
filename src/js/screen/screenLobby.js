@@ -221,11 +221,11 @@ var screenLobby = {
         break;
       case 1:
         console.log('go course play');
-        this.state.start('screenInputCheck');
+        this.state.start('screenCoursePlayInit');
         break;
       case 2:
         console.log('player info');
-        this.state.start('');
+        this.state.start('screenInputCheck');
         break;
       case 3:
         console.log('ranking info');

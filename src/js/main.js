@@ -9,6 +9,8 @@ game.state.add('screenConfig', screenConfig);
 game.state.add('screenRanking', screenRanking);
 game.state.add('screenFreePlayInit', screenFreePlayInit);
 game.state.add('screenFreePlay', screenFreePlay);
+game.state.add('screenCoursePlayInit', screenCoursePlayInit);
+game.state.add('screenCoursePlay', screenCoursePlay);
 game.state.add('screenPlayInit', screenPlayInit);
 game.state.add('screenPlay', screenPlay);
 game.state.add('screenResult', screenResult);
