@@ -157,15 +157,15 @@ var screenSelectAccount = {
     switch(this.var.selectType){
       case 0:
         console.log('go online account');
-        this.state.start('screenLobby');
+        game.state.start('screenLobby');
         break;
       case 1:
         console.log('go local account');
-        this.state.start('screenLobby');
+        game.state.start('screenLobby');
         break;
       case 2:
         console.log('go guest account');
-        this.state.start('screenLobby');
+        game.state.start('screenLobby');
         break;
       default:
     }

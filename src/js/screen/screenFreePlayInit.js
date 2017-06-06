@@ -2,7 +2,7 @@ var screenFreePlayInit = {
   allPlaylist: "",
   preload: function(){
     // Load Playlist
-    game.load.json('allPlaylist', PATH.STAGE+'freeplaylist/list.json');
+    game.load.json('allPlaylist', PATH.STAGE.FREE+'list.json');
   },
   create: function(){
     this.allPlaylist = game.cache.getJSON('allPlaylist');

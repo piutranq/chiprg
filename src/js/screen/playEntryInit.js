@@ -1,4 +1,4 @@
-var screenPlayInit = {
+var screenPlayEntryInit = {
   skindata: "",
   stagedata: "",
   loadimg: "",
@@ -14,10 +14,10 @@ var screenPlayInit = {
     // Load Song Data
     game.load.spritesheet(
       'loadimg',
-      PATH.stagePath(PATH.stageName)+'loadimg.png', 320, 180);
+      PATH.coursePath(PATH.courseName)+'loadimg.png', 320, 180);
     game.load.json(
       'stagedata',
-      PATH.stagePath(PATH.stageName)+'stageData'+PATH.stageLevel+'.json');
+      PATH.entryPath(PATH.courseName, screenCourseInit.var.currentEntry)+'entryData.json');
 
     // Load Skin
     game.load.json(
@@ -26,10 +26,11 @@ var screenPlayInit = {
   },
   create: function(){
     this.loadTimer.start(120);
-    this.loadimg = game.add.sprite(0, 0, 'loadimg', PATH.stageLevel);
+    this.loadimg = game.add.sprite(0, 0, 'loadimg', screenCourseInit.var.currentEntry);
     Skindata = game.cache.getJSON('skindata');
     Stagedata = game.cache.getJSON('stagedata');
-    C2TrackerControl.load(C2Trackers.bgmNonLoop, PATH.stagePath(PATH.stageName) + 'bgm.xm');
+    C2TrackerControl.load(C2Trackers.bgmNonLoop, 
+      PATH.entryPath(PATH.courseName, screenCourseInit.var.currentEntry) + 'bgm.xm');
   },
   update: function(){
     if(this.loadTimer.getMsec()>=2000) {

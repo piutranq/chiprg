@@ -85,7 +85,7 @@ var screenInit = {
 
   update: function(){
     if(this.loadTimer.getMsec()>=2000) {
-      this.state.start('screenStart');
+      game.state.start('screenStart');
     }
   }
 };

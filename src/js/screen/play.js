@@ -194,22 +194,22 @@ var screenPlay = {
       add: function(judge){
         switch(judge){
           case 'perfect':
-            this.value += screenPlayInit.stagedata.judgeLife.perfect;
+            this.value += Stagedata.judgeLife.perfect;
           break;
           case 'great':
-            this.value += screenPlayInit.stagedata.judgeLife.great;
+            this.value += Stagedata.judgeLife.great;
           break;
           case 'good':
-            this.value += screenPlayInit.stagedata.judgeLife.good;
+            this.value += Stagedata.judgeLife.good;
           break;
           case 'miss':
-            this.value += screenPlayInit.stagedata.judgeLife.miss;
+            this.value += Stagedata.judgeLife.miss;
           break;
           case 'bad':
-            this.value += screenPlayInit.stagedata.judgeLife.bad;
+            this.value += Stagedata.judgeLife.bad;
           break;
           case 'fail':
-            this.value += screenPlayInit.stagedata.judgeLife.fail;
+            this.value += Stagedata.judgeLife.fail;
           break;
         }
         this.value = (this.value>0) ? this.value : 0;
@@ -234,243 +234,240 @@ var screenPlay = {
     game.load.spritesheet(
       'buttonTrigger',
       PATH.skinPath('default') + 'buttonTrigger.png',
-      screenPlayInit.skindata.size.buttonTrigger.x,
-      screenPlayInit.skindata.size.buttonTrigger.y);
+      Skindata.size.buttonTrigger.x,
+      Skindata.size.buttonTrigger.y);
 
     game.load.spritesheet(
       'buttonCircle',
       PATH.skinPath('default') + 'buttonCircle.png',
-      screenPlayInit.skindata.size.buttonCircle.x,
-      screenPlayInit.skindata.size.buttonCircle.y);
+      Skindata.size.buttonCircle.x,
+      Skindata.size.buttonCircle.y);
 
     game.load.spritesheet(
       'buttonS',
       PATH.skinPath('default') + 'buttonS.png',
-      screenPlayInit.skindata.size.buttonS.x,
-      screenPlayInit.skindata.size.buttonS.y);
+      Skindata.size.buttonS.x,
+      Skindata.size.buttonS.y);
 
     game.load.spritesheet(
       'lineCircle',
       PATH.skinPath('default') + 'lineCircle.png',
-      screenPlayInit.skindata.size.lineCircle.x,
-      screenPlayInit.skindata.size.lineCircle.y);
+      Skindata.size.lineCircle.x,
+      Skindata.size.lineCircle.y);
 
     game.load.spritesheet(
       'lineTrigger',
       PATH.skinPath('default') + 'lineTrigger.png',
-      screenPlayInit.skindata.size.lineTrigger.x,
-      screenPlayInit.skindata.size.lineTrigger.y);
+      Skindata.size.lineTrigger.x,
+      Skindata.size.lineTrigger.y);
 
     game.load.spritesheet(
       'judgeLine', PATH.skinPath('default') + 'judgeLine.png',
-      screenPlayInit.skindata.size.judgeLine.x,
-      screenPlayInit.skindata.size.judgeLine.y);
+      Skindata.size.judgeLine.x,
+      Skindata.size.judgeLine.y);
 
     game.load.spritesheet(
       'noteCircle', PATH.skinPath('default') + 'noteCircle.png',
-      screenPlayInit.skindata.size.noteCircle.x,
-      screenPlayInit.skindata.size.noteCircle.y);
+      Skindata.size.noteCircle.x,
+      Skindata.size.noteCircle.y);
 
     game.load.spritesheet(
       'noteTrigger', PATH.skinPath('default') + 'noteTrigger.png',
-      screenPlayInit.skindata.size.noteTrigger.x,
-      screenPlayInit.skindata.size.noteTrigger.y);
+      Skindata.size.noteTrigger.x,
+      Skindata.size.noteTrigger.y);
 
     game.load.spritesheet(
       'judgePerfect', PATH.skinPath('default') + 'judgePerfect.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'judgeGreat', PATH.skinPath('default') + 'judgeGreat.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'judgeGood', PATH.skinPath('default') + 'judgeGood.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'judgeBad', PATH.skinPath('default') + 'judgeBad.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'judgeMiss', PATH.skinPath('default') + 'judgeMiss.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'judgeFail', PATH.skinPath('default') + 'judgeFail.png',
-      screenPlayInit.skindata.size.judgeFont.x,
-      screenPlayInit.skindata.size.judgeFont.y);
+      Skindata.size.judgeFont.x,
+      Skindata.size.judgeFont.y);
 
     game.load.spritesheet(
       'effectCirclePerfect', PATH.skinPath('default')+ 'effectCirclePerfect.png',
-      screenPlayInit.skindata.size.effectCircle.x,
-      screenPlayInit.skindata.size.effectCircle.y);
+      Skindata.size.effectCircle.x,
+      Skindata.size.effectCircle.y);
     game.load.spritesheet(
       'effectCircleGreat', PATH.skinPath('default')+ 'effectCircleGreat.png',
-      screenPlayInit.skindata.size.effectCircle.x,
-      screenPlayInit.skindata.size.effectCircle.y);
+      Skindata.size.effectCircle.x,
+      Skindata.size.effectCircle.y);
     game.load.spritesheet(
       'effectCircleGood', PATH.skinPath('default')+ 'effectCircleGood.png',
-      screenPlayInit.skindata.size.effectCircle.x,
-      screenPlayInit.skindata.size.effectCircle.y);
+      Skindata.size.effectCircle.x,
+      Skindata.size.effectCircle.y);
 
     game.load.spritesheet(
       'effectTriggerPerfect', PATH.skinPath('default')+ 'effectTriggerPerfect.png',
-      screenPlayInit.skindata.size.effectTrigger.x,
-      screenPlayInit.skindata.size.effectTrigger.y);
+      Skindata.size.effectTrigger.x,
+      Skindata.size.effectTrigger.y);
     game.load.spritesheet(
       'effectTriggerGreat', PATH.skinPath('default')+ 'effectTriggerGreat.png',
-      screenPlayInit.skindata.size.effectTrigger.x,
-      screenPlayInit.skindata.size.effectTrigger.y);
+      Skindata.size.effectTrigger.x,
+      Skindata.size.effectTrigger.y);
     game.load.spritesheet(
       'effectTriggerGood', PATH.skinPath('default')+ 'effectTriggerGood.png',
-      screenPlayInit.skindata.size.effectTrigger.x,
-      screenPlayInit.skindata.size.effectTrigger.y);
+      Skindata.size.effectTrigger.x,
+      Skindata.size.effectTrigger.y);
 
     game.load.spritesheet(
       'lifeGague', PATH.skinPath('default')+ 'lifeGague.png',
-      screenPlayInit.skindata.size.lifeGague.x,
-      screenPlayInit.skindata.size.lifeGague.y);
+      Skindata.size.lifeGague.x,
+      Skindata.size.lifeGague.y);
     game.load.spritesheet(
       'lifeGagueBlack', PATH.skinPath('default')+ 'lifeGagueBlack.png',
-      screenPlayInit.skindata.size.lifeGague.x,
-      screenPlayInit.skindata.size.lifeGague.y);
+      Skindata.size.lifeGague.x,
+      Skindata.size.lifeGague.y);
 
     game.load.spritesheet(
       'beatMeter', PATH.skinPath('default')+ 'beatMeter.png',
-      screenPlayInit.skindata.size.beatMeter.x,
-      screenPlayInit.skindata.size.beatMeter.y);
+      Skindata.size.beatMeter.x,
+      Skindata.size.beatMeter.y);
     game.load.spritesheet(
       'beatMeterBlack', PATH.skinPath('default')+ 'beatMeterBlack.png',
-      screenPlayInit.skindata.size.beatMeter.x,
-      screenPlayInit.skindata.size.beatMeter.y);
+      Skindata.size.beatMeter.x,
+      Skindata.size.beatMeter.y);
 
-
-    // Load BGM
-    C2TrackerControl.load(C2Trackers.bgmNonLoop, PATH.stagePath(PATH.stageName) + 'bgm.xm');
 
   },
   create: function(){
 
     // Add touch area
-    this.area.button1 = screenPlayInit.skindata.button1.area;
-    this.area.button2 = screenPlayInit.skindata.button2.area;
-    this.area.button3 = screenPlayInit.skindata.button3.area;
-    this.area.button4 = screenPlayInit.skindata.button4.area;
-    this.area.buttonL = screenPlayInit.skindata.buttonL.area;
-    this.area.buttonR = screenPlayInit.skindata.buttonR.area;
-    this.area.buttonS = screenPlayInit.skindata.buttonS.area;
+    this.area.button1 = Skindata.button1.area;
+    this.area.button2 = Skindata.button2.area;
+    this.area.button3 = Skindata.button3.area;
+    this.area.button4 = Skindata.button4.area;
+    this.area.buttonL = Skindata.buttonL.area;
+    this.area.buttonR = Skindata.buttonR.area;
+    this.area.buttonS = Skindata.buttonS.area;
 
     // Add image, text on screen
     this.img.lineL   = game.add.sprite(
-      screenPlayInit.skindata.lineL.pos.x,
-      screenPlayInit.skindata.lineL.pos.y,
+      Skindata.lineL.pos.x,
+      Skindata.lineL.pos.y,
       'lineTrigger',
-      screenPlayInit.skindata.lineL.sprite.default);
+      Skindata.lineL.sprite.default);
 
     this.img.lineR   = game.add.sprite(
-      screenPlayInit.skindata.lineR.pos.x,
-      screenPlayInit.skindata.lineR.pos.y,
+      Skindata.lineR.pos.x,
+      Skindata.lineR.pos.y,
       'lineTrigger',
-      screenPlayInit.skindata.lineR.sprite.default);
+      Skindata.lineR.sprite.default);
 
     this.img.line1   = game.add.sprite(
-      screenPlayInit.skindata.line1.pos.x,
-      screenPlayInit.skindata.line1.pos.y,
+      Skindata.line1.pos.x,
+      Skindata.line1.pos.y,
       'lineCircle',
-      screenPlayInit.skindata.line1.sprite.default);
+      Skindata.line1.sprite.default);
 
     this.img.line2   = game.add.sprite(
-      screenPlayInit.skindata.line2.pos.x,
-      screenPlayInit.skindata.line2.pos.y,
+      Skindata.line2.pos.x,
+      Skindata.line2.pos.y,
       'lineCircle',
-      screenPlayInit.skindata.line2.sprite.default);
+      Skindata.line2.sprite.default);
 
     this.img.line3   = game.add.sprite(
-      screenPlayInit.skindata.line3.pos.x,
-      screenPlayInit.skindata.line3.pos.y,
+      Skindata.line3.pos.x,
+      Skindata.line3.pos.y,
       'lineCircle',
-      screenPlayInit.skindata.line3.sprite.default);
+      Skindata.line3.sprite.default);
 
     this.img.line4   = game.add.sprite(
-      screenPlayInit.skindata.line4.pos.x,
-      screenPlayInit.skindata.line4.pos.y,
+      Skindata.line4.pos.x,
+      Skindata.line4.pos.y,
       'lineCircle',
-      screenPlayInit.skindata.line4.sprite.default);
+      Skindata.line4.sprite.default);
 
     this.img.judgeline  = game.add.sprite(
-      screenPlayInit.skindata.judgeLine.pos.x,
-      screenPlayInit.skindata.judgeLine.pos.y,
+      Skindata.judgeLine.pos.x,
+      Skindata.judgeLine.pos.y,
       'judgeLine', 0);
 
     this.img.gear    = game.add.sprite(
-      screenPlayInit.skindata.gear.pos.x,
-      screenPlayInit.skindata.gear.pos.y,
+      Skindata.gear.pos.x,
+      Skindata.gear.pos.y,
       'gear');
 
     this.img.button1 = game.add.sprite(
-      screenPlayInit.skindata.button1.pos.x,
-      screenPlayInit.skindata.button1.pos.y,
+      Skindata.button1.pos.x,
+      Skindata.button1.pos.y,
       'buttonCircle',
-      screenPlayInit.skindata.button1.sprite.default);
+      Skindata.button1.sprite.default);
 
     this.img.button2 = game.add.sprite(
-      screenPlayInit.skindata.button2.pos.x,
-      screenPlayInit.skindata.button2.pos.y,
+      Skindata.button2.pos.x,
+      Skindata.button2.pos.y,
       'buttonCircle',
-      screenPlayInit.skindata.button2.sprite.default);
+      Skindata.button2.sprite.default);
 
     this.img.button3 = game.add.sprite(
-      screenPlayInit.skindata.button3.pos.x,
-      screenPlayInit.skindata.button3.pos.y,
+      Skindata.button3.pos.x,
+      Skindata.button3.pos.y,
       'buttonCircle',
-      screenPlayInit.skindata.button3.sprite.default);
+      Skindata.button3.sprite.default);
 
     this.img.button4 = game.add.sprite(
-      screenPlayInit.skindata.button4.pos.x,
-      screenPlayInit.skindata.button4.pos.y,
+      Skindata.button4.pos.x,
+      Skindata.button4.pos.y,
       'buttonCircle',
-      screenPlayInit.skindata.button4.sprite.default);
+      Skindata.button4.sprite.default);
 
     this.img.buttonL = game.add.sprite(
-      screenPlayInit.skindata.buttonL.pos.x,
-      screenPlayInit.skindata.buttonL.pos.y,
+      Skindata.buttonL.pos.x,
+      Skindata.buttonL.pos.y,
       'buttonTrigger',
-      screenPlayInit.skindata.buttonL.sprite.default);
+      Skindata.buttonL.sprite.default);
 
     this.img.buttonR = game.add.sprite(
-      screenPlayInit.skindata.buttonR.pos.x,
-      screenPlayInit.skindata.buttonR.pos.y,
+      Skindata.buttonR.pos.x,
+      Skindata.buttonR.pos.y,
       'buttonTrigger',
-      screenPlayInit.skindata.buttonR.sprite.default);
+      Skindata.buttonR.sprite.default);
 
     this.img.buttonS = game.add.sprite(
-      screenPlayInit.skindata.buttonS.pos.x,
-      screenPlayInit.skindata.buttonS.pos.y,
+      Skindata.buttonS.pos.x,
+      Skindata.buttonS.pos.y,
       'buttonS',
-      screenPlayInit.skindata.buttonS.sprite.default);
+      Skindata.buttonS.sprite.default);
 
     this.img.lifeGague = game.add.sprite(
-      screenPlayInit.skindata.lifeGague.pos.x,
-      screenPlayInit.skindata.lifeGague.pos.y,
+      Skindata.lifeGague.pos.x,
+      Skindata.lifeGague.pos.y,
       'lifeGague', 0);
     this.img.lifeGagueBlack = game.add.sprite(
-      screenPlayInit.skindata.lifeGague.pos.x,
-      screenPlayInit.skindata.lifeGague.pos.y,
+      Skindata.lifeGague.pos.x,
+      Skindata.lifeGague.pos.y,
       'lifeGagueBlack');
 
     this.img.beatMeter = game.add.sprite(
-      screenPlayInit.skindata.beatMeter.pos.x,
-      screenPlayInit.skindata.beatMeter.pos.y,
+      Skindata.beatMeter.pos.x,
+      Skindata.beatMeter.pos.y,
       'beatMeter', 0);
     this.img.beatMeterBlack = game.add.sprite(
-      screenPlayInit.skindata.beatMeter.pos.x,
-      screenPlayInit.skindata.beatMeter.pos.y,
+      Skindata.beatMeter.pos.x,
+      Skindata.beatMeter.pos.y,
       'beatMeterBlack');
 
 
@@ -482,12 +479,12 @@ var screenPlay = {
 
 
     // Create ObjectImage
-    this.object = screenPlayInit.stagedata.object;
+    this.object = Stagedata.object;
     var createObjImg = function(line){
-      var initY = -screenPlayInit.skindata.size.judgeLine;
+      var initY = -Skindata.size.judgeLine;
       var Type = RGobjectType;
       var objline = screenPlay.object[line];
-      var linePos = screenPlayInit.skindata.linePos[line];
+      var linePos = Skindata.linePos[line];
       var note;
       switch(line){
       case 0:
@@ -546,41 +543,41 @@ var screenPlay = {
 
     // Set Text & Effect
     this.img.judgeFont = game.add.sprite(
-      screenPlayInit.skindata.judgeFont.pos.x,
-      screenPlayInit.skindata.judgeFont.pos.y,
+      Skindata.judgeFont.pos.x,
+      Skindata.judgeFont.pos.y,
       'judgeFail',
       0);
 
     this.img.judgeFont.animations.add('judgeEffect');
 
     this.img.screen = game.add.sprite(
-      screenPlayInit.skindata.screen.pos.x,
-      screenPlayInit.skindata.screen.pos.y,
+      Skindata.screen.pos.x,
+      Skindata.screen.pos.y,
       'screen');
 
     this.img.effect[0] = game.add.sprite(
-      screenPlayInit.skindata.effect1.pos.x,
-      screenPlayInit.skindata.effect1.pos.y,
+      Skindata.effect1.pos.x,
+      Skindata.effect1.pos.y,
       'effectCirclePerfect');
     this.img.effect[1] = game.add.sprite(
-      screenPlayInit.skindata.effect2.pos.x,
-      screenPlayInit.skindata.effect2.pos.y,
+      Skindata.effect2.pos.x,
+      Skindata.effect2.pos.y,
       'effectCirclePerfect');
     this.img.effect[2] = game.add.sprite(
-      screenPlayInit.skindata.effect3.pos.x,
-      screenPlayInit.skindata.effect3.pos.y,
+      Skindata.effect3.pos.x,
+      Skindata.effect3.pos.y,
       'effectCirclePerfect');
     this.img.effect[3] = game.add.sprite(
-      screenPlayInit.skindata.effect4.pos.x,
-      screenPlayInit.skindata.effect4.pos.y,
+      Skindata.effect4.pos.x,
+      Skindata.effect4.pos.y,
       'effectCirclePerfect');
     this.img.effect[4] = game.add.sprite(
-      screenPlayInit.skindata.effectL.pos.x,
-      screenPlayInit.skindata.effectL.pos.y,
+      Skindata.effectL.pos.x,
+      Skindata.effectL.pos.y,
       'effectTriggerPerfect');
     this.img.effect[5] = game.add.sprite(
-      screenPlayInit.skindata.effectR.pos.x,
-      screenPlayInit.skindata.effectR.pos.y,
+      Skindata.effectR.pos.x,
+      Skindata.effectR.pos.y,
       'effectTriggerPerfect');
 
     this.img.effect[0].animations.add('effect');
@@ -592,12 +589,12 @@ var screenPlay = {
 
 
     this.text.genre = game.add.bitmapText(
-      110, 52, 'font57', screenPlayInit.stagedata.genre, 7);
+      110, 52, 'font57', Stagedata.genre, 7);
     this.text.title = game.add.bitmapText(
-      110, 60, 'font57', screenPlayInit.stagedata.title, 7);
+      110, 60, 'font57', Stagedata.title, 7);
     this.text.pattern_and_level = game.add.bitmapText(
       110, 68, 'font57',
-      'LV.'+screenPlayInit.stagedata.songLevel+' '+screenPlayInit.stagedata.pattern, 7);
+      'LV.'+Stagedata.songLevel+' '+Stagedata.pattern, 7);
 
     this.text.combo = game.add.bitmapText(
       148, 33, 'font57', '', 7);
@@ -776,7 +773,7 @@ var screenPlay = {
         this.waitTimer.init();
         C2TrackerControl.songStart(C2Trackers.bgmNonLoop);
         this.flag.songStarted++;
-        this.songTimer.start(screenPlayInit.stagedata.tempo);
+        this.songTimer.start(Stagedata.tempo);
       }
     }
     // Update Timer
@@ -793,7 +790,7 @@ var screenPlay = {
       (10000-this.var.lifeGague.value)/(10000/this.img.lifeGague.height);
 
     // song is end?
-    if((this.var.elapsed_time > screenPlayInit.stagedata.songLength*1000) ||
+    if((this.var.elapsed_time > Stagedata.songLength*1000) ||
       (this.var.lifeGague.value <= 0)) {
       C2Trackers.bgmNonLoop.tk.stop();
       this.goToResult();
@@ -807,8 +804,8 @@ var screenPlay = {
       var time = screenPlay.var.elapsed_beat;
 
       var getPos = screenPlay.getObjectImgPos;
-      var lineHeight = screenPlayInit.skindata.judgeLine.pos.y;
-      var noteHeight = screenPlayInit.skindata.size.noteCircle.y;
+      var lineHeight = Skindata.judgeLine.pos.y;
+      var noteHeight = Skindata.size.noteCircle.y;
       var speed = screenPlay.var.speed;
       for(var i=0; objline[i].type!=Type.endofline; i++){
       if(objline[i].type!==Type.longMid){
@@ -842,7 +839,7 @@ var screenPlay = {
 
     // Check Object Fail
     var checkSingleFail = function(line){
-      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var judgeTime = Stagedata.judgeTime;
       var Type = RGobjectType;
       var State = RGobjectState;
       var Judge = RGobjectJudge;
@@ -869,7 +866,7 @@ var screenPlay = {
 
     // Check Single Object Hit
     var checkSingleHit = function(line){
-      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var judgeTime = Stagedata.judgeTime;
       var Type = RGobjectType;
       var State = RGobjectState;
       var Judge = RGobjectJudge;
@@ -944,7 +941,7 @@ var screenPlay = {
 
     // Check Long Object
     var checkLongHit = function(line){
-      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var judgeTime = Stagedata.judgeTime;
       var Type = RGobjectType;
       var State = RGobjectState;
       var Judge = RGobjectJudge;
@@ -1003,7 +1000,7 @@ var screenPlay = {
 
     // Check Miss
     var checkMiss = function(line) {
-      var judgeTime = screenPlayInit.stagedata.judgeTime;
+      var judgeTime = Stagedata.judgeTime;
       var Type = RGobjectType;
       var State = RGobjectState;
       var Judge = RGobjectJudge;
@@ -1125,64 +1122,64 @@ var screenPlay = {
 
     // Check is Down
     if (isDownState[0]){
-      this.img.button1.frame=screenPlayInit.skindata.button1.sprite.pressed;
-      this.img.line1.frame=screenPlayInit.skindata.line1.sprite.pressed;
+      this.img.button1.frame=Skindata.button1.sprite.pressed;
+      this.img.line1.frame=Skindata.line1.sprite.pressed;
     }
     else{
-      this.img.button1.frame=screenPlayInit.skindata.button1.sprite.default;
-      this.img.line1.frame=screenPlayInit.skindata.line1.sprite.default;
+      this.img.button1.frame=Skindata.button1.sprite.default;
+      this.img.line1.frame=Skindata.line1.sprite.default;
     }
 
     if (isDownState[1]){
-      this.img.button2.frame=screenPlayInit.skindata.button2.sprite.pressed;
-      this.img.line2.frame=screenPlayInit.skindata.line2.sprite.pressed;
+      this.img.button2.frame=Skindata.button2.sprite.pressed;
+      this.img.line2.frame=Skindata.line2.sprite.pressed;
     }
     else{
-      this.img.button2.frame=screenPlayInit.skindata.button2.sprite.default;
-      this.img.line2.frame=screenPlayInit.skindata.line2.sprite.default;
+      this.img.button2.frame=Skindata.button2.sprite.default;
+      this.img.line2.frame=Skindata.line2.sprite.default;
     }
 
     if (isDownState[2]){
-      this.img.button3.frame=screenPlayInit.skindata.button3.sprite.pressed;
-      this.img.line3.frame=screenPlayInit.skindata.line3.sprite.pressed;
+      this.img.button3.frame=Skindata.button3.sprite.pressed;
+      this.img.line3.frame=Skindata.line3.sprite.pressed;
     }
     else{
-      this.img.button3.frame=screenPlayInit.skindata.button3.sprite.default;
-      this.img.line3.frame=screenPlayInit.skindata.line3.sprite.default;
+      this.img.button3.frame=Skindata.button3.sprite.default;
+      this.img.line3.frame=Skindata.line3.sprite.default;
     }
 
     if (isDownState[3]){
-      this.img.button4.frame=screenPlayInit.skindata.button4.sprite.pressed;
-      this.img.line4.frame=screenPlayInit.skindata.line4.sprite.pressed;
+      this.img.button4.frame=Skindata.button4.sprite.pressed;
+      this.img.line4.frame=Skindata.line4.sprite.pressed;
     }
     else{
-      this.img.button4.frame=screenPlayInit.skindata.button4.sprite.default;
-      this.img.line4.frame=screenPlayInit.skindata.line4.sprite.default;
+      this.img.button4.frame=Skindata.button4.sprite.default;
+      this.img.line4.frame=Skindata.line4.sprite.default;
     }
 
     if (isDownState[4]){
-      this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.pressed;
-      this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.pressed;
+      this.img.buttonL.frame=Skindata.buttonL.sprite.pressed;
+      this.img.lineL.frame=Skindata.lineL.sprite.pressed;
     }
     else{
-      this.img.buttonL.frame=screenPlayInit.skindata.buttonL.sprite.default;
-      this.img.lineL.frame=screenPlayInit.skindata.lineL.sprite.default;
+      this.img.buttonL.frame=Skindata.buttonL.sprite.default;
+      this.img.lineL.frame=Skindata.lineL.sprite.default;
     }
 
     if (isDownState[5]){
-      this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.pressed;
-      this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.pressed;
+      this.img.buttonR.frame=Skindata.buttonR.sprite.pressed;
+      this.img.lineR.frame=Skindata.lineR.sprite.pressed;
     }
     else{
-      this.img.buttonR.frame=screenPlayInit.skindata.buttonR.sprite.default;
-      this.img.lineR.frame=screenPlayInit.skindata.lineR.sprite.default;
+      this.img.buttonR.frame=Skindata.buttonR.sprite.default;
+      this.img.lineR.frame=Skindata.lineR.sprite.default;
     }
 
     if (isDownState[6]){
-      this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.pressed;
+      this.img.buttonS.frame=Skindata.buttonS.sprite.pressed;
     }
     else{
-      this.img.buttonS.frame=screenPlayInit.skindata.buttonS.sprite.default;
+      this.img.buttonS.frame=Skindata.buttonS.sprite.default;
     }
   },
 
@@ -1197,7 +1194,10 @@ var screenPlay = {
   },
 
   goToResult: function() {
-    this.state.start('screenResult');
+    if(screenCourseInit.var.isCoursePlay == true)
+      game.state.start('screenEntryResult');
+    else
+      game.state.start('screenResult');
   }
 
 };

@@ -8,16 +8,24 @@ var PATH = {
   BGM: 'assets/sound/BGM/',
   SE: 'assets/sound/SE/',
 
-  STAGE: 'assets/stage/',
+  STAGE: {
+    FREE: 'assets/stage/freeplay/',
+    COURSE: 'assets/stage/courseplay/'
+  },
 
   skinName: 'default',
   uiName: 'default',
   stageName: '',
   stageLevel: 0,
+  courseName: '',
+  entry: 0,
 
   setStage: function(name, level){
     PATH.stageName = name;
     PATH.stageLevel = level;
+  },
+  setCourse: function(name){
+    PATH.courseName = name;
   },
 
   skinPath: function(skinName){
@@ -27,6 +35,12 @@ var PATH = {
     return this.UI + uiName + '/';
   },
   stagePath: function(stageName, stageLevel){
-    return this.STAGE + stageName + '/';
+    return this.STAGE.FREE + stageName + '/';
+  },
+  coursePath: function(courseName){
+    return this.STAGE.COURSE + courseName + '/';
+  },
+  entryPath: function(courseName, entry){
+    return this.STAGE.COURSE + courseName + '/entry' + entry + '/';
   }
 };

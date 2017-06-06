@@ -3,13 +3,12 @@ var screenCoursePlayInit = {
   preload: function(){
     // Load Playlist
     game.load.json(
-      'allCourseList',
-      PATH.STAGE+'courseplaylist/list.json');
+      'allCourseList', PATH.STAGE.COURSE+'list.json');
   },
   create: function(){
     this.allCourseList = game.cache.getJSON('allCourseList');
   },
   update: function(){
-    this.state.start('screenCoursePlay');
+    game.state.start('screenCoursePlay');
   }
 };

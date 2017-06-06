@@ -110,7 +110,7 @@ var screenCoursePlay = {
     game.load.image('optionselector', this.uiPath+'optionselector.png');
 
     for(var i=0; i<screenCoursePlayInit.allCourseList.max; i++){
-      game.load.spritesheet(screenCoursePlayInit.allCourseList.list[i].path, PATH.STAGE+screenCoursePlayInit.allCourseList.list[i].path+'/listimg.png', 100, 100);
+      game.load.spritesheet(screenCoursePlayInit.allCourseList.list[i].path, PATH.STAGE.COURSE+screenCoursePlayInit.allCourseList.list[i].path+'/listimg.png', 100, 100);
     }
     // Load BGM
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
@@ -533,7 +533,7 @@ var screenCoursePlay = {
 
   pressbackspace: function(){
     C2TrackerControl.stop(C2Trackers.bgmLoop);
-    this.state.start('screenLobby');
+    game.state.start('screenLobby');
   },
 
   presshelp: function(){
@@ -542,11 +542,10 @@ var screenCoursePlay = {
 
   pressstart: function(){
     C2TrackerControl.stop(C2Trackers.bgmLoop);
-    PATH.setStage(
-      this.var.allCourseList.list[this.var.selectedCourseNum].path,
-      this.var.selectedView);
+    PATH.setCourse(
+      this.var.allCourseList.list[this.var.selectedCourseNum].path);
     screenPlay.var.speed = this.var.selectedSpeedValue;
-    this.state.start('screenPlayInit');
+    game.state.start('screenCourseInit');
   },
 
   selectionUpdate: function(){

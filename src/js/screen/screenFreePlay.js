@@ -101,7 +101,7 @@ var screenFreePlay = {
     game.load.image('optionselector', this.uiPath+'optionselector.png');
 
     for(var i=0; i<screenFreePlayInit.allPlaylist.max; i++){
-      game.load.spritesheet(screenFreePlayInit.allPlaylist.list[i].path, PATH.STAGE+screenFreePlayInit.allPlaylist.list[i].path+'/listimg.png', 100, 100);
+      game.load.spritesheet(screenFreePlayInit.allPlaylist.list[i].path, PATH.STAGE.FREE+screenFreePlayInit.allPlaylist.list[i].path+'/listimg.png', 100, 100);
     }
     // Load BGM
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
@@ -514,7 +514,7 @@ var screenFreePlay = {
 
   pressbackspace: function(){
     C2TrackerControl.stop(C2Trackers.bgmLoop);
-    this.state.start('screenLobby');
+    game.state.start('screenLobby');
   },
 
   presshelp: function(){
@@ -527,7 +527,7 @@ var screenFreePlay = {
       this.var.allPlaylist.list[this.var.selectedSongNum].path,
       this.var.selectedPattern);
     screenPlay.var.speed = this.var.selectedSpeedValue;
-    this.state.start('screenPlayInit');
+    game.state.start('screenPlayInit');
   },
 
   selectionUpdate: function(){

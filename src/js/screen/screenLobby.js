@@ -217,27 +217,27 @@ var screenLobby = {
     switch(this.var.selectType){
       case 0:
         console.log('go free play');
-        this.state.start('screenFreePlayInit');
+        game.state.start('screenFreePlayInit');
         break;
       case 1:
         console.log('go course play');
-        this.state.start('screenCoursePlayInit');
+        game.state.start('screenCoursePlayInit');
         break;
       case 2:
         console.log('player info');
-        this.state.start('screenInputCheck');
+        game.state.start('screenInputCheck');
         break;
       case 3:
         console.log('ranking info');
-        this.state.start('');
+        game.state.start('');
         break;
       case 4:
         console.log('config');
-        this.state.start('');
+        game.state.start('');
         break;
       case 5:
         console.log('go back');
-        this.state.start('screenSelectAccount');
+        game.state.start('screenSelectAccount');
         break;
       default:
     }

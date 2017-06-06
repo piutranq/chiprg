@@ -1,5 +1,5 @@
-var screenResult = {
-  name: "screenResult",
+var screenEntryResult = {
+  name: "screenEntryResult",
   var: {
     songGenre: "",
     songTitle: "",
@@ -33,8 +33,13 @@ var screenResult = {
       this.isAllCombo = screenPlay.var.score.isAllCombo();
       this.isAllGreat = screenPlay.var.score.isAllGreat();
       this.isAllPerfect = screenPlay.var.score.isAllPerfect();
-      this.totalScore = screenPlay.var.score.value+
+      if(this.isAllGreat == true){
+        this.totalScore = screenPlay.var.score.value+
                         screenPlay.var.score.advanced;
+      }
+      else{
+        this.totalScore = screenPlay.var.score.value;
+      }
     },
     isCleared: function(){
       if(screenPlay.var.lifeGague.value > 0) return true;
@@ -43,7 +48,7 @@ var screenResult = {
   },
   string: {
     screenTitle: function(){
-      switch(screenResult.var.isCleared()){
+      switch(screenEntryResult.var.isCleared()){
       case true:
         return "STAGE CLEAR";
       case false:
@@ -56,20 +61,20 @@ var screenResult = {
     rank:[ "1ST PLACE", "2ND PLACE", "3RD PLACE", "4TH PLACE", "5TH PLACE" ],
     grade: "GRADE",
     gradeValue: function(){
-      if(screenResult.var.gradeRate>=98)      return 'SS';
-      else if(screenResult.var.gradeRate>=95) return 'S';
-      else if(screenResult.var.gradeRate>=90) return 'A';
-      else if(screenResult.var.gradeRate>=80) return 'B';
-      else if(screenResult.var.gradeRate>=70) return 'C';
-      else if(screenResult.var.gradeRate>=50) return 'D';
+      if(screenEntryResult.var.gradeRate>=98)      return 'SS';
+      else if(screenEntryResult.var.gradeRate>=95) return 'S';
+      else if(screenEntryResult.var.gradeRate>=90) return 'A';
+      else if(screenEntryResult.var.gradeRate>=80) return 'B';
+      else if(screenEntryResult.var.gradeRate>=70) return 'C';
+      else if(screenEntryResult.var.gradeRate>=50) return 'D';
       else                                   return 'F';
     },
     isAll: function(){
-      if(screenResult.var.isAllPerfect)
+      if(screenEntryResult.var.isAllPerfect)
         return 'ALL PERFECT';
-      else if(screenResult.var.isAllGreat)
+      else if(screenEntryResult.var.isAllGreat)
         return 'ALL GREAT';
-      else if(screenResult.var.isAllCombo)
+      else if(screenEntryResult.var.isAllCombo)
         return 'ALL COMBO';
       else
         return '';
@@ -87,9 +92,8 @@ var screenResult = {
     totalScore : "TOTAL SCORE : ",
     advBonus: "ALL GREAT BONUS",
 
-    retry: "RETRY",
     lobby: "LOBBY",
-    songSelect: "SONG SELECT",
+    nextEntry: "PLAY NEXT ENTRY",
   },
   text: {
     screenTitle: "",
@@ -119,9 +123,7 @@ var screenResult = {
     },
     maxCombo: "",
     isAll: "",
-    retry: "",
-    lobby: "",
-    songSelect: "",
+    button: "",
   },
 
 
@@ -147,12 +149,6 @@ var screenResult = {
   create: function(){
     this.var.getResultData();
     this.img.background = game.add.sprite(0, 0, 'background');
-
-    this.img.button1 = game.add.button(190, 125, 'buttonShort',
-      this.button1touched, this);
-
-    this.img.button2 = game.add.button(253, 125, 'buttonShort',
-      this.button2touched, this);
 
     this.img.button3 = game.add.button(190, 150, 'buttonLong',
       this.button3touched, this);
@@ -202,13 +198,22 @@ var screenResult = {
     this.text.isAll = game.add.bitmapText(
       125, 104, 'font57', this.string.isAll(), 7);
 
-    this.text.retry = game.add.bitmapText(
-      210, 132, 'font57', this.string.retry, 7);
-    this.text.lobby = game.add.bitmapText(
-      272, 132, 'font57', this.string.lobby, 7);
-    this.text.songSelect = game.add.bitmapText(
-      215, 157, 'font57', this.string.songSelect, 7);
+    if(this.var.isCleared()){
+      this.text.nextEntry = game.add.bitmapText(
+        215, 157, 'font57', this.string.nextEntry, 7);
+    }
+    else{
+      this.text.lobby = game.add.bitmapText(
+        215, 157, 'font57', this.string.lobby, 7);
+    }
+    this.writeEntryResultData(screenCourseInit.var.currentEntry);
 
+  },
+  writeEntryResultData: function(entryNum){
+    CourseResultData.entry[entryNum].score = this.var.totalScore;
+    CourseResultData.entry[entryNum].gradeRate = this.var.gradeRate;
+    CourseResultData.entry[entryNum].gradeValue = this.string.gradeValue();
+    CourseResultData.entry[entryNum].isAll = this.string.isAll();
   },
   update: function(){
     if(this.var.isAllGreat) {
@@ -222,22 +227,19 @@ var screenResult = {
     }
   },
 
-  button1touched: function(){
-    this.retry();
-  },
-  button2touched: function(){
-    this.lobby();
-  },
   button3touched: function(){
-    this.songSelect();
+    if(this.var.isCleared())
+      this.nextEntry();
+    else
+      this.lobby();
   },
   lobby: function() {
+    screenCourseInit.var.currentEntry=0;
+    screenCourseInit.var.isCoursePlay=0;
     game.state.start('screenLobby');
   },
-  songSelect: function() {
-    game.state.start('screenFreePlayInit');
-  },
-  retry: function(){
-    game.state.start('screenPlayInit');
+  nextEntry: function() {
+    screenCourseInit.var.currentEntry++;
+    game.state.start('screenCourseInit');
   }
 };
