@@ -40,6 +40,6 @@ var screenStart = {
 
   goLogin: function(){
     C2TrackerControl.stop(C2Trackers.bgmLoop);
-    game.state.start('screenLobby');
+    game.state.start('screenSelectAccount');
   }
 };

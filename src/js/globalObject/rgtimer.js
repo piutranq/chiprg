@@ -1,4 +1,4 @@
-function RGtimer(){
+var RGtimer = function(){
 
   this.start_msec = false;
   this.tempo = 120;
@@ -50,4 +50,4 @@ function RGtimer(){
     this.current_mbeat = this.current_msec/this.beatSlicer;
     return parseInt(this.current_mbeat);
   };
-}
+};

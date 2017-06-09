@@ -165,6 +165,7 @@ var screenSelectAccount = {
         break;
       case 2:
         console.log('go guest account');
+        currentUser.load({type: "guest"});
         game.state.start('screenLobby');
         break;
       default:
