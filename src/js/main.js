@@ -14,7 +14,6 @@ game.state.add('screenCoursePlay', screenCoursePlay);
 game.state.add('screenPlayInit', screenPlayInit);
 game.state.add('screenPlay', screenPlay);
 game.state.add('screenResult', screenResult);
-game.state.add('screenInputCheck', screenInputCheck);
 game.state.add('screenCourseInit', screenCourseInit);
 game.state.add('screenPlayEntryInit', screenPlayEntryInit);
 game.state.add('screenEntryResult', screenEntryResult);

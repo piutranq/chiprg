@@ -225,7 +225,7 @@ var screenLobby = {
         break;
       case 2:
         console.log('player info');
-        game.state.start('screenInputCheck');
+        game.state.start('');
         break;
       case 3:
         console.log('ranking info');
@@ -237,6 +237,7 @@ var screenLobby = {
         break;
       case 5:
         console.log('go back');
+        currentUser.init();
         game.state.start('screenSelectAccount');
         break;
       default:
