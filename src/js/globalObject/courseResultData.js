@@ -47,4 +47,4 @@ var CourseResultData = {
       else                             this.totalGradeValue = 'F';
     }
   }
-}
+};

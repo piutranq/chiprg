@@ -1194,7 +1194,7 @@ var screenPlay = {
   },
 
   goToResult: function() {
-    if(screenCourseInit.var.isCoursePlay == true)
+    if(screenCourseInit.var.isCoursePlay === true)
       game.state.start('screenEntryResult');
     else
       game.state.start('screenResult');

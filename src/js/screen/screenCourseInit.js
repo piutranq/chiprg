@@ -21,7 +21,7 @@ var screenCourseInit = {
     this.var.isCoursePlay = true;
     if(this.var.currentEntry >= 4){
       console.log('go screenCourseResult');
-      this.var.isCoursePlay = false,
+      this.var.isCoursePlay = false;
       game.state.start('screenCourseResult');
     }
     else{

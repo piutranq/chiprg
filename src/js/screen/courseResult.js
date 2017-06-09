@@ -166,4 +166,4 @@ var screenCourseResult = {
   retry: function(){
     game.state.start('screenPlayInit');
   }
-}
+};

@@ -33,7 +33,7 @@ var screenEntryResult = {
       this.isAllCombo = screenPlay.var.score.isAllCombo();
       this.isAllGreat = screenPlay.var.score.isAllGreat();
       this.isAllPerfect = screenPlay.var.score.isAllPerfect();
-      if(this.isAllGreat == true){
+      if(this.isAllGreat === true){
         this.totalScore = screenPlay.var.score.value+
                         screenPlay.var.score.advanced;
       }
