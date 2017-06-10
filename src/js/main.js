@@ -4,6 +4,7 @@ var game = new Phaser.Game(320, 180, Phaser.AUTO, 'chiprg');
 game.state.add('screenInit', screenInit);
 game.state.add('screenStart', screenStart);
 game.state.add('screenSelectAccount', screenSelectAccount);
+game.state.add('screenLogin', screenLogin);
 game.state.add('screenLobby', screenLobby);
 game.state.add('screenConfig', screenConfig);
 game.state.add('screenRanking', screenRanking);

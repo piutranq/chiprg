@@ -9,8 +9,6 @@ var screenStart = {
 
   // FUNCTIONS
   preload: function(){
-    game.load.image(
-      'titleImage', PATH.IMG + 'title/titleImage.png');
     C2TrackerControl.load(C2Trackers.bgmLoop, 'assets/sound/BGM/bgmSelectAccount.mod');
   },
 

@@ -20,14 +20,40 @@ var screenInit = {
     game.load.bitmapFont(
       'font79', PATH.FONT + 'font79.png', PATH.FONT + 'font79.xml');
 
-    game.load.image(
-      'titleImage', PATH.IMG + 'title/studio2AOE_180p.png');
+    // Load Virtual Keyboard IMG
+    game.load.spritesheet(
+      'keyboard', PATH.uiPath(PATH.uiName)+ 'keyboard/keyboard.png', 300, 80);
+    game.load.spritesheet(
+      'textbox', PATH.uiPath(PATH.uiName)+ 'keyboard/textbox.png', 300, 20);
+    game.load.spritesheet(
+      'beam', PATH.uiPath(PATH.uiName)+ 'keyboard/beam.png', 1, 9);
+    game.load.spritesheet(
+      'key20', PATH.uiPath(PATH.uiName)+ 'keyboard/key20.png', 20, 20);
+    game.load.spritesheet(
+      'key30', PATH.uiPath(PATH.uiName)+ 'keyboard/key30.png', 30, 20);
+    game.load.spritesheet(
+      'key40', PATH.uiPath(PATH.uiName)+ 'keyboard/key40.png', 40, 20);
+    game.load.spritesheet(
+      'key50', PATH.uiPath(PATH.uiName)+ 'keyboard/key50.png', 50, 20);
+    game.load.spritesheet(
+      'sel20', PATH.uiPath(PATH.uiName)+ 'keyboard/sel20.png', 20, 20);
+    game.load.spritesheet(
+      'sel30', PATH.uiPath(PATH.uiName)+ 'keyboard/sel30.png', 30, 20);
+    game.load.spritesheet(
+      'sel40', PATH.uiPath(PATH.uiName)+ 'keyboard/sel40.png', 40, 20);
+    game.load.spritesheet(
+      'sel50', PATH.uiPath(PATH.uiName)+ 'keyboard/sel50.png', 50, 20);
 
+    // Load Logo
+    game.load.image(
+      'teamLogo', PATH.IMG + 'title/studio2AOE_180p.png');
+    game.load.image(
+      'titleImage', PATH.IMG + 'title/titleImage.png');
   },
 
   create: function(){
     this.loadTimer.start(120);
-    this.titleImage = game.add.button(0, 0, 'titleImage');
+    this.titleImage = game.add.image(0, 0, 'teamLogo');
 
     // Setup Multitouch
     game.input.addPointer();
@@ -56,11 +82,11 @@ var screenInit = {
     RGinput.menu.padDOWN    = Phaser.Gamepad.XBOX360_DPAD_DOWN;
     RGinput.menu.padLEFT    = Phaser.Gamepad.XBOX360_DPAD_LEFT;
     RGinput.menu.padRIGHT   = Phaser.Gamepad.XBOX360_DPAD_RIGHT;
-    RGinput.menu.padCancel  = Phaser.Gamepad.XBOX360_DPAD_A;
-    RGinput.menu.padOK      = Phaser.Gamepad.XBOX360_DPAD_B;
-    RGinput.menu.padOption1 = Phaser.Gamepad.XBOX360_DPAD_X;
-    RGinput.menu.padOption2 = Phaser.Gamepad.XBOX360_DPAD_Y;
-    RGinput.menu.padHelp    = Phaser.Gamepad.XBOX360_DPAD_BACK;
+    RGinput.menu.padCancel  = Phaser.Gamepad.XBOX360_A;
+    RGinput.menu.padOK      = Phaser.Gamepad.XBOX360_B;
+    RGinput.menu.padOption1 = Phaser.Gamepad.XBOX360_X;
+    RGinput.menu.padOption2 = Phaser.Gamepad.XBOX360_Y;
+    RGinput.menu.padHelp    = Phaser.Gamepad.XBOX360_BACK;
 
     // Setup Default Keyboard Keys
     RGinput.stage.key1      = Phaser.Keyboard.S;

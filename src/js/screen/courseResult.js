@@ -18,7 +18,7 @@ var screenCourseResult = {
 
     retry: "RETRY",
     lobby: "LOBBY",
-    songSelect: "SONG SELECT",
+    songSelect: "COURSE SELECT",
   },
   text: {
     screenTitle: "",
@@ -106,9 +106,9 @@ var screenCourseResult = {
       this.text.entry[i].title = game.add.bitmapText(
         20, 67+i*30, 'font57', CourseResultData.entry[i].score, 7);
       this.text.entry[i].title = game.add.bitmapText(
-        150, 54+i*30, 'font57', CourseResultData.entry[i].gradeValue, 14);
+        130, 54+i*30, 'font57', CourseResultData.entry[i].gradeValue, 14);
       this.text.entry[i].title = game.add.bitmapText(
-        150, 70+i*30, 'font57', CourseResultData.entry[i].isAll, 7);
+        130, 70+i*30, 'font57', CourseResultData.entry[i].isAll, 7);
     }
     
     this.text.retry = game.add.bitmapText(
@@ -161,7 +161,7 @@ var screenCourseResult = {
     game.state.start('screenLobby');
   },
   songSelect: function() {
-    game.state.start('screenFreePlayInit');
+    game.state.start('screenCoursePlayInit');
   },
   retry: function(){
     game.state.start('screenPlayInit');

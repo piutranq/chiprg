@@ -7,27 +7,27 @@ var screenLobby = {
     title: "LOBBY",
     type1: {
       name: "FREE PLAY",
-      contents: "FREE PLAYING\nON ONE SONG\n"
+      contents: "JUST PLAY ONE SONG"
     },
     type2: {
       name: "COURSE PLAY",
-      contents: "COURSE PLAYING\nON FOUR SONGS\n"
+      contents: "PLAY COURSE WITH\nCOLLECTION OF 4 SONGS"
     },
     type3: {
       name: "PLAYER INFO",
-      contents: "PLAYER INFO\nWITH DATA\n"
+      contents: "READ PLAYER INFORMATION"
     },
     type4: {
       name: "RANKING INFO",
-      contents: "PLAYER RANK\nWITH DATA\n"
+      contents: "READ RANKING INFORMATION"
     },
     type5: {
       name: "CONFIG",
-      contents: "SET CONFIG\nEX) KEY SETTING\n"
+      contents: "SET CONFIGURATION"
     },
     type6: {
-      name: "GO BACK",
-      contents: "GO BACK\nSELECT ACCOUNT\n"
+      name: "LOGOUT",
+      contents: "SELECT ANOTHER ACCOUNT"
     },
   },
 
@@ -99,7 +99,7 @@ var screenLobby = {
     this.text.buttontype5 = game.add.bitmapText(40, 133, 'font57', this.string.type5.name, 7);
     this.text.buttontype6 = game.add.bitmapText(40, 157, 'font57', this.string.type6.name, 7);
     this.text.typename = game.add.bitmapText(190, 20, 'font79', this.string.type1.name, 9);
-    this.text.okname = game.add.bitmapText(210, 147, 'font57', 'USE '+this.string.type1.name, 7);
+    this.text.okname = game.add.bitmapText(210, 147, 'font57', this.string.type1.name, 7);
     this.text.contents = game.add.bitmapText(190, 40, 'font57', this.string.type1.contents, 7);
 
   },

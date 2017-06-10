@@ -157,7 +157,7 @@ var screenSelectAccount = {
     switch(this.var.selectType){
       case 0:
         console.log('go online account');
-        game.state.start('screenLobby');
+        game.state.start('screenLogin');
         break;
       case 1:
         console.log('go local account');
